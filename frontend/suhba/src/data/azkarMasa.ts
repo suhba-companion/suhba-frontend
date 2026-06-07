@@ -1,0 +1,60 @@
+import type { Dhikr } from '../types'
+
+export const AZKAR_MASA: Dhikr[] = [
+  {
+    id: 'masa-1',
+    ar: 'أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ، لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ',
+    latin: 'Amsaynā wa-amsa l-mulku lillāhi, wa-l-ḥamdu lillāh, lā ilāha illallāhu waḥdahu lā sharīka lah, lahu l-mulku wa-lahu l-ḥamdu wa-huwa ʿalā kulli shayʾin qadīr',
+    en: 'We have entered the evening and with it all dominion belongs to Allah. All praise is for Allah. None has the right to be worshipped except Allah, alone, without partner. To Him belongs all sovereignty and all praise, and He is over all things capable.',
+    count: '1×',
+    hadithInfo: "Der Prophet ﷺ pflegte am Abend zu sagen: 'Amsaynā wa-amsa l-mulku lillāh...' — Ṣaḥīḥ Muslim 2723",
+  },
+  {
+    id: 'masa-2',
+    ar: 'اللَّهُمَّ بِكَ أَمْسَيْنَا، وَبِكَ أَصْبَحْنَا، وَبِكَ نَحْيَا، وَبِكَ نَمُوتُ، وَإِلَيْكَ الْمَصِيرُ',
+    latin: 'Allāhumma bika amsaynā, wa-bika aṣbaḥnā, wa-bika naḥyā, wa-bika namūtu, wa-ilayka l-maṣīr',
+    en: 'O Allah, by You we have entered the evening, by You we have entered the morning, by You we live, by You we die, and to You is the return.',
+    count: '1×',
+    hadithInfo: "Überliefert von Abū Hurayra رضي الله عنه — Sunan at-Tirmidhī 3391",
+  },
+  {
+    id: 'masa-3',
+    ar: 'اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ وَأَبُوءُ بِذَنْبِي فَاغْفِرْ لِي فَإِنَّهُ لَا يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ',
+    latin: 'Allāhumma anta rabbī lā ilāha illā anta, khalaqtanī wa-anā ʿabduk, wa-anā ʿalā ʿahdika wa-waʿdika ma-staṭaʿtu, aʿūdhu bika min sharri mā ṣanaʿtu, abūʾu laka bi-niʿmatika ʿalayya wa-abūʾu bi-dhanbī fa-ghfir lī fa-innahū lā yaghfiru dh-dhunūba illā ant',
+    en: 'O Allah, You are my Lord. None has the right to be worshipped except You. You created me and I am Your slave. I acknowledge Your blessings upon me and acknowledge my sin. So forgive me, for none forgives sins except You.',
+    count: '1×',
+    hadithInfo: "Sayyid al-Istighfār — 'Wer dies abends mit Überzeugung sagt und noch vor Morgen stirbt, ist ein Bewohner des Paradieses.' — Ṣaḥīḥ al-Bukhārī 6306",
+  },
+  {
+    id: 'masa-4',
+    ar: 'رَضِيتُ بِاللَّهِ رَبًّا، وَبِالْإِسْلَامِ دِينًا، وَبِمُحَمَّدٍ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ نَبِيًّا',
+    latin: 'Raḍītu billāhi rabbā, wa-bi-l-islāmi dīnā, wa-bi-Muḥammadin ṣallallāhu ʿalayhi wa-sallama nabiyyā',
+    en: 'I am pleased with Allah as my Lord, with Islam as my religion, and with Muhammad ﷺ as my Prophet.',
+    count: '3×',
+    hadithInfo: "'Wer dies morgens und abends dreimal sagt, dem ist es ein Recht bei Allah, ihn zufriedenzustellen.' — Sunan Abī Dāwūd 5072",
+  },
+  {
+    id: 'masa-5',
+    ar: 'اللَّهُمَّ عَافِنِي فِي بَدَنِي، اللَّهُمَّ عَافِنِي فِي سَمْعِي، اللَّهُمَّ عَافِنِي فِي بَصَرِي، لَا إِلَهَ إِلَّا أَنْتَ',
+    latin: 'Allāhumma ʿāfinī fī badanī, Allāhumma ʿāfinī fī samʿī, Allāhumma ʿāfinī fī baṣarī, lā ilāha illā ant',
+    en: 'O Allah, grant me health in my body. O Allah, grant me health in my hearing. O Allah, grant me health in my sight. None has the right to be worshipped except You.',
+    count: '3×',
+    hadithInfo: "Überliefert von Abū Bakr aṣ-Ṣiddīق رضي الله عنه — Sunan Abī Dāwūd 5090",
+  },
+  {
+    id: 'masa-6',
+    ar: 'حَسْبِيَ اللَّهُ لَا إِلَهَ إِلَّا هُوَ، عَلَيْهِ تَوَكَّلْتُ وَهُوَ رَبُّ الْعَرْشِ الْعَظِيمِ',
+    latin: 'Ḥasbiya llāhu lā ilāha illā hū, ʿalayhi tawakkaltu wa-huwa rabbu l-ʿarshi l-ʿaẓīm',
+    en: 'Sufficient for me is Allah; there is no deity except Him. Upon Him I have relied, and He is Lord of the great Throne.',
+    count: '7×',
+    hadithInfo: "'Wer dies morgens und abends siebenmal sagt — Allah wird ihm in seiner Angelegenheit genügen.' — Sunan Abī Dāwūd 5081",
+  },
+  {
+    id: 'masa-7',
+    ar: 'أَعُوذُ بِكَلِمَاتِ اللَّهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ',
+    latin: "Aʿūdhu bi-kalimāti llāhi t-tāmmāti min sharri mā khalaq",
+    en: 'I seek refuge in the perfect words of Allah from the evil of what He has created.',
+    count: '3×',
+    hadithInfo: "'Wer diese Worte abends dreimal sagt, den wird in dieser Nacht kein Gift schaden.' — Ṣaḥīḥ Muslim 2709",
+  },
+]
