@@ -1,4 +1,4 @@
-const BASE = '/api/admin'
+const BASE = `${import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8080'}/api/admin`
 
 function csrfToken(): string {
   const match = document.cookie.match(/(?:^|;\s*)XSRF-TOKEN=([^;]+)/)
