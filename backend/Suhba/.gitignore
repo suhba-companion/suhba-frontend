@@ -1,0 +1,9 @@
+target/
+*.class
+application-local.yml
+application-local.properties
+.env
+*.credentials
+.idea/
+*.iml
+.DS_Store

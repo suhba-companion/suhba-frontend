@@ -1,0 +1,39 @@
+services:
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: suhba
+      POSTGRES_USER: suhba
+      POSTGRES_PASSWORD: suhba
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U suhba -d suhba"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  backend:
+    build: ./backend/Suhba
+    ports:
+      - "8080:8080"
+    environment:
+      DB_DATASOURCE: jdbc:postgresql://db:5432/suhba
+      DB_USERNAME: suhba
+      DB_PASSWORD: suhba
+      SPRING_PROFILES_ACTIVE: local
+    depends_on:
+      db:
+        condition: service_healthy
+
+  frontend:
+    build: ./frontend/suhba
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:

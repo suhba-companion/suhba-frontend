@@ -1,0 +1,9 @@
+ALTER TABLE prayer_spots
+    ADD COLUMN IF NOT EXISTS juma_time_summer VARCHAR(200),
+    ADD COLUMN IF NOT EXISTS juma_time_winter VARCHAR(200),
+    ADD COLUMN IF NOT EXISTS language         VARCHAR(200),
+    ADD COLUMN IF NOT EXISTS google_maps_url  VARCHAR(500),
+    ADD COLUMN IF NOT EXISTS verified         BOOLEAN NOT NULL DEFAULT FALSE;
+
+ALTER TABLE prayer_spots ALTER COLUMN juma_time TYPE VARCHAR(200);
+ALTER TABLE prayer_spots ALTER COLUMN submitted_by DROP NOT NULL;
