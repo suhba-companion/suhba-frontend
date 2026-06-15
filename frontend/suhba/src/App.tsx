@@ -5,7 +5,7 @@ import type { NavTab } from '@components'
 import { HomePage } from '@features/home'
 import { SpotsPage, SpotDetailPage } from '@features/spots'
 import { HalalPage, HalalBusinessDetailPage } from '@features/halal'
-import { EventsPage } from '@features/events'
+import { EventsPage, EventDetailPage } from '@features/events'
 import { AzkarPage } from '@features/azkar'
 import { SubmitSpotPage, SubmitBusinessPage, SubmitEventPage } from '@features/submit'
 
@@ -16,11 +16,13 @@ function App(): JSX.Element {
   const [activeTab, setActiveTab] = useState<NavTab>('start')
   const [selectedSpot, setSelectedSpot] = useState<{ id: string; name: string } | null>(null)
   const [selectedBusiness, setSelectedBusiness] = useState<string | null>(null)
+  const [selectedEvent, setSelectedEvent] = useState<{ id: string; title: string } | null>(null)
   const [activeForm, setActiveForm] = useState<FormView>(null)
 
   const handleTabChange = (tab: NavTab): void => {
     setSelectedSpot(null)
     setSelectedBusiness(null)
+    setSelectedEvent(null)
     setActiveForm(null)
     setActiveTab(tab)
   }
@@ -47,7 +49,16 @@ function App(): JSX.Element {
     if (activeForm === 'submit-event') {
       return <SubmitEventPage onBack={() => setActiveForm(null)} />
     }
-    if (activeTab === 'start') return <HomePage onNavigate={handleTabChange} />
+    if (activeTab === 'start') {
+      return (
+        <HomePage
+          onNavigate={handleTabChange}
+          onSpotSelect={(id, name) => setSelectedSpot({ id, name })}
+          onBusinessSelect={(id) => setSelectedBusiness(id)}
+          onEventSelect={(id, title) => setSelectedEvent({ id, title })}
+        />
+      )
+    }
     if (activeTab === 'orte') {
       return (
         <SpotsPage
@@ -100,6 +111,11 @@ function App(): JSX.Element {
       {selectedBusiness !== null && (
         <Modal title={t('halal.detail.title')} onClose={() => setSelectedBusiness(null)}>
           <HalalBusinessDetailPage businessId={selectedBusiness} />
+        </Modal>
+      )}
+      {selectedEvent !== null && (
+        <Modal title={selectedEvent.title} onClose={() => setSelectedEvent(null)}>
+          <EventDetailPage eventId={selectedEvent.id} />
         </Modal>
       )}
     </div>

@@ -18,9 +18,9 @@
   "home": {
     "quickAccess": "Schnellzugriff",
     "nearby": "In der Nähe",
-    "nearbyEmpty": "Keine Ereignisse in der Nähe.",
-    "nearbyLoading": "Ereignisse werden geladen…",
-    "nearbyError": "Ereignisse konnten nicht geladen werden.",
+    "nearbyEmpty": "Nichts in der Nähe gefunden.",
+    "nearbyLoading": "Wird geladen…",
+    "nearbyError": "Inhalte konnten nicht geladen werden.",
     "azkar": "Azkar & Duaa",
     "azkarLink": "Azkar & Duaa öffnen",
     "tiles": {
@@ -94,11 +94,7 @@
       "directions": "Navigation",
       "verified": "Verifiziert",
       "map": "Karte",
-      "mapLoading": "Karte wird geladen…",
-      "reviews": "Bewertungen",
-      "noReviews": "Noch keine Bewertungen.",
-      "stars": "{{count}} von 5 Sternen",
-      "suggestChange": "+ Änderung vorschlagen"
+      "mapLoading": "Karte wird geladen…"
     }
   },
   "halal": {
@@ -295,6 +291,7 @@
     "addEvent": "+ Event vorschlagen",
     "loading": "Events werden geladen…",
     "empty": "Keine Events gefunden.",
+    "notFound": "Event nicht gefunden.",
     "free": "Kostenlos",
     "filter": "Filter",
     "filter_": {

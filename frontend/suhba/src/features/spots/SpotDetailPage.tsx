@@ -1,11 +1,10 @@
 import { useState, useEffect, Suspense, lazy } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Sect, Spinner } from '@components'
-import { getSpotById, getReviewsBySpotId } from '@services/masjidiService'
-import type { PrayerSpot, SpotReview } from '../../types'
+import { getSpotById } from '@services/masjidiService'
+import type { PrayerSpot } from '../../types'
 import { SpotDetailHero } from './SpotDetailHero'
 import { SpotDetailInfo } from './SpotDetailInfo'
-import { SpotDetailReviews } from './SpotDetailReviews'
 
 const SpotDetailMap = lazy(() =>
   import('./SpotDetailMap').then((m) => ({ default: m.SpotDetailMap })),
@@ -18,7 +17,6 @@ interface SpotDetailPageProps {
 export function SpotDetailPage({ spotId }: SpotDetailPageProps): JSX.Element {
   const { t } = useTranslation()
   const [spot, setSpot] = useState<PrayerSpot | undefined>(undefined)
-  const [reviews, setReviews] = useState<SpotReview[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -26,7 +24,6 @@ export function SpotDetailPage({ spotId }: SpotDetailPageProps): JSX.Element {
     getSpotById(spotId)
       .then((s) => {
         setSpot(s)
-        setReviews(getReviewsBySpotId(spotId))
       })
       .finally(() => setLoading(false))
   }, [spotId])
@@ -68,15 +65,6 @@ export function SpotDetailPage({ spotId }: SpotDetailPageProps): JSX.Element {
             </Suspense>
           </div>
         </section>
-
-        <SpotDetailReviews reviews={reviews} />
-
-        <button
-          type="button"
-          className="w-full py-3 text-sm font-medium text-text-muted border border-divider rounded-card hover:bg-sage-tint transition-colors"
-        >
-          {t('spots.detail.suggestChange')}
-        </button>
       </div>
     </div>
   )

@@ -1,6 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import { SpotDetailPage } from './SpotDetailPage'
-import type { PrayerSpot, SpotReview } from '../../types'
+import type { PrayerSpot } from '../../types'
 
 vi.mock('./SpotDetailMap', () => ({
   SpotDetailMap: () => <div data-testid="detail-map" />,
@@ -23,13 +23,8 @@ const MOCK_SPOT: PrayerSpot = {
   distanceKm: 5.5,
 }
 
-const MOCK_REVIEWS: SpotReview[] = [
-  { id: 'r1', spotId: 'izw', user: 'Test User', stars: 5, text: 'Sehr gut!', createdAt: '2025-11-14' },
-]
-
 vi.mock('@services/masjidiService', () => ({
   getSpotById: (id: string) => Promise.resolve(id === 'izw' ? MOCK_SPOT : undefined),
-  getReviewsBySpotId: (id: string) => (id === 'izw' ? MOCK_REVIEWS : []),
 }))
 
 describe('SpotDetailPage', () => {
@@ -46,16 +41,6 @@ describe('SpotDetailPage', () => {
   it('renders Juma time', async () => {
     render(<SpotDetailPage spotId="izw" />)
     await waitFor(() => expect(screen.getByText(/12:30 Uhr/)).toBeInTheDocument())
-  })
-
-  it('renders reviews', async () => {
-    render(<SpotDetailPage spotId="izw" />)
-    await waitFor(() => expect(screen.getByText('Test User')).toBeInTheDocument())
-  })
-
-  it('renders the Änderung button', async () => {
-    render(<SpotDetailPage spotId="izw" />)
-    await waitFor(() => expect(screen.getByRole('button', { name: /änderung/i })).toBeInTheDocument())
   })
 
   it('shows not found message for unknown spotId', async () => {

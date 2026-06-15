@@ -1,14 +1,20 @@
 import { useState, useEffect, useMemo } from 'react'
-import type { Event, FeedEvent } from '../../types'
+import type { Event, FeedEvent, PrayerSpot, HalalBusiness } from '../../types'
 import { getUpcomingEvents } from '@services/eventService'
+import { getSpots } from '@services/masjidiService'
+import { getHalalBusinesses } from '@services/halalService'
 import { useGeolocation } from '../../hooks/useGeolocation'
-
-const MAX_FEED_ITEMS = 3
 
 interface UseNearbyFeedReturn {
   items: readonly FeedEvent[]
   loading: boolean
   error: Error | null
+}
+
+interface NearbyData {
+  spots: readonly PrayerSpot[]
+  businesses: readonly HalalBusiness[]
+  events: readonly Event[]
 }
 
 function isToday(date: Date): boolean {
@@ -28,40 +34,109 @@ function formatFeedTime(isoStr: string): string {
   return `${day} ${time}`
 }
 
-function toFeedEvent(event: Event): FeedEvent {
+function byDistance<T extends { distanceKm?: number }>(a: T, b: T): number {
+  return (a.distanceKm ?? Infinity) - (b.distanceKm ?? Infinity)
+}
+
+function spotToFeedEvent(spot: PrayerSpot): FeedEvent {
   return {
-    id: event.id,
+    id: `spot-${spot.id}`,
+    title: spot.name,
+    location: spot.district || spot.address,
+    distanceKm: spot.distanceKm,
+    tag: spot.type,
+    time: spot.jumaTime ? `Juma ${spot.jumaTime}` : 'Offen',
+    kind: 'spot',
+    lat: spot.lat,
+    lng: spot.lng,
+    googleMapsUrl: spot.googleMapsUrl,
+  }
+}
+
+function businessToFeedEvent(business: HalalBusiness): FeedEvent {
+  return {
+    id: `halal-${business.id}`,
+    title: business.name,
+    location: business.district || business.address,
+    distanceKm: business.distanceKm,
+    tag: business.type,
+    time: business.rating !== undefined ? `★ ${business.rating.toFixed(1)}` : 'Halal',
+    kind: 'halal',
+    lat: business.lat,
+    lng: business.lng,
+  }
+}
+
+function eventToFeedEvent(event: Event): FeedEvent {
+  return {
+    id: `event-${event.id}`,
     title: event.title,
     location: event.district || event.address,
     distanceKm: event.distanceKm,
     tag: event.category,
     time: formatFeedTime(event.startTime),
+    kind: 'event',
+    lat: event.lat,
+    lng: event.lng,
+    googleMapsUrl: event.googleMapsUrl,
   }
 }
 
 export function useNearbyFeed(): UseNearbyFeedReturn {
   const userPos = useGeolocation()
-  const [events, setEvents] = useState<readonly Event[]>([])
+  const [data, setData] = useState<NearbyData>({ spots: [], businesses: [], events: [] })
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<Error | null>(null)
 
   useEffect(() => {
+    let cancelled = false
     setLoading(true)
-    getUpcomingEvents(userPos)
-      .then((data) => {
-        setEvents(data)
+    Promise.allSettled([
+      getSpots(userPos),
+      getHalalBusinesses(userPos),
+      getUpcomingEvents(userPos),
+    ])
+      .then(([spotsRes, halalRes, eventsRes]) => {
+        if (cancelled) return
+        if (
+          spotsRes.status === 'rejected' &&
+          halalRes.status === 'rejected' &&
+          eventsRes.status === 'rejected'
+        ) {
+          setError(spotsRes.reason instanceof Error ? spotsRes.reason : new Error('Feed failed'))
+          return
+        }
+        setData({
+          spots: spotsRes.status === 'fulfilled' ? spotsRes.value : [],
+          businesses: halalRes.status === 'fulfilled' ? halalRes.value : [],
+          events: eventsRes.status === 'fulfilled' ? eventsRes.value : [],
+        })
         setError(null)
       })
-      .catch(setError)
-      .finally(() => setLoading(false))
+      .finally(() => {
+        if (!cancelled) setLoading(false)
+      })
+    return () => {
+      cancelled = true
+    }
   }, [userPos.lat, userPos.lng])
 
   const items = useMemo(() => {
-    return [...events]
-      .sort((a, b) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime())
-      .slice(0, MAX_FEED_ITEMS)
-      .map(toFeedEvent)
-  }, [events])
+    const result: FeedEvent[] = []
+
+    const nearestSpot = [...data.spots].sort(byDistance)[0]
+    if (nearestSpot) result.push(spotToFeedEvent(nearestSpot))
+
+    const nearestBusiness = [...data.businesses].sort(byDistance)[0]
+    if (nearestBusiness) result.push(businessToFeedEvent(nearestBusiness))
+
+    const nextEvent = [...data.events].sort(
+      (a, b) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime(),
+    )[0]
+    if (nextEvent) result.push(eventToFeedEvent(nextEvent))
+
+    return result
+  }, [data])
 
   return { items, loading, error }
 }

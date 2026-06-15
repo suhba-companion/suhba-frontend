@@ -1,4 +1,4 @@
-import type { PrayerSpot, SpotReview, SpotType } from '../types'
+import type { PrayerSpot, SpotType } from '../types'
 import { haversineKm, roundKm } from '../utils/geo'
 import { getRoadDistancesKm } from './routingService'
 
@@ -95,8 +95,4 @@ export async function getSpotById(id: string, userPos: GeoPosition = VIENNA_CENT
   if (res.status === 404) return undefined
   if (!res.ok) throw new Error(`Failed to fetch prayer spot: ${res.status}`)
   return toFrontendSpot(await res.json(), userPos)
-}
-
-export function getReviewsBySpotId(_spotId: string): SpotReview[] {
-  return []
 }

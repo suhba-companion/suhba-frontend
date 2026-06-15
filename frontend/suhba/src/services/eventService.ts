@@ -78,6 +78,13 @@ export async function getUpcomingEvents(userPos: GeoPosition = VIENNA_CENTER): P
   return events
 }
 
+export async function getEventById(id: string): Promise<Event | undefined> {
+  const res = await fetch(`${API_BASE}/events/${id}`)
+  if (res.status === 404) return undefined
+  if (!res.ok) throw new Error(`Failed to fetch event: ${res.status}`)
+  return toFrontendEvent(await res.json())
+}
+
 export async function submitEvent(
   data: Omit<BackendEvent, 'id' | 'status' | 'upvotes' | 'distanceKm'>,
 ): Promise<Event> {

@@ -41,15 +41,6 @@ export interface PrayerSpot {
   distanceKm?: number;
 }
 
-export interface SpotReview {
-  id: string;
-  spotId: string;
-  user: string;
-  stars: number;
-  text: string;
-  createdAt: string;
-}
-
 export type BusinessType =
   | 'Restaurant'
   | 'Café'
@@ -87,6 +78,10 @@ export interface FeedEvent {
   distanceKm?: number;
   tag: string;
   time: string;
+  kind?: 'spot' | 'halal' | 'event';
+  lat?: number;
+  lng?: number;
+  googleMapsUrl?: string;
 }
 
 export type EventCategory =

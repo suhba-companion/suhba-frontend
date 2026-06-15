@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, fireEvent } from '@testing-library/react'
 import { NearbyFeed } from './NearbyFeed'
 import type { FeedEvent } from '../../types'
 
@@ -12,7 +12,7 @@ const MOCK_ITEMS: FeedEvent[] = [
 describe('NearbyFeed', () => {
   it('renders loading state', () => {
     render(<NearbyFeed loading />)
-    expect(screen.getByText(/werden geladen/i)).toBeInTheDocument()
+    expect(screen.getByText(/wird geladen/i)).toBeInTheDocument()
   })
 
   it('renders error state', () => {
@@ -28,7 +28,7 @@ describe('NearbyFeed', () => {
 
   it('shows empty state when items list is empty', () => {
     render(<NearbyFeed items={[]} />)
-    expect(screen.getByText(/keine ereignisse/i)).toBeInTheDocument()
+    expect(screen.getByText(/nichts in der nähe/i)).toBeInTheDocument()
   })
 
   it('renders tag chips', () => {
@@ -39,5 +39,41 @@ describe('NearbyFeed', () => {
   it('renders distance', () => {
     render(<NearbyFeed items={MOCK_ITEMS} />)
     expect(screen.getByText(/0\.5 km/)).toBeInTheDocument()
+  })
+
+  it('opens the detail (calls onSelect) when a card is clicked', () => {
+    const onSelect = vi.fn()
+    const item: FeedEvent = { id: 'spot-1', title: 'Zentralmoschee', tag: 'Moschee', time: 'Offen', kind: 'spot', lat: 48.2, lng: 16.37 }
+    render(<NearbyFeed items={[item]} onSelect={onSelect} />)
+    fireEvent.click(screen.getByText('Zentralmoschee'))
+    expect(onSelect).toHaveBeenCalledWith(item)
+  })
+
+  it('opens the map route via the route button without opening the detail', () => {
+    const openSpy = vi.spyOn(window, 'open').mockImplementation(() => null)
+    const onSelect = vi.fn()
+    const items: FeedEvent[] = [
+      { id: 'spot-1', title: 'Zentralmoschee', tag: 'Moschee', time: 'Offen', kind: 'spot', lat: 48.2, lng: 16.37 },
+    ]
+    render(<NearbyFeed items={items} onSelect={onSelect} />)
+    fireEvent.click(screen.getByRole('button', { name: /route/i }))
+    expect(openSpy).toHaveBeenCalledWith(
+      'https://maps.google.com/maps?daddr=48.2,16.37&travelmode=transit',
+      '_blank',
+      'noopener,noreferrer',
+    )
+    expect(onSelect).not.toHaveBeenCalled()
+    openSpy.mockRestore()
+  })
+
+  it('prefers googleMapsUrl over coordinates for the route', () => {
+    const openSpy = vi.spyOn(window, 'open').mockImplementation(() => null)
+    const items: FeedEvent[] = [
+      { id: 'event-1', title: 'Vortrag', tag: 'Vortrag', time: 'Heute', kind: 'event', lat: 48.2, lng: 16.37, googleMapsUrl: 'https://maps.app.goo.gl/abc' },
+    ]
+    render(<NearbyFeed items={items} />)
+    fireEvent.click(screen.getByRole('button', { name: /route/i }))
+    expect(openSpy).toHaveBeenCalledWith('https://maps.app.goo.gl/abc', '_blank', 'noopener,noreferrer')
+    openSpy.mockRestore()
   })
 })
