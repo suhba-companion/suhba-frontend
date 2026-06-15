@@ -1,39 +1,30 @@
 import { useTranslation } from 'react-i18next'
 import type { FeedEvent } from '../../types'
 
-const DEFAULT_ITEMS: readonly FeedEvent[] = [
-  {
-    id: 'event-1',
-    title: 'Freitagsgebet — IZW',
-    location: 'Am Bruckhaufen 4',
-    distanceKm: 2.1,
-    tag: 'Juma',
-    time: 'Fr. 12:30',
-  },
-  {
-    id: 'event-2',
-    title: 'Neues Halal-Restaurant eröffnet',
-    location: 'Mariahilfer Str. 45',
-    distanceKm: 0.8,
-    tag: 'Neu',
-    time: 'Heute',
-  },
-  {
-    id: 'event-3',
-    title: 'Islamisches Zentrum Wien',
-    location: 'Floridsdorf',
-    distanceKm: 5.2,
-    tag: 'Moschee',
-    time: 'Täglich',
-  },
-]
-
 interface NearbyFeedProps {
   items?: readonly FeedEvent[]
+  loading?: boolean
+  error?: Error | null
 }
 
-export function NearbyFeed({ items = DEFAULT_ITEMS }: NearbyFeedProps): JSX.Element {
+export function NearbyFeed({ items = [], loading = false, error = null }: NearbyFeedProps): JSX.Element {
   const { t } = useTranslation()
+
+  if (loading) {
+    return (
+      <p className="text-text-muted text-sm text-center py-6">
+        {t('home.nearbyLoading')}
+      </p>
+    )
+  }
+
+  if (error) {
+    return (
+      <p className="text-text-muted text-sm text-center py-6">
+        {t('home.nearbyError')}
+      </p>
+    )
+  }
 
   if (items.length === 0) {
     return (

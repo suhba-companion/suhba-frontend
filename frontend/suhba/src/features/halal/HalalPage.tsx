@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useVirtualizer } from '@tanstack/react-virtual'
-import { Sect } from '@components'
+import { Sect, LoadingState } from '@components'
 import { useHalal, type HalalSort } from './useHalal'
 import { useGeolocationState } from '../../hooks/useGeolocation'
 import { HalalFilter } from './HalalFilter'
@@ -26,6 +26,7 @@ export function HalalPage({ onAddBusiness, onBusinessSelect }: HalalPageProps): 
     activeFilterCount,
     sort,
     setSort,
+    loading,
   } = useHalal()
 
   const { status: geoStatus } = useGeolocationState()
@@ -128,8 +129,10 @@ export function HalalPage({ onAddBusiness, onBusinessSelect }: HalalPageProps): 
       </div>
 
       {/* Scrollable content */}
-      {totalCount === 0 ? (
-        <div className="flex items-center justify-center py-16 text-text-muted text-sm px-8 text-center">
+      {loading ? (
+        <LoadingState className="flex-1" />
+      ) : totalCount === 0 ? (
+        <div className="flex-1 flex items-center justify-center text-text-muted text-sm px-8 text-center">
           {t('halal.noResults')}
         </div>
       ) : (

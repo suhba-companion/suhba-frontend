@@ -5,6 +5,7 @@ import { useDhikr } from './useDhikr'
 import { DhikrCard } from './DhikrCard'
 import { QuickGrid } from './QuickGrid'
 import { NearbyFeed } from './NearbyFeed'
+import { useNearbyFeed } from './useNearbyFeed'
 import { PrayerTimesWidget } from './PrayerTimesWidget'
 
 interface HomePageProps {
@@ -14,6 +15,7 @@ interface HomePageProps {
 export function HomePage({ onNavigate }: HomePageProps): JSX.Element {
   const { t } = useTranslation()
   const { dhikrList, current, index, goToNext, goTo } = useDhikr()
+  const { items: nearbyItems, loading: nearbyLoading, error: nearbyError } = useNearbyFeed()
 
   return (
     <div className="p-4 space-y-6 pb-8">
@@ -40,7 +42,7 @@ export function HomePage({ onNavigate }: HomePageProps): JSX.Element {
       <section>
         <Sect label={t('home.nearby')} />
         <div className="mt-3">
-          <NearbyFeed />
+          <NearbyFeed items={nearbyItems} loading={nearbyLoading} error={nearbyError} />
         </div>
       </section>
 

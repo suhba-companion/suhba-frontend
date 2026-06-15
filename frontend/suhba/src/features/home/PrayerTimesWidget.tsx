@@ -5,6 +5,7 @@ import { usePrayerTimes } from '@features/prayers/usePrayerTimes'
 import { buildPrayers, getNextPrayer, formatCountdown } from '@features/prayers/prayerUtils'
 import type { Prayer, PrayerKey } from '@features/prayers/prayerUtils'
 import { useClockTick } from '@hooks/useClockTick'
+import { Spinner } from '@components'
 
 const ICONS: Record<PrayerKey, Icon> = {
   fajr:    SunHorizon,
@@ -63,7 +64,7 @@ export function PrayerTimesWidget(): JSX.Element {
   if (loading) {
     return (
       <div className="bg-hero-gradient rounded-card p-4 h-[116px] flex items-center justify-center">
-        <span className="text-cream-card/60 text-xs">Gebetszeiten werden geladen…</span>
+        <Spinner size={56} />
       </div>
     )
   }

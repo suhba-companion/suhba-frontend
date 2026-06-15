@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useVirtualizer } from '@tanstack/react-virtual'
-import { Modal } from '@components'
+import { Modal, LoadingState } from '@components'
 import { useEvents, type EventSort } from './useEvents'
 import { useGeolocationState } from '../../hooks/useGeolocation'
 import { EventCard } from './EventCard'
@@ -116,11 +116,11 @@ export function EventsPage({ onAddEvent }: EventsPageProps): JSX.Element {
 
         {/* Scrollable virtualized list */}
         {loading ? (
-          <div className="flex justify-center py-8">
-            <span className="text-text-muted text-sm">{t('events.loading')}</span>
-          </div>
+          <LoadingState className="py-8" />
         ) : filteredEvents.length === 0 ? (
-          <p className="text-center text-text-muted text-sm py-8">{t('events.empty')}</p>
+          <div className="flex-1 flex items-center justify-center px-8 text-center text-text-muted text-sm">
+            {t('events.empty')}
+          </div>
         ) : (
           <div ref={parentRef} className="flex-1 overflow-y-auto px-4 pb-4">
             <ul

@@ -10,9 +10,14 @@ const MOCK_ITEMS: FeedEvent[] = [
 ]
 
 describe('NearbyFeed', () => {
-  it('renders default feed items', () => {
-    render(<NearbyFeed />)
-    expect(screen.getByText('Freitagsgebet — IZW')).toBeInTheDocument()
+  it('renders loading state', () => {
+    render(<NearbyFeed loading />)
+    expect(screen.getByText(/werden geladen/i)).toBeInTheDocument()
+  })
+
+  it('renders error state', () => {
+    render(<NearbyFeed error={new Error('boom')} />)
+    expect(screen.getByText(/konnten nicht geladen/i)).toBeInTheDocument()
   })
 
   it('renders at most 3 items when more are passed', () => {

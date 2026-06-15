@@ -1,6 +1,7 @@
 import { Fragment, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Clock, MapPin } from '@phosphor-icons/react'
+import { LoadingState } from '@components'
 import { usePrayerTimes } from './usePrayerTimes'
 import { PrayerCard } from './PrayerCard'
 import { ShoroukRow } from './ShoroukRow'
@@ -17,16 +18,12 @@ export function PrayerTimesPage(): JSX.Element {
   }, [data])
 
   if (loading) {
-    return (
-      <div className="flex justify-center items-center py-20">
-        <p className="text-text-muted text-sm">{t('prayers.loading')}</p>
-      </div>
-    )
+    return <LoadingState className="h-full" />
   }
 
   if (error !== null || data === null) {
     return (
-      <div className="flex flex-col justify-center items-center py-20 px-6 text-center gap-4">
+      <div className="flex flex-col justify-center items-center h-full px-6 text-center gap-4">
         <p className="text-text-muted text-sm">{t('prayers.error')}</p>
         <button
           onClick={retry}

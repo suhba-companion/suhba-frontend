@@ -1,5 +1,6 @@
 import { useState, Suspense, lazy } from 'react'
 import { useTranslation } from 'react-i18next'
+import { LoadingState } from '@components'
 import { useSpots, type SpotSort } from './useSpots'
 import { useGeolocationState } from '../../hooks/useGeolocation'
 import { SpotsFilter } from './SpotsFilter'
@@ -16,7 +17,7 @@ interface SpotsPageProps {
 
 export function SpotsPage({ onSpotSelect, onAddSpot }: SpotsPageProps): JSX.Element {
   const { t } = useTranslation()
-  const { filteredSpots, filters, updateFilters, resetFilters, activeFilterCount, sort, setSort } = useSpots()
+  const { filteredSpots, filters, updateFilters, resetFilters, activeFilterCount, sort, setSort, loading } = useSpots()
   const { status: geoStatus } = useGeolocationState()
   const [viewMode, setViewMode] = useState<ViewMode>('list')
   const [isFilterOpen, setIsFilterOpen] = useState(false)
@@ -121,7 +122,9 @@ export function SpotsPage({ onSpotSelect, onAddSpot }: SpotsPageProps): JSX.Elem
       </div>
 
       <div className="flex-1 overflow-hidden">
-        {viewMode === 'list' ? (
+        {loading ? (
+          <LoadingState className="h-full" />
+        ) : viewMode === 'list' ? (
           <SpotsListView spots={filteredSpots} onSpotSelect={onSpotSelect} />
         ) : (
           <Suspense fallback={
