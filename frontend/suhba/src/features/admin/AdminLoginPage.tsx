@@ -36,7 +36,7 @@ export function AdminLoginPage({ onLogin }: AdminLoginPageProps): JSX.Element {
     <div className="min-h-dvh flex items-center justify-center bg-cream-bg p-4">
       <div className="bg-cream-card border border-divider rounded-card w-full max-w-sm p-8 shadow-sm">
         <div className="mb-6">
-          <h1 className="text-text-dark font-bold text-xl tracking-tight">su7ba admin</h1>
+          <h1 className="text-text-dark font-bold text-xl tracking-tight">Suhba admin</h1>
           <p className="text-text-muted text-sm mt-1">Admin-only access</p>
         </div>
 

@@ -4,7 +4,7 @@ import { TopBar } from './TopBar'
 describe('TopBar', () => {
   it('does not render title text without backAction', () => {
     render(<TopBar />)
-    expect(screen.queryByText('su7ba')).not.toBeInTheDocument()
+    expect(screen.queryByText('Suhba')).not.toBeInTheDocument()
   })
 
   it('renders title when backAction is provided', () => {
@@ -19,7 +19,7 @@ describe('TopBar', () => {
 
   it('does not render logo', () => {
     render(<TopBar />)
-    expect(screen.queryByRole('img', { name: 'su7ba logo' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('img', { name: 'Suhba logo' })).not.toBeInTheDocument()
   })
 
   it('renders back button when backAction is provided', () => {
@@ -37,6 +37,6 @@ describe('TopBar', () => {
 
   it('does not render logo when backAction is provided', () => {
     render(<TopBar backAction={vi.fn()} />)
-    expect(screen.queryByRole('img', { name: 'su7ba logo' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('img', { name: 'Suhba logo' })).not.toBeInTheDocument()
   })
 })

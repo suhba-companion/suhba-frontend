@@ -195,7 +195,7 @@ export function AdminDashboardPage({ username, onLogout }: AdminDashboardPagePro
   return (
     <div className="min-h-dvh bg-cream-bg">
       <header className="bg-primary text-white px-4 h-14 flex items-center justify-between shrink-0">
-        <span className="font-bold text-base tracking-tight">su7ba admin</span>
+        <span className="font-bold text-base tracking-tight">Suhba admin</span>
         <div className="flex items-center gap-3">
           <span className="text-white/50 text-sm">{username}</span>
           <button

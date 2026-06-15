@@ -5,8 +5,8 @@ interface LogoProps {
 export function Logo({ size = 32 }: LogoProps): JSX.Element {
   return (
     <img
-      src="/logo.png"
-      alt="su7ba logo"
+      src="/logo.png?v=2"
+      alt="Suhba logo"
       width={size}
       height={size}
       style={{ objectFit: 'contain', display: 'block' }}

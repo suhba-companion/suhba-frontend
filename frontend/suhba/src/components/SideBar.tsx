@@ -1,7 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import { House, Mosque, CalendarCheck, BookOpen } from '@phosphor-icons/react'
 import type { Icon } from '@phosphor-icons/react'
-import { Logo } from './Logo'
 import type { NavTab } from './NavBar'
 
 interface SideBarItem {
@@ -43,9 +42,8 @@ export function SideBar({ activeTab, onTabChange }: SideBarProps): JSX.Element {
 
   return (
     <aside className="hidden lg:flex flex-col w-52 bg-hero-gradient border-r border-white/10 shrink-0 h-full">
-      <div className="flex items-center gap-3 px-5 h-14 shrink-0 border-b border-white/10">
-        <Logo size={32} />
-        <span className="text-cream-card font-semibold text-lg tracking-wide">su7ba</span>
+      <div className="flex items-center px-5 h-14 shrink-0 border-b border-white/10">
+        <span className="text-cream-card font-semibold text-lg tracking-wide">Suhba</span>
       </div>
 
       <nav className="flex-1 py-2" aria-label={t('nav.label')}>

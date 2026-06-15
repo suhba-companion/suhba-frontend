@@ -6,7 +6,7 @@ interface TopBarProps {
   backAction?: () => void;
 }
 
-export function TopBar({ title = 'su7ba', rightAction, backAction }: TopBarProps): JSX.Element {
+export function TopBar({ title = 'Suhba', rightAction, backAction }: TopBarProps): JSX.Element {
   return (
     <header className="bg-cream-card border-b border-divider flex items-center px-4 h-14 shrink-0 gap-3">
       {backAction !== undefined && (
