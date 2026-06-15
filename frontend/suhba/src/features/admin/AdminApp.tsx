@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { adminService } from '@services/adminService'
+import { LoadingState } from '@components/LoadingState'
 import { AdminLoginPage } from './AdminLoginPage'
 import { AdminDashboardPage } from './AdminDashboardPage'
 
@@ -20,16 +21,8 @@ export function AdminApp(): JSX.Element {
 
   if (authState === 'loading') {
     return (
-      <div style={{
-        minHeight: '100dvh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#EBE0CC',
-        color: '#5E5E46',
-        fontSize: '0.9rem',
-      }}>
-        Loading…
+      <div className="min-h-dvh flex items-center justify-center bg-cream-bg">
+        <LoadingState label="Laden…" />
       </div>
     )
   }
