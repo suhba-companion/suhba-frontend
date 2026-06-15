@@ -1,0 +1,12 @@
+server:
+  servlet:
+    session:
+      cookie:
+        # Frontend (Cloudflare Pages) and backend (Render) are different sites,
+        # so the session cookie must be SameSite=None + Secure to survive the
+        # cross-site admin login request.
+        same-site: none
+        secure: true
+
+admin:
+  allowed-origin: ${ADMIN_ALLOWED_ORIGIN}
