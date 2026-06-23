@@ -1,4 +1,9 @@
-const BASE = `${import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8080'}/api/admin`
+// Admin auth uses session + CSRF cookies. To avoid cross-site cookies (which
+// Safari/iOS blocks), admin calls go to the SAME origin as the frontend and are
+// reverse-proxied to the backend — by the Cloudflare Pages Function in production
+// (functions/api/[[path]].ts) and by the Vite dev-server proxy locally. So this is
+// a relative path, never the cross-origin VITE_API_BASE_URL the public services use.
+const BASE = '/api/admin'
 
 function csrfToken(): string {
   const match = document.cookie.match(/(?:^|;\s*)XSRF-TOKEN=([^;]+)/)
