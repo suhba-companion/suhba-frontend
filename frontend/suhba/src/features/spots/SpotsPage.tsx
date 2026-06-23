@@ -39,8 +39,8 @@ export function SpotsPage({ onSpotSelect, onAddSpot }: SpotsPageProps): JSX.Elem
           className="w-full bg-cream-card border border-divider rounded-card px-4 py-2.5 text-sm text-text-dark placeholder:text-text-muted outline-none focus:border-sage-light"
         />
 
-        <div className="flex items-center gap-2">
-          <div className="flex items-center gap-2 overflow-x-auto no-scrollbar flex-1">
+        <div className="space-y-2">
+          <div className="flex items-center gap-2 overflow-x-auto no-scrollbar">
             <div
               className="flex shrink-0 bg-cream-card border border-divider rounded-pill overflow-hidden"
               role="group"
@@ -98,17 +98,19 @@ export function SpotsPage({ onSpotSelect, onAddSpot }: SpotsPageProps): JSX.Elem
             </div>
           </div>
 
-          <span className="shrink-0 text-xs text-text-muted">
-            {t('spots.count', { count: filteredSpots.length })}
-          </span>
+          <div className="flex items-center justify-between gap-2">
+            <span className="text-xs text-text-muted">
+              {t('spots.count', { count: filteredSpots.length })}
+            </span>
 
-          <button
-            type="button"
-            onClick={onAddSpot}
-            className="shrink-0 text-xs font-medium text-primary hover:text-moss transition-colors"
-          >
-            {t('spots.addSpot')}
-          </button>
+            <button
+              type="button"
+              onClick={onAddSpot}
+              className="shrink-0 text-xs font-medium text-primary hover:text-moss transition-colors"
+            >
+              {t('spots.addSpot')}
+            </button>
+          </div>
         </div>
 
         {isFilterOpen && (
