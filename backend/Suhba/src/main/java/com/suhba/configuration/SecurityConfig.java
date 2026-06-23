@@ -39,6 +39,16 @@ public class SecurityConfig {
     @Value("${admin.allowed-origin:http://localhost:5173}")
     private String adminAllowedOrigin;
 
+    // Cross-site admin (Cloudflare Pages frontend ↔ Render backend) needs the CSRF
+    // cookie to be SameSite=None; Secure, otherwise the browser drops it on cross-site
+    // requests and every admin mutation (approve/reject/edit/delete) fails with 403.
+    // Defaults keep local dev (same-site, http) working.
+    @Value("${admin.cookie.same-site:Lax}")
+    private String adminCookieSameSite;
+
+    @Value("${admin.cookie.secure:false}")
+    private boolean adminCookieSecure;
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(12);
@@ -77,12 +87,23 @@ public class SecurityConfig {
         return source;
     }
 
+    // CSRF cookie repository whose SameSite/Secure attributes are driven by config so the
+    // XSRF-TOKEN cookie survives the cross-site admin panel in production (None; Secure)
+    // while staying Lax/insecure for local http dev.
+    private CookieCsrfTokenRepository csrfTokenRepository() {
+        CookieCsrfTokenRepository repo = CookieCsrfTokenRepository.withHttpOnlyFalse();
+        repo.setCookieCustomizer(cookie -> cookie
+            .sameSite(adminCookieSameSite)
+            .secure(adminCookieSecure));
+        return repo;
+    }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .csrf(csrf -> csrf
-                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                .csrfTokenRepository(csrfTokenRepository())
                 // Spring Security 6 defaults to XorCsrfTokenRequestAttributeHandler which masks
                 // the cookie value — the SPA reads the raw UUID and sends it back unchanged,
                 // so the XOR comparison always fails. Use the plain handler instead.

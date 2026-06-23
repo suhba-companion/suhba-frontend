@@ -1,4 +1,8 @@
 server:
+  # Render terminates TLS at its edge and forwards plain HTTP to the container.
+  # Honour X-Forwarded-* so the app knows the request is https — required for
+  # Secure cookies and correct absolute URLs behind the proxy.
+  forward-headers-strategy: framework
   servlet:
     session:
       cookie:
@@ -10,3 +14,8 @@ server:
 
 admin:
   allowed-origin: ${ADMIN_ALLOWED_ORIGIN}
+  cookie:
+    # Same cross-site requirement applies to the CSRF (XSRF-TOKEN) cookie, otherwise
+    # admin mutations (approve/reject/edit/delete) fail with 403 in production.
+    same-site: None
+    secure: true

@@ -60,8 +60,16 @@ export function AdminDashboardPage({ username, onLogout }: AdminDashboardPagePro
         adminService.allEvents(),
       ])
       setSpots(s); setHalal(h); setEvents(e)
-    } catch {
-      setError('Failed to load listings.')
+    } catch (err) {
+      const status = (err as { status?: number }).status
+      if (status === 401 || status === 403) {
+        setError('Session expired or not authorised. Please sign in again.')
+      } else if (status !== undefined) {
+        setError(`Failed to load listings (HTTP ${status}).`)
+      } else {
+        // No status → request never completed: network error or blocked CORS response.
+        setError('Failed to load listings — could not reach the server (network or CORS).')
+      }
     } finally {
       setLoading(false)
     }
