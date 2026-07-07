@@ -19,7 +19,7 @@ export default defineConfig({
       includeAssets: ['icons/apple-touch-icon.png'],
       manifest: {
         name: 'Suhba — Muslimischer Begleiter in Wien',
-        short_name: 'su7ba',
+        short_name: 'Suhba',
         description: 'Dein muslimischer Begleiter in Wien',
         theme_color: '#485530',
         background_color: '#EBE0CC',
