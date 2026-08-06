@@ -1,11 +1,10 @@
-import { useRef, useState, useEffect } from 'react'
+import { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useVirtualizer } from '@tanstack/react-virtual'
-import { Sect, LoadingState } from '@components'
+import { LoadingState } from '@components'
 import { useHalal, type HalalSort } from './useHalal'
 import { useGeolocationState } from '../../hooks/useGeolocation'
 import { HalalFilter } from './HalalFilter'
-import { HalalFeaturedCard } from './HalalFeaturedCard'
 import { HalalBusinessCard } from './HalalBusinessCard'
 
 
@@ -17,8 +16,7 @@ interface HalalPageProps {
 export function HalalPage({ onAddBusiness, onBusinessSelect }: HalalPageProps): JSX.Element {
   const { t } = useTranslation()
   const {
-    featuredBusinesses,
-    regularBusinesses,
+    businesses,
     totalCount,
     filters,
     updateFilters,
@@ -32,20 +30,11 @@ export function HalalPage({ onAddBusiness, onBusinessSelect }: HalalPageProps): 
   const { status: geoStatus } = useGeolocationState()
   const [isFilterOpen, setIsFilterOpen] = useState(false)
   const parentRef = useRef<HTMLDivElement>(null)
-  const featuredRef = useRef<HTMLDivElement>(null)
-  const [featuredHeight, setFeaturedHeight] = useState(0)
-
-  useEffect(() => {
-    if (featuredRef.current) {
-      setFeaturedHeight(featuredRef.current.offsetHeight)
-    }
-  }, [featuredBusinesses])
 
   const virtualizer = useVirtualizer({
-    count: regularBusinesses.length,
+    count: businesses.length,
     getScrollElement: () => parentRef.current,
     estimateSize: () => 146,
-    paddingStart: featuredHeight,
     overscan: 5,
   })
 
@@ -139,22 +128,9 @@ export function HalalPage({ onAddBusiness, onBusinessSelect }: HalalPageProps): 
         </div>
       ) : (
         <div ref={parentRef} className="flex-1 overflow-y-auto px-4 pb-4">
-          {/* Featured (non-virtualized — typically 2–4 items) */}
-          {featuredBusinesses.length > 0 && (
-            <div ref={featuredRef} className="pt-4 mb-4">
-              <Sect label={t('halal.featured')} />
-              <div className="grid grid-cols-2 gap-3 mt-3">
-                {featuredBusinesses.map((b) => (
-                  <HalalFeaturedCard key={b.id} business={b} onSelect={onBusinessSelect} />
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Virtualized regular businesses */}
-          {regularBusinesses.length > 0 && (
+          {businesses.length > 0 && (
             <ul
-              style={{ height: `${virtualizer.getTotalSize() - featuredHeight}px`, position: 'relative' }}
+              style={{ height: `${virtualizer.getTotalSize()}px`, position: 'relative' }}
               className="list-none m-0 p-0 pt-4"
             >
               {virtualizer.getVirtualItems().map((virtualItem) => (
@@ -167,12 +143,12 @@ export function HalalPage({ onAddBusiness, onBusinessSelect }: HalalPageProps): 
                     top: 0,
                     left: 0,
                     width: '100%',
-                    transform: `translateY(${virtualItem.start - featuredHeight}px)`,
+                    transform: `translateY(${virtualItem.start}px)`,
                     paddingBottom: '16px',
                   }}
                 >
                   <HalalBusinessCard
-                    business={regularBusinesses[virtualItem.index]}
+                    business={businesses[virtualItem.index]}
                     onSelect={onBusinessSelect}
                   />
                 </li>

@@ -8,7 +8,7 @@ interface TopBarProps {
 
 export function TopBar({ title = 'Suhba', rightAction, backAction }: TopBarProps): JSX.Element {
   return (
-    <header className="bg-cream-card border-b border-divider flex items-center px-4 h-14 shrink-0 gap-3">
+    <header className="bg-cream-card border-b border-divider flex items-center px-4 h-[calc(3.5rem_+_env(safe-area-inset-top))] pt-[env(safe-area-inset-top)] shrink-0 gap-3">
       {backAction !== undefined && (
         <button
           type="button"

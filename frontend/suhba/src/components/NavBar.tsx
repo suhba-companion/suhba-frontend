@@ -22,7 +22,7 @@ export function NavBar({ activeTab, onTabChange }: NavBarProps): JSX.Element {
 
   return (
     <nav
-      className="bg-cream-card border-t border-divider flex items-stretch shrink-0 h-16 shadow-[0_-1px_4px_rgba(0,0,0,0.06)]"
+      className="bg-cream-card border-t border-divider flex items-stretch shrink-0 h-[calc(4rem_+_env(safe-area-inset-bottom))] pb-[env(safe-area-inset-bottom)] shadow-[0_-1px_4px_rgba(0,0,0,0.06)]"
       aria-label={t('nav.label')}
     >
       {(['start', 'orte', 'halal', 'events', 'azkar'] as NavTab[]).map((id) => {
