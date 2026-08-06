@@ -18,8 +18,7 @@ const DEFAULT_FILTERS: HalalFilters = {
 }
 
 interface UseHalalReturn {
-  featuredBusinesses: HalalBusiness[]
-  regularBusinesses: HalalBusiness[]
+  businesses: HalalBusiness[]
   totalCount: number
   filters: HalalFilters
   updateFilters: (updates: Partial<HalalFilters>) => void
@@ -62,16 +61,6 @@ export function useHalal(): UseHalalReturn {
     })
   }, [allBusinesses, filters, sort])
 
-  const featuredBusinesses = useMemo<HalalBusiness[]>(
-    () => filteredAll.filter((b) => b.featured),
-    [filteredAll],
-  )
-
-  const regularBusinesses = useMemo<HalalBusiness[]>(
-    () => filteredAll.filter((b) => !b.featured),
-    [filteredAll],
-  )
-
   const activeFilterCount = useMemo<number>(
     () => (filters.type !== 'Alle' ? 1 : 0) + (filters.parking ? 1 : 0),
     [filters.type, filters.parking],
@@ -86,8 +75,7 @@ export function useHalal(): UseHalalReturn {
   }, [])
 
   return {
-    featuredBusinesses,
-    regularBusinesses,
+    businesses: filteredAll,
     totalCount: filteredAll.length,
     filters,
     updateFilters,

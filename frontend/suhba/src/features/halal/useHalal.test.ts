@@ -19,24 +19,17 @@ describe('useHalal', () => {
     expect(result.current.totalCount).toBeGreaterThan(0)
   })
 
-  it('separates featured and regular businesses', async () => {
+  it('totalCount equals number of businesses', async () => {
     const { result } = renderHook(() => useHalal())
     await waitFor(() => expect(result.current.loading).toBe(false))
-    expect(result.current.featuredBusinesses.every((b) => b.featured)).toBe(true)
-    expect(result.current.regularBusinesses.every((b) => !b.featured)).toBe(true)
-  })
-
-  it('totalCount equals featured + regular', async () => {
-    const { result } = renderHook(() => useHalal())
-    await waitFor(() => expect(result.current.loading).toBe(false))
-    const { featuredBusinesses, regularBusinesses, totalCount } = result.current
-    expect(totalCount).toBe(featuredBusinesses.length + regularBusinesses.length)
+    const { businesses, totalCount } = result.current
+    expect(totalCount).toBe(businesses.length)
   })
 
   it('businesses have distanceKm computed', async () => {
     const { result } = renderHook(() => useHalal())
     await waitFor(() => expect(result.current.loading).toBe(false))
-    result.current.featuredBusinesses.forEach((b) => {
+    result.current.businesses.forEach((b) => {
       expect(b.distanceKm).toBeDefined()
     })
   })
@@ -46,7 +39,7 @@ describe('useHalal', () => {
     await waitFor(() => expect(result.current.loading).toBe(false))
     act(() => result.current.updateFilters({ search: 'Taqwa' }))
     expect(result.current.totalCount).toBe(1)
-    expect(result.current.featuredBusinesses[0]?.name).toBe('Taqwa Restaurant')
+    expect(result.current.businesses[0]?.name).toBe('Taqwa Restaurant')
   })
 
   it('search is case-insensitive', async () => {
@@ -60,7 +53,7 @@ describe('useHalal', () => {
     const { result } = renderHook(() => useHalal())
     await waitFor(() => expect(result.current.loading).toBe(false))
     act(() => result.current.updateFilters({ type: 'Metzgerei' }))
-    const all = [...result.current.featuredBusinesses, ...result.current.regularBusinesses]
+    const all = result.current.businesses
     expect(all.every((b) => b.type === 'Metzgerei')).toBe(true)
     expect(all.length).toBeGreaterThan(0)
   })

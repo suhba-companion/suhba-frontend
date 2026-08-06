@@ -17,16 +17,6 @@ describe('HalalPage', () => {
     expect(screen.getByPlaceholderText(/halal-betriebe suchen/i)).toBeInTheDocument()
   })
 
-  it('renders featured section with Empfohlen label', async () => {
-    render(<HalalPage />)
-    await waitFor(() => expect(screen.getAllByText('Empfohlen').length).toBeGreaterThan(0))
-  })
-
-  it('renders featured cards', async () => {
-    render(<HalalPage />)
-    await waitFor(() => expect(screen.getAllByText('Empfohlen').length).toBeGreaterThan(0))
-  })
-
   it('renders regular businesses', async () => {
     render(<HalalPage />)
     await waitFor(() => expect(screen.getByText(/\d+ betriebe/i)).toBeInTheDocument())
