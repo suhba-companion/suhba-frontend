@@ -8,6 +8,8 @@ import { HalalPage, HalalBusinessDetailPage } from '@features/halal'
 import { EventsPage, EventDetailPage } from '@features/events'
 import { AzkarPage } from '@features/azkar'
 import { SubmitSpotPage, SubmitBusinessPage, SubmitEventPage } from '@features/submit'
+import { LegalPage, LegalLinks } from '@features/legal'
+import type { LegalDocument } from '@features/legal'
 
 type FormView = 'submit-spot' | 'submit-business' | 'submit-event' | null
 
@@ -18,17 +20,20 @@ function App(): JSX.Element {
   const [selectedBusiness, setSelectedBusiness] = useState<string | null>(null)
   const [selectedEvent, setSelectedEvent] = useState<{ id: string; title: string } | null>(null)
   const [activeForm, setActiveForm] = useState<FormView>(null)
+  const [legalDocument, setLegalDocument] = useState<LegalDocument | null>(null)
 
   const handleTabChange = (tab: NavTab): void => {
     setSelectedSpot(null)
     setSelectedBusiness(null)
     setSelectedEvent(null)
     setActiveForm(null)
+    setLegalDocument(null)
     setActiveTab(tab)
   }
 
   const handleBack = (): void => {
     setActiveForm(null)
+    setLegalDocument(null)
   }
 
   const formTitles: Record<NonNullable<FormView>, string> = {
@@ -37,9 +42,18 @@ function App(): JSX.Element {
     'submit-event': t('topBar.formEvent'),
   }
 
-  const topBarTitle = activeForm ? formTitles[activeForm] : t('topBar.appName')
+  const showBack = activeForm !== null || legalDocument !== null
+
+  const topBarTitle = legalDocument
+    ? t(`legal.${legalDocument}.title`)
+    : activeForm
+      ? formTitles[activeForm]
+      : t('topBar.appName')
 
   const renderContent = (): JSX.Element => {
+    if (legalDocument !== null) {
+      return <LegalPage documentId={legalDocument} />
+    }
     if (activeForm === 'submit-spot') {
       return <SubmitSpotPage onBack={() => setActiveForm(null)} />
     }
@@ -56,6 +70,7 @@ function App(): JSX.Element {
           onSpotSelect={(id, name) => setSelectedSpot({ id, name })}
           onBusinessSelect={(id) => setSelectedBusiness(id)}
           onEventSelect={(id, title) => setSelectedEvent({ id, title })}
+          onLegalSelect={setLegalDocument}
         />
       )
     }
@@ -86,12 +101,16 @@ function App(): JSX.Element {
 
   return (
     <div className="flex h-dvh bg-cream-bg pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)]">
-      <SideBar activeTab={activeTab} onTabChange={handleTabChange} />
+      <SideBar
+        activeTab={activeTab}
+        onTabChange={handleTabChange}
+        footer={<LegalLinks variant="dark" onSelect={setLegalDocument} />}
+      />
       <div className="flex-1 flex flex-col min-w-0">
         <TopBar
           title={topBarTitle}
-          backAction={activeForm !== null ? handleBack : undefined}
-          rightAction={activeTab !== 'start' && activeForm === null ? <PrayerCountdown /> : undefined}
+          backAction={showBack ? handleBack : undefined}
+          rightAction={activeTab !== 'start' && !showBack ? <PrayerCountdown /> : undefined}
         />
         <main className="flex-1 overflow-y-auto" style={{ WebkitOverflowScrolling: 'touch' } as CSSProperties}>
           <ErrorBoundary>

@@ -35,9 +35,10 @@ const SIDE_ITEMS: SideBarItem[] = [
 interface SideBarProps {
   activeTab: NavTab
   onTabChange: (tab: NavTab) => void
+  footer?: React.ReactNode
 }
 
-export function SideBar({ activeTab, onTabChange }: SideBarProps): JSX.Element {
+export function SideBar({ activeTab, onTabChange, footer }: SideBarProps): JSX.Element {
   const { t } = useTranslation()
 
   return (
@@ -70,6 +71,10 @@ export function SideBar({ activeTab, onTabChange }: SideBarProps): JSX.Element {
           )
         })}
       </nav>
+
+      {footer !== undefined && (
+        <div className="px-4 py-4 border-t border-white/10 shrink-0">{footer}</div>
+      )}
     </aside>
   )
 }

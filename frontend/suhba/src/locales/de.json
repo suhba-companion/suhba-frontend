@@ -299,6 +299,168 @@
       "reset": "Zurücksetzen",
       "apply": "Anwenden"
     }
+  },
+  "legal": {
+    "footerLabel": "Rechtliches",
+    "impressum": {
+      "title": "Impressum",
+      "linkLabel": "Impressum",
+      "updated": "Stand: September 2026",
+      "sections": [
+        {
+          "heading": "Angaben gemäß § 5 ECG und § 25 MedienG",
+          "paragraphs": [
+            "Suhba – Muslimischer Begleiter in Wien",
+            "Medieninhaberinnen, Herausgeberinnen und Diensteanbieterinnen sind gemeinsam:",
+            "Amal Mostafa und Mona Imam",
+            "Musterstraße 1/2/3",
+            "1010 Wien, Österreich"
+          ]
+        },
+        {
+          "heading": "Verantwortlich für den Inhalt",
+          "paragraphs": [
+            "Amal Mostafa und Mona Imam sind gemeinsam für die Inhalte der App verantwortlich."
+          ]
+        },
+        {
+          "heading": "Kontakt",
+          "paragraphs": [
+            "E-Mail: info@suhba-beispiel.at",
+            "Telefon: +43 1 234 56 78",
+            "Web: www.suhba-beispiel.at",
+            "Anfragen an diese Adresse erreichen beide Betreiber."
+          ]
+        },
+        {
+          "heading": "Rechtliche Angaben",
+          "paragraphs": [
+            "Suhba wird von zwei Privatpersonen ehrenamtlich betrieben. Es besteht keine Eintragung im Firmenbuch und keine UID-Nummer.",
+            "Anwendbare Rechtsvorschriften: ECG, MedienG, DSGVO, DSG"
+          ]
+        },
+        {
+          "heading": "Zweck des Angebots",
+          "paragraphs": [
+            "Betrieb einer nicht gewerblichen Community-App für Musliminnen und Muslime in Wien: Gebetsorte, Halal-Betriebe, Events, Azkar und Duaa."
+          ]
+        },
+        {
+          "heading": "Blattlinie (§ 25 Abs. 4 MedienG)",
+          "paragraphs": [
+            "Suhba ist ein unabhängiges, ehrenamtlich von zwei Privatpersonen betriebenes Informationsangebot für die muslimische Gemeinschaft in Wien. Die App verfolgt keine parteipolitischen Ziele und vertritt keine einzelne Rechtsschule oder Organisation."
+          ]
+        },
+        {
+          "heading": "Online-Streitbeilegung",
+          "paragraphs": [
+            "Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung bereit: ec.europa.eu/consumers/odr",
+            "Wir sind nicht verpflichtet und nicht bereit, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen."
+          ]
+        },
+        {
+          "heading": "Haftung für Inhalte",
+          "paragraphs": [
+            "Die Inhalte dieser App werden mit größtmöglicher Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Angaben zu Gebetszeiten, Gebetsorten, Halal-Zertifizierungen und Events kann jedoch keine Gewähr übernommen werden.",
+            "Community-Beiträge (vorgeschlagene Orte, Betriebe und Events) geben die Meinung der jeweils einreichenden Person wieder. Bei Kenntnis von Rechtsverletzungen entfernen wir die betroffenen Inhalte umgehend."
+          ]
+        },
+        {
+          "heading": "Haftung für Links",
+          "paragraphs": [
+            "Unser Angebot enthält Links zu externen Websites Dritter, auf deren Inhalte wir keinen Einfluss haben. Für diese fremden Inhalte ist stets der jeweilige Anbieter verantwortlich."
+          ]
+        },
+        {
+          "heading": "Urheberrecht",
+          "paragraphs": [
+            "Die durch die Betreiber erstellten Inhalte und Werke unterliegen dem österreichischen Urheberrecht. Kartendaten stammen von OpenStreetMap und stehen unter der Open Database License (ODbL)."
+          ]
+        }
+      ]
+    },
+    "datenschutz": {
+      "title": "Datenschutzerklärung",
+      "linkLabel": "Datenschutz",
+      "updated": "Stand: September 2026",
+      "sections": [
+        {
+          "heading": "Gemeinsam Verantwortliche (Art. 26 DSGVO)",
+          "paragraphs": [
+            "Amal Mostafa und Mona Imam",
+            "Musterstraße 1/2/3, 1010 Wien, Österreich",
+            "E-Mail: datenschutz@suhba-beispiel.at",
+            "Wir entscheiden gemeinsam über Zwecke und Mittel der Verarbeitung und sind daher gemeinsam Verantwortliche im Sinne des Art. 26 DSGVO. Du kannst deine Rechte gegenüber jeder von uns beiden geltend machen; die oben genannte E-Mail-Adresse erreicht beide."
+          ]
+        },
+        {
+          "heading": "Grundsätzliches",
+          "paragraphs": [
+            "Der Schutz deiner persönlichen Daten ist uns ein wichtiges Anliegen. Wir verarbeiten deine Daten ausschließlich auf Grundlage der DSGVO und des österreichischen Datenschutzgesetzes.",
+            "Die Nutzung von Suhba ist ohne Benutzerkonto und ohne Angabe personenbezogener Daten möglich."
+          ]
+        },
+        {
+          "heading": "Standortdaten",
+          "paragraphs": [
+            "Um Entfernungen zu Gebetsorten und Halal-Betrieben sowie die korrekten Gebetszeiten zu berechnen, fragt die App deinen Standort ab. Die Abfrage erfolgt nur nach deiner ausdrücklichen Freigabe im Browser (Art. 6 Abs. 1 lit. a DSGVO).",
+            "Dein Standort wird ausschließlich auf deinem Gerät verarbeitet, nicht an unsere Server übertragen und nicht gespeichert. Du kannst die Freigabe jederzeit in den Einstellungen deines Browsers widerrufen."
+          ]
+        },
+        {
+          "heading": "Server-Logfiles",
+          "paragraphs": [
+            "Beim Aufruf der App werden vom Hosting-Anbieter automatisch Zugriffsdaten in Logfiles gespeichert: IP-Adresse, Datum und Uhrzeit, aufgerufene Adresse, Browsertyp und Betriebssystem.",
+            "Die Verarbeitung erfolgt zur Gewährleistung eines sicheren und stabilen Betriebs auf Basis unseres berechtigten Interesses (Art. 6 Abs. 1 lit. f DSGVO). Die Logfiles werden nach spätestens 30 Tagen gelöscht."
+          ]
+        },
+        {
+          "heading": "Formulare: Ort, Betrieb und Event vorschlagen",
+          "paragraphs": [
+            "Wenn du einen Gebetsort, einen Halal-Betrieb oder ein Event vorschlägst, verarbeiten wir die von dir eingegebenen Angaben, um den Vorschlag zu prüfen und zu veröffentlichen (Art. 6 Abs. 1 lit. a und lit. f DSGVO).",
+            "Bitte gib nur Kontaktdaten an, deren Veröffentlichung du oder die betroffene Einrichtung wünschst. Vorschläge werden vor der Veröffentlichung redaktionell geprüft."
+          ]
+        },
+        {
+          "heading": "Lokale Speicherung im Browser",
+          "paragraphs": [
+            "Suhba ist eine Progressive Web App und speichert Daten wie zuletzt angesehene Orte, Filtereinstellungen und Azkar-Zähler lokal auf deinem Gerät, damit die App auch offline funktioniert.",
+            "Diese Daten verlassen dein Gerät nicht. Wir setzen keine Tracking-Cookies und verwenden keine Analyse- oder Werbedienste."
+          ]
+        },
+        {
+          "heading": "Karten und externe Datenquellen",
+          "paragraphs": [
+            "Für die Kartendarstellung nutzen wir OpenStreetMap. Beim Laden der Karte wird deine IP-Adresse an die Server der OpenStreetMap Foundation übertragen. Details: osmfoundation.org/wiki/Privacy_Policy",
+            "Für Moscheedaten greifen wir auf die Schnittstelle von MasjidiApp zu. Diese Abfragen erfolgen über unseren Server, deine IP-Adresse wird dabei nicht weitergegeben."
+          ]
+        },
+        {
+          "heading": "Speicherdauer",
+          "paragraphs": [
+            "Wir speichern personenbezogene Daten nur so lange, wie es für die genannten Zwecke erforderlich ist oder gesetzliche Aufbewahrungspflichten bestehen."
+          ]
+        },
+        {
+          "heading": "Deine Rechte",
+          "paragraphs": [
+            "Dir stehen die Rechte auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit und Widerspruch zu. Eine erteilte Einwilligung kannst du jederzeit mit Wirkung für die Zukunft widerrufen.",
+            "Wende dich dazu an: datenschutz@suhba-beispiel.at"
+          ]
+        },
+        {
+          "heading": "Beschwerderecht",
+          "paragraphs": [
+            "Wenn du der Ansicht bist, dass die Verarbeitung deiner Daten gegen das Datenschutzrecht verstößt, kannst du dich bei der Österreichischen Datenschutzbehörde beschweren: Barichgasse 40–42, 1030 Wien, dsb.gv.at"
+          ]
+        },
+        {
+          "heading": "Änderungen dieser Erklärung",
+          "paragraphs": [
+            "Wir passen diese Datenschutzerklärung an, sobald sich die Funktionen der App oder die rechtlichen Rahmenbedingungen ändern. Es gilt jeweils die in der App abrufbare Fassung."
+          ]
+        }
+      ]
+    }
   }
-
 }
