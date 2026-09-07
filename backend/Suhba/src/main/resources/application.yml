@@ -12,6 +12,16 @@ spring:
     url: ${DB_DATASOURCE}
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
+    hikari:
+      # The production DB sits behind a session-mode connection pooler capped at
+      # 15 client connections. Keep this app's pool small so a rolling deploy
+      # (old instance + new instance booting) plus Flyway stays under that limit;
+      # the default pool of 10 exhausts it and Flyway fails to obtain a connection.
+      maximum-pool-size: 3
+      minimum-idle: 1
+      connection-timeout: 30000
+      idle-timeout: 30000
+      max-lifetime: 120000
   jpa:
     show-sql: false
     hibernate:
@@ -20,6 +30,11 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
+        # Batch-load EAGER collections (e.g. HalalSpot.cuisines) with IN queries
+        # instead of one query per entity. Without this, /halal-spots/nearby fires
+        # ~1 query per spot (N+1) and takes ~50s over the remote pooled DB once the
+        # directory grew to 400+ rows; batching collapses that to a handful.
+        default_batch_fetch_size: 100
   flyway:
     enabled: true
     locations: classpath:db/migration
