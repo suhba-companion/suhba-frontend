@@ -276,29 +276,39 @@ GET /masjid/{id}/iqamah
 - `src/data/dhikr.json` — Dhikr collection
 - `src/data/duaa.json` — Duaa collection
 
-### Supabase
-| Table | Content |
+### Suhba Backend — Custom Data
+Spring Boot API at `VITE_API_BASE_URL`, routes under `/api/v1` (admin under `/api/admin`).
+The client never talks to the database directly — the backend owns all DB access.
+
+| Endpoint group | Content |
 |---|---|
-| `halal_businesses` | Curated halal directory |
-| `prayer_spots` | Community-submitted spots |
-| `spot_reviews` | Read-only MVP, write Phase 2 |
-| `events` | Home feed items |
+| `/api/v1/halal-spots` | Curated halal directory |
+| `/api/v1/prayer-spots` | Community-submitted spots |
+| `/api/v1/events` | Home feed items |
+| `/api/v1/prayer-times` | IZW prayer time calendar |
+
+> The backend's Postgres runs on Supabase, but only as a plain database reached over
+> JDBC. Do **not** add `@supabase/supabase-js` or query Supabase from the client: the
+> `public` schema is locked down (RLS on, `anon`/`authenticated` grants revoked — see
+> `backend/Suhba/.../db/migration/V15__lock_down_public_schema.sql`), so an anon-key
+> request will fail. Add a backend endpoint instead.
 
 ### Service Layer
 ```
+src/api/index.ts           # shared fetch wrapper, prefixes /api/v1
 src/services/
   masjidiService.ts
-  supabaseClient.ts
   halalService.ts
-  spotsService.ts
-  eventsService.ts
+  eventService.ts
+  prayerTimesService.ts
+  routingService.ts
+  adminService.ts
 ```
 
 ### Env Vars
 ```env
-VITE_MASJIDI_API_KEY=123-test-key
-VITE_SUPABASE_URL=
-VITE_SUPABASE_ANON_KEY=
+VITE_API_BASE_URL=http://localhost:8080
+VITE_GOOGLE_MAPS_API_KEY=
 ```
 
 ---
