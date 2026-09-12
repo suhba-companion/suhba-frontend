@@ -1,6 +1,5 @@
 import type { HalalBusiness, BusinessType, CertStatus } from '../types'
 import { haversineKm, roundKm } from '../utils/geo'
-import { getRoadDistancesKm } from './routingService'
 import type { GeoPosition } from '../hooks/useGeolocation'
 
 const API_BASE = `${import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8080'}/api/v1`
@@ -82,13 +81,5 @@ export async function getHalalBusinesses(userPos: GeoPosition = VIENNA_CENTER): 
   const res = await fetch(`${API_BASE}/halal-spots/nearby?${params}`)
   if (!res.ok) throw new Error(`Failed to fetch halal spots: ${res.status}`)
   const data: BackendHalalSpot[] = await res.json()
-  const businesses = data.map((dto) => toFrontendBusiness(dto, userPos))
-  const roadDists = await getRoadDistancesKm(userPos, businesses.map((b) => ({ lat: b.lat, lng: b.lng })))
-  if (roadDists) {
-    return businesses.map((b, i) => ({
-      ...b,
-      distanceKm: roadDists[i] > 0 ? roadDists[i] : b.distanceKm,
-    }))
-  }
-  return businesses
+  return data.map((dto) => toFrontendBusiness(dto, userPos))
 }

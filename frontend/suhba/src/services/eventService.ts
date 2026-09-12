@@ -1,7 +1,6 @@
 import type { Event } from '../types'
 import type { GeoPosition } from '../hooks/useGeolocation'
 import { roundKm } from '../utils/geo'
-import { getRoadDistancesKm } from './routingService'
 
 const API_BASE = `${import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8080'}/api/v1`
 const VIENNA_CENTER: GeoPosition = { lat: 48.2082, lng: 16.3738 }
@@ -67,15 +66,7 @@ export async function getUpcomingEvents(userPos: GeoPosition = VIENNA_CENTER): P
   const res = await fetch(`${API_BASE}/events/nearby?${params}`)
   if (!res.ok) throw new Error(`Failed to fetch events: ${res.status}`)
   const data: BackendEvent[] = await res.json()
-  const events = data.map(toFrontendEvent)
-  const roadDists = await getRoadDistancesKm(userPos, events.map((e) => ({ lat: e.lat, lng: e.lng })))
-  if (roadDists) {
-    return events.map((e, i) => ({
-      ...e,
-      distanceKm: roadDists[i] > 0 ? roadDists[i] : e.distanceKm,
-    }))
-  }
-  return events
+  return data.map(toFrontendEvent)
 }
 
 export async function getEventById(id: string): Promise<Event | undefined> {

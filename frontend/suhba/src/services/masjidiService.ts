@@ -1,6 +1,5 @@
 import type { PrayerSpot, SpotType } from '../types'
 import { haversineKm, roundKm } from '../utils/geo'
-import { getRoadDistancesKm } from './routingService'
 
 import type { GeoPosition } from '../hooks/useGeolocation'
 
@@ -79,15 +78,7 @@ export async function getSpots(userPos: GeoPosition = VIENNA_CENTER): Promise<re
   const res = await fetch(`${API_BASE}/prayer-spots/nearby?${params}`)
   if (!res.ok) throw new Error(`Failed to fetch prayer spots: ${res.status}`)
   const data: BackendPrayerSpot[] = await res.json()
-  const spots = data.map((dto) => toFrontendSpot(dto, userPos))
-  const roadDists = await getRoadDistancesKm(userPos, spots.map((s) => ({ lat: s.lat, lng: s.lng })))
-  if (roadDists) {
-    return spots.map((s, i) => ({
-      ...s,
-      distanceKm: roadDists[i] > 0 ? roadDists[i] : s.distanceKm,
-    }))
-  }
-  return spots
+  return data.map((dto) => toFrontendSpot(dto, userPos))
 }
 
 export async function getSpotById(id: string, userPos: GeoPosition = VIENNA_CENTER): Promise<PrayerSpot | undefined> {
