@@ -8,18 +8,15 @@ import { QuickGrid } from './QuickGrid'
 import { NearbyFeed } from './NearbyFeed'
 import { useNearbyFeed } from './useNearbyFeed'
 import { PrayerTimesWidget } from './PrayerTimesWidget'
-import { LegalLinks } from '@features/legal'
-import type { LegalDocument } from '@features/legal'
 
 interface HomePageProps {
   onNavigate: (tab: NavTab) => void
   onSpotSelect?: (id: string, name: string) => void
   onBusinessSelect?: (id: string) => void
   onEventSelect?: (id: string, title: string) => void
-  onLegalSelect?: (documentId: LegalDocument) => void
 }
 
-export function HomePage({ onNavigate, onSpotSelect, onBusinessSelect, onEventSelect, onLegalSelect }: HomePageProps): JSX.Element {
+export function HomePage({ onNavigate, onSpotSelect, onBusinessSelect, onEventSelect }: HomePageProps): JSX.Element {
   const { t } = useTranslation()
   const { dhikrList, current, index, goToNext, goTo } = useDhikr()
   const { items: nearbyItems, loading: nearbyLoading, error: nearbyError } = useNearbyFeed()
@@ -60,12 +57,6 @@ export function HomePage({ onNavigate, onSpotSelect, onBusinessSelect, onEventSe
           <NearbyFeed items={nearbyItems} loading={nearbyLoading} error={nearbyError} onSelect={handleFeedSelect} />
         </div>
       </section>
-
-      {onLegalSelect !== undefined && (
-        <footer className="lg:hidden pt-2">
-          <LegalLinks onSelect={onLegalSelect} />
-        </footer>
-      )}
     </div>
   )
 }

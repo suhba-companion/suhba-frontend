@@ -70,7 +70,6 @@ function App(): JSX.Element {
           onSpotSelect={(id, name) => setSelectedSpot({ id, name })}
           onBusinessSelect={(id) => setSelectedBusiness(id)}
           onEventSelect={(id, title) => setSelectedEvent({ id, title })}
-          onLegalSelect={setLegalDocument}
         />
       )
     }
@@ -116,6 +115,13 @@ function App(): JSX.Element {
           <ErrorBoundary>
             {renderContent()}
           </ErrorBoundary>
+          {/* § 5 ECG: Impressum und Datenschutz müssen aus jeder Ansicht erreichbar sein.
+              Auf Desktop leistet das die Sidebar, auf Mobil dieser Footer. */}
+          {legalDocument === null && (
+            <footer className="lg:hidden px-4 pb-6 pt-2">
+              <LegalLinks onSelect={setLegalDocument} />
+            </footer>
+          )}
         </main>
         <div className="lg:hidden shrink-0">
           <NavBar activeTab={activeTab} onTabChange={handleTabChange} />
