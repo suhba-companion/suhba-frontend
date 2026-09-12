@@ -458,7 +458,8 @@
           "heading": "Karten und externe Datenquellen",
           "paragraphs": [
             "Für die Kartendarstellung nutzen wir OpenStreetMap. Beim Laden der Karte wird deine IP-Adresse an die Server der OpenStreetMap Foundation übertragen. Details: osmfoundation.org/wiki/Privacy_Policy",
-            "Für Moscheedaten greifen wir auf die Schnittstelle von MasjidiApp zu. Diese Abfragen erfolgen über unseren Server, deine IP-Adresse wird dabei nicht weitergegeben."
+            "Für Moscheedaten greifen wir auf die Schnittstelle von MasjidiApp zu. Diese Abfragen erfolgen über unseren Server, deine IP-Adresse wird dabei nicht weitergegeben.",
+            "Wenn du auf einer Orts- oder Betriebskarte die Schaltfläche „Route“ antippst, öffnet sich Google Maps in einem neuen Tab. Erst mit diesem Tippen werden deine IP-Adresse und die Zieladresse an Google übermittelt; es gelten dann die Datenschutzbestimmungen von Google. Ohne dein Antippen findet keine Verbindung zu Google Maps statt."
           ]
         },
         {
