@@ -301,14 +301,12 @@ src/services/
   halalService.ts
   eventService.ts
   prayerTimesService.ts
-  routingService.ts
   adminService.ts
 ```
 
 ### Env Vars
 ```env
 VITE_API_BASE_URL=http://localhost:8080
-VITE_GOOGLE_MAPS_API_KEY=
 ```
 
 ---
