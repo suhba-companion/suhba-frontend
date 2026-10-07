@@ -21,4 +21,7 @@ EXPOSE 8080
 # (required for the cross-site admin panel). Overridable via SPRING_PROFILES_ACTIVE
 # (e.g. docker-compose sets it for local runs).
 ENV SPRING_PROFILES_ACTIVE=prod
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Without a heap ceiling the JVM sizes itself from the host, overshoots the
+# container limit and gets OOM-killed, which looks identical to a crash. Exit on
+# OOM rather than limping on in an unrecoverable state.
+ENTRYPOINT ["java", "-XX:MaxRAMPercentage=75.0", "-XX:+ExitOnOutOfMemoryError", "-jar", "app.jar"]

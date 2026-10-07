@@ -25,17 +25,14 @@ ALTER TABLE events              ENABLE ROW LEVEL SECURITY;
 ALTER TABLE prayer_times        ENABLE ROW LEVEL SECURITY;
 ALTER TABLE admin_users         ENABLE ROW LEVEL SECURITY;
 
--- Flyway's own bookkeeping table is exposed by the same default grants.
--- Guarded because it does not exist yet on a from-scratch `flyway:clean` run.
-DO $$
-BEGIN
-    IF EXISTS (
-        SELECT 1 FROM pg_tables
-        WHERE schemaname = 'public' AND tablename = 'flyway_schema_history'
-    ) THEN
-        EXECUTE 'ALTER TABLE public.flyway_schema_history ENABLE ROW LEVEL SECURITY';
-    END IF;
-END $$;
+-- flyway_schema_history is deliberately NOT altered here. Flyway holds a lock on that
+-- table for the whole run, and ENABLE ROW LEVEL SECURITY needs ACCESS EXCLUSIVE on it,
+-- so the statement waits on a lock its own runner is holding and the migration hangs
+-- forever -- taking application startup down with it.
+--
+-- It is covered anyway: step 2 revokes ALL on every table in the schema plus USAGE on
+-- the schema itself, so anon/authenticated cannot reach it. Enable RLS there by hand in
+-- the Supabase SQL editor if you want the extra layer.
 
 -- 2. Remove the privileges themselves, so the tables are closed even if RLS is ever
 --    switched off again. Revoking USAGE on the schema also covers every table added

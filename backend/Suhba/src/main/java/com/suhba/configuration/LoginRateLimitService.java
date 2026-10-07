@@ -12,6 +12,12 @@ public class LoginRateLimitService {
     private static final int MAX_FAILURES = 5;
     private static final Duration LOCKOUT = Duration.ofMinutes(15);
 
+    // An IP that fails once and never returns used to leave its entry behind forever,
+    // and bots probe the admin login constantly. Purge entries idle longer than the
+    // lockout once the map gets large, which also makes the failure count a rolling
+    // window rather than one that accumulates across months.
+    private static final int PURGE_THRESHOLD = 10_000;
+
     private final ConcurrentHashMap<String, AttemptRecord> attempts = new ConcurrentHashMap<>();
 
     public boolean isBlocked(String ip) {
@@ -25,13 +31,26 @@ public class LoginRateLimitService {
     }
 
     public void recordFailure(String ip) {
+        if (attempts.size() >= PURGE_THRESHOLD) {
+            purgeIdle();
+        }
         AttemptRecord record = attempts.computeIfAbsent(ip, k -> new AttemptRecord());
         synchronized (record) {
             record.failures++;
+            record.lastAttempt = Instant.now();
             if (record.failures >= MAX_FAILURES) {
-                record.lockedUntil = Instant.now().plus(LOCKOUT);
+                record.lockedUntil = record.lastAttempt.plus(LOCKOUT);
             }
         }
+    }
+
+    private void purgeIdle() {
+        Instant cutoff = Instant.now().minus(LOCKOUT);
+        attempts.values().removeIf(record -> {
+            synchronized (record) {
+                return record.lastAttempt != null && record.lastAttempt.isBefore(cutoff);
+            }
+        });
     }
 
     public void recordSuccess(String ip) {
@@ -41,5 +60,6 @@ public class LoginRateLimitService {
     private static final class AttemptRecord {
         int failures = 0;
         Instant lockedUntil = null;
+        Instant lastAttempt = null;
     }
 }

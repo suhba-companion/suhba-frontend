@@ -3,8 +3,13 @@ services:
     name: suhba-backend
     env: docker
     dockerfilePath: ./Dockerfile
-    plan: free
-    healthCheckPath: /actuator/health
+    # No `plan:` on purpose — the value here was stale (`free`) while the service
+    # runs on a paid tier, so a blueprint sync could have downgraded it. Omitting
+    # the key leaves the plan to the dashboard.
+
+    # Liveness only — see the comment in application.yml. Checking the datasource
+    # here makes a transient DB failure escalate into a restart loop.
+    healthCheckPath: /actuator/health/liveness
     envVars:
       - key: DB_DATASOURCE
         sync: false
