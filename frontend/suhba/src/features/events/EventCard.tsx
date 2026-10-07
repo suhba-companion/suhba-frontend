@@ -20,11 +20,15 @@ const CATEGORY_ICONS: Record<EventCategory, Icon> = {
 
 function formatDate(isoStr: string): string {
   const d = new Date(isoStr)
-  return d.toLocaleDateString('de-AT', { weekday: 'short', day: 'numeric', month: 'short' })
+  return d.toLocaleDateString('de-AT', {
+    weekday: 'short', day: 'numeric', month: 'short', timeZone: 'Europe/Vienna',
+  })
 }
 
 function formatTime(isoStr: string): string {
-  return new Date(isoStr).toLocaleTimeString('de-AT', { hour: '2-digit', minute: '2-digit' })
+  return new Date(isoStr).toLocaleTimeString('de-AT', {
+    hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Vienna',
+  })
 }
 
 interface EventCardProps {

@@ -300,6 +300,11 @@
       "apply": "Anwenden"
     }
   },
+  "social": {
+    "label": "Suhba in sozialen Medien",
+    "instagram": "Suhba auf Instagram (öffnet in neuem Tab)",
+    "tiktok": "Suhba auf TikTok (öffnet in neuem Tab)"
+  },
   "legal": {
     "footerLabel": "Rechtliches",
     "impressum": {

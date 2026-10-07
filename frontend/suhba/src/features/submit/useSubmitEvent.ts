@@ -20,8 +20,10 @@ const CATEGORY_TO_ENUM: Record<EventCategory, string> = {
 }
 
 function toInstant(datetimeLocal: string): string {
-  // datetime-local gives "YYYY-MM-DDTHH:mm" — backend needs a full ISO instant
-  return datetimeLocal.length === 16 ? `${datetimeLocal}:00Z` : datetimeLocal
+  // datetime-local gives "YYYY-MM-DDTHH:mm" as *local* wall-clock time. Date parses it
+  // in the browser's zone, so toISOString() yields the real UTC instant the backend stores.
+  const parsed = new Date(datetimeLocal)
+  return Number.isNaN(parsed.getTime()) ? datetimeLocal : parsed.toISOString()
 }
 
 interface EventFormData {

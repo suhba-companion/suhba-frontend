@@ -99,6 +99,27 @@ describe('useSubmitEvent', () => {
     expect(opts.method).toBe('POST')
   })
 
+  it('sends the entered time as the matching instant, not as UTC wall-clock', async () => {
+    const mockFetch = vi.fn().mockResolvedValue({
+      ok: true,
+      json: () => Promise.resolve({}),
+    })
+    global.fetch = mockFetch
+    const { result } = renderHook(() => useSubmitEvent())
+    act(() => {
+      result.current.update('title', 'Test Event')
+      result.current.update('category', 'Gebet')
+      result.current.update('address', 'Teststraße 1')
+      result.current.update('district', '1010 Wien')
+      result.current.update('startTime', '2026-06-01T12:00')
+      result.current.update('endTime', '2026-06-01T14:00')
+    })
+    await act(async () => { await result.current.submit() })
+    const body = JSON.parse(mockFetch.mock.calls[0][1].body)
+    expect(new Date(body.startTime).getTime()).toBe(new Date('2026-06-01T12:00').getTime())
+    expect(new Date(body.endTime).getTime()).toBe(new Date('2026-06-01T14:00').getTime())
+  })
+
   it('submit with server error sets status to error', async () => {
     global.fetch = vi.fn().mockResolvedValue({ ok: false, status: 500 })
     const { result } = renderHook(() => useSubmitEvent())

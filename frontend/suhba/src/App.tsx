@@ -10,6 +10,7 @@ import { AzkarPage } from '@features/azkar'
 import { SubmitSpotPage, SubmitBusinessPage, SubmitEventPage } from '@features/submit'
 import { LegalPage, LegalLinks } from '@features/legal'
 import type { LegalDocument } from '@features/legal'
+import { SocialLinks } from '@features/social'
 
 type FormView = 'submit-spot' | 'submit-business' | 'submit-event' | null
 
@@ -103,7 +104,12 @@ function App(): JSX.Element {
       <SideBar
         activeTab={activeTab}
         onTabChange={handleTabChange}
-        footer={<LegalLinks variant="dark" onSelect={setLegalDocument} />}
+        footer={
+          <div className="flex flex-col gap-3">
+            <SocialLinks variant="dark" />
+            <LegalLinks variant="dark" onSelect={setLegalDocument} />
+          </div>
+        }
       />
       <div className="flex-1 flex flex-col min-w-0">
         <TopBar
@@ -118,7 +124,8 @@ function App(): JSX.Element {
           {/* § 5 ECG: Impressum und Datenschutz müssen aus jeder Ansicht erreichbar sein.
               Auf Desktop leistet das die Sidebar, auf Mobil dieser Footer. */}
           {legalDocument === null && (
-            <footer className="lg:hidden px-4 pb-6 pt-2">
+            <footer className="lg:hidden px-4 pb-6 pt-2 flex flex-col gap-3">
+              <SocialLinks />
               <LegalLinks onSelect={setLegalDocument} />
             </footer>
           )}

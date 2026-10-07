@@ -5,6 +5,7 @@ import {
 } from '@phosphor-icons/react'
 import type { Icon } from '@phosphor-icons/react'
 import type { Event, EventCategory } from '../../types'
+import { buildDirectionsUrl } from '@utils/maps'
 
 const CATEGORY_ICONS: Record<EventCategory, Icon> = {
   Gebet: HandsPraying,
@@ -30,13 +31,13 @@ const CATEGORY_COLORS: Record<EventCategory, string> = {
 
 function formatDate(isoStr: string): string {
   return new Date(isoStr).toLocaleDateString('de-AT', {
-    weekday: 'long', day: 'numeric', month: 'long',
+    weekday: 'long', day: 'numeric', month: 'long', timeZone: 'Europe/Vienna',
   })
 }
 
 function formatTime(isoStr: string): string {
   return new Date(isoStr).toLocaleTimeString('de-AT', {
-    hour: '2-digit', minute: '2-digit',
+    hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Vienna',
   })
 }
 
@@ -50,8 +51,7 @@ export function EventDetailModal({ event }: EventDetailModalProps): JSX.Element 
   const colorClass = CATEGORY_COLORS[event.category]
 
   function handleRoute(): void {
-    const url = event.googleMapsUrl ?? `https://maps.google.com/maps?daddr=${event.lat},${event.lng}&travelmode=transit`
-    window.open(url, '_blank', 'noopener,noreferrer')
+    window.open(buildDirectionsUrl(event), '_blank', 'noopener,noreferrer')
   }
 
   return (

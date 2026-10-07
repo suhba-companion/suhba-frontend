@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { Modal } from '@components/Modal'
+import { instantToDatetimeLocal, datetimeLocalToInstant } from '@utils/datetimeLocal'
 import { CaretRight, Check, X, PencilSimple, Trash } from '@phosphor-icons/react'
 import {
   adminService,
@@ -736,8 +737,8 @@ function EditForm({ kind, data, onChange }: EditFormProps): JSX.Element {
         </select>
       </Field>
       <div className="grid grid-cols-2 gap-3">
-        <Field label="Start time"><input type="datetime-local" className={INPUT} value={str('startTime').slice(0,16)} onChange={e => set('startTime', e.target.value ? `${e.target.value}:00Z` : null)} /></Field>
-        <Field label="End time"><input type="datetime-local" className={INPUT} value={str('endTime').slice(0,16)} onChange={e => set('endTime', e.target.value ? `${e.target.value}:00Z` : null)} /></Field>
+        <Field label="Start time"><input type="datetime-local" className={INPUT} value={instantToDatetimeLocal(str('startTime'))} onChange={e => set('startTime', datetimeLocalToInstant(e.target.value))} /></Field>
+        <Field label="End time"><input type="datetime-local" className={INPUT} value={instantToDatetimeLocal(str('endTime'))} onChange={e => set('endTime', datetimeLocalToInstant(e.target.value))} /></Field>
       </div>
       <div className="grid grid-cols-2 gap-3">
         <Field label="Organizer"><input className={INPUT} value={str('organizer')} onChange={e => set('organizer', e.target.value)} /></Field>
