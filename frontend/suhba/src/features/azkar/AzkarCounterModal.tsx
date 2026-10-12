@@ -1,68 +1,15 @@
 import { useState, useEffect, useCallback } from 'react'
+import { createPortal } from 'react-dom'
+import { useTranslation } from 'react-i18next'
 import { X, ArrowCounterClockwise } from '@phosphor-icons/react'
+import { CounterRing } from './CounterRing'
 import type { Dhikr } from '../../types'
 
-const RADIUS = 88
-const CIRCUMFERENCE = 2 * Math.PI * RADIUS
+const FALLBACK_TARGET = 33
 
 function parseTarget(countStr: string): number {
   const n = parseInt(countStr, 10)
-  return isNaN(n) || n <= 0 ? 33 : n
-}
-
-interface RingProps {
-  count: number
-  target: number
-  complete: boolean
-}
-
-function Ring({ count, target, complete }: RingProps): JSX.Element {
-  const dashOffset = CIRCUMFERENCE * (1 - Math.min(1, count / target))
-
-  return (
-    <div className="relative w-64 h-64">
-      <svg
-        className="w-full h-full -rotate-90"
-        viewBox="0 0 200 200"
-        aria-hidden="true"
-      >
-        {/* Track */}
-        <circle
-          cx="100" cy="100" r={RADIUS}
-          fill="none"
-          stroke="rgba(247,242,232,0.12)"
-          strokeWidth="7"
-        />
-        {/* Progress arc */}
-        <circle
-          cx="100" cy="100" r={RADIUS}
-          fill="none"
-          strokeWidth="7"
-          strokeLinecap="round"
-          strokeDasharray={CIRCUMFERENCE}
-          strokeDashoffset={dashOffset}
-          className="transition-all duration-300"
-          style={{ stroke: complete ? 'var(--color-sage-light)' : 'var(--color-cream-card)' }}
-        />
-      </svg>
-
-      {/* Center label */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center">
-        {complete ? (
-          <p className="font-amiri text-4xl text-cream-card m-0" lang="ar">
-            ما شاء الله
-          </p>
-        ) : (
-          <>
-            <span className="text-7xl font-bold text-cream-card tabular-nums leading-none">
-              {count}
-            </span>
-            <span className="text-cream-card/50 text-sm mt-1">von {target}</span>
-          </>
-        )}
-      </div>
-    </div>
-  )
+  return isNaN(n) || n <= 0 ? FALLBACK_TARGET : n
 }
 
 interface AzkarCounterModalProps {
@@ -71,6 +18,7 @@ interface AzkarCounterModalProps {
 }
 
 export function AzkarCounterModal({ dhikr, onClose }: AzkarCounterModalProps): JSX.Element {
+  const { t } = useTranslation()
   const target = parseTarget(dhikr.count)
   const [count, setCount] = useState(0)
   const complete = count >= target
@@ -86,68 +34,73 @@ export function AzkarCounterModal({ dhikr, onClose }: AzkarCounterModalProps): J
   useEffect(() => {
     const onKey = (e: KeyboardEvent): void => {
       if (e.key === 'Escape') onClose()
-      if (e.key === ' ' || e.key === 'Enter') increment()
+      if (e.key === ' ' || e.key === 'Enter') {
+        // Sonst zählt der Browser den Treffer doppelt: Keydown plus erzeugter Klick.
+        e.preventDefault()
+        increment()
+      }
     }
     document.addEventListener('keydown', onKey)
     return () => document.removeEventListener('keydown', onKey)
   }, [onClose, increment])
 
-  return (
+  useEffect(() => {
+    const previous = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = previous
+    }
+  }, [])
+
+  return createPortal(
     <div
-      className="fixed inset-0 z-50 flex flex-col bg-hero-gradient"
+      className="fixed inset-0 z-50 h-[100dvh] w-screen flex flex-col bg-hero-gradient select-none touch-manipulation overscroll-contain pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)] [-webkit-tap-highlight-color:transparent]"
       role="dialog"
       aria-modal="true"
     >
-      {/* Header */}
-      <div className="flex items-center justify-between px-4 pt-5 pb-3 shrink-0">
+      <div className="flex items-center justify-between px-4 pt-4 pb-2 shrink-0">
         <button
           type="button"
           onClick={reset}
-          aria-label="Zurücksetzen"
-          className="p-2 rounded-full text-cream-card/60 hover:text-cream-card hover:bg-white/10 transition-colors"
+          aria-label={t('azkar.counter.reset')}
+          className="p-3 -m-1 rounded-full text-cream-card/60 hover:text-cream-card hover:bg-white/10 transition-colors"
         >
           <ArrowCounterClockwise size={22} aria-hidden="true" />
         </button>
         <button
           type="button"
           onClick={onClose}
-          aria-label="Schließen"
-          className="p-2 rounded-full text-cream-card/60 hover:text-cream-card hover:bg-white/10 transition-colors"
+          aria-label={t('azkar.counter.close')}
+          className="p-3 -m-1 rounded-full text-cream-card/60 hover:text-cream-card hover:bg-white/10 transition-colors"
         >
           <X size={22} aria-hidden="true" />
         </button>
       </div>
 
-      {/* Dhikr text */}
-      <div className="px-6 pt-2 shrink-0 text-center space-y-1">
+      <div className="px-6 shrink-0 text-center space-y-1 max-h-[38dvh] overflow-y-auto overscroll-contain">
         <p
-          className="font-amiri text-2xl text-cream-card leading-relaxed m-0"
+          className="font-amiri text-[clamp(1.15rem,5.5vw,1.6rem)] text-cream-card leading-relaxed m-0"
           dir="rtl"
           lang="ar"
         >
           {dhikr.ar}
         </p>
-        <p
-          className="text-cream-card/55 text-sm italic m-0"
-          style={{ fontFamily: 'Georgia, serif' }}
-        >
+        <p className="font-georgia text-cream-card/55 text-[clamp(0.75rem,3.4vw,0.875rem)] italic m-0">
           {dhikr.latin}
         </p>
       </div>
 
-      {/* Ring — tap area */}
       <button
         type="button"
         onClick={increment}
         disabled={complete}
-        aria-label={`${count} von ${target}`}
-        className="flex-1 flex items-center justify-center focus-visible:outline-none select-none"
+        aria-label={t('azkar.counter.progress', { current: count, target })}
+        className="flex-1 min-h-0 w-full flex items-center justify-center py-4 focus-visible:outline-none active:scale-95 transition-transform"
       >
-        <Ring count={count} target={target} complete={complete} />
+        <CounterRing count={count} target={target} complete={complete} />
       </button>
 
-      {/* CTA */}
-      <div className="px-6 pb-10 shrink-0">
+      <div className="px-6 pb-6 shrink-0">
         <button
           type="button"
           onClick={complete ? onClose : increment}
@@ -155,12 +108,13 @@ export function AzkarCounterModal({ dhikr, onClose }: AzkarCounterModalProps): J
             'w-full py-4 rounded-card text-base font-semibold transition-colors',
             complete
               ? 'bg-cream-card text-primary'
-              : 'bg-primary text-cream-card hover:bg-moss',
+              : 'bg-moss text-cream-card hover:bg-selected',
           ].join(' ')}
         >
-          {complete ? 'Fertig · Alhamdulillah' : 'Tippe zum Zählen'}
+          {complete ? t('azkar.counter.done') : t('azkar.counter.tapToCount')}
         </button>
       </div>
-    </div>
+    </div>,
+    document.body,
   )
 }

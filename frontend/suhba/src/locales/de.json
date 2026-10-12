@@ -150,7 +150,17 @@
     "sabahLabel": "Azkar Sabah",
     "masaLabel": "Azkar Masa'",
     "afterPrayerLabel": "Nach dem Gebet",
-    "repetitions": "{{count}} Wiederholungen"
+    "repetitions": "{{count}} Wiederholungen",
+    "counter": {
+      "cardHint": "Tippen zum Zählen →",
+      "reset": "Zurücksetzen",
+      "close": "Schließen",
+      "of": "von {{target}}",
+      "progress": "{{current}} von {{target}}",
+      "tapToCount": "Tippe zum Zählen",
+      "done": "Fertig · Alhamdulillah",
+      "mashallah": "ما شاء الله"
+    }
   },
   "submit": {
     "spot": {

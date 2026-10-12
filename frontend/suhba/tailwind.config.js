@@ -50,6 +50,7 @@ export default {
 
       fontFamily: {
         amiri: ["'Amiri'", 'serif'],
+        georgia: ['Georgia', 'serif'],
       },
 
       borderRadius: {

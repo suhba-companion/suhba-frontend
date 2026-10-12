@@ -26,7 +26,7 @@ export function AzkarCard({ dhikr, onSelect }: AzkarCardProps): JSX.Element {
           {dhikr.count}
         </span>
         {selectable && (
-          <span className="text-[11px] text-text-muted">Tippen zum Zählen →</span>
+          <span className="text-[11px] text-text-muted">{t('azkar.counter.cardHint')}</span>
         )}
       </div>
 
