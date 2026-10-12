@@ -43,13 +43,14 @@ function spotToFeedEvent(spot: PrayerSpot): FeedEvent {
     id: `spot-${spot.id}`,
     title: spot.name,
     location: spot.district || spot.address,
+    address: spot.address,
+    district: spot.district,
     distanceKm: spot.distanceKm,
     tag: spot.type,
     time: spot.jumaTime ? `Juma ${spot.jumaTime}` : 'Offen',
     kind: 'spot',
     lat: spot.lat,
     lng: spot.lng,
-    googleMapsUrl: spot.googleMapsUrl,
   }
 }
 
@@ -58,6 +59,8 @@ function businessToFeedEvent(business: HalalBusiness): FeedEvent {
     id: `halal-${business.id}`,
     title: business.name,
     location: business.district || business.address,
+    address: business.address,
+    district: business.district,
     distanceKm: business.distanceKm,
     tag: business.type,
     time: business.rating !== undefined ? `★ ${business.rating.toFixed(1)}` : 'Halal',
@@ -72,13 +75,14 @@ function eventToFeedEvent(event: Event): FeedEvent {
     id: `event-${event.id}`,
     title: event.title,
     location: event.district || event.address,
+    address: event.address,
+    district: event.district,
     distanceKm: event.distanceKm,
     tag: event.category,
     time: formatFeedTime(event.startTime),
     kind: 'event',
     lat: event.lat,
     lng: event.lng,
-    googleMapsUrl: event.googleMapsUrl,
   }
 }
 

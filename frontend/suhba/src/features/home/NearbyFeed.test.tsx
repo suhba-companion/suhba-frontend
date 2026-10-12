@@ -58,7 +58,7 @@ describe('NearbyFeed', () => {
     render(<NearbyFeed items={items} onSelect={onSelect} />)
     fireEvent.click(screen.getByRole('button', { name: /route/i }))
     expect(openSpy).toHaveBeenCalledWith(
-      'https://maps.google.com/maps?daddr=48.2,16.37&travelmode=transit',
+      'https://maps.google.com/maps?daddr=48.2%2C16.37&travelmode=transit',
       '_blank',
       'noopener,noreferrer',
     )
@@ -66,14 +66,26 @@ describe('NearbyFeed', () => {
     openSpy.mockRestore()
   })
 
-  it('prefers googleMapsUrl over coordinates for the route', () => {
+  it('prefers the saved address over coordinates for the route', () => {
     const openSpy = vi.spyOn(window, 'open').mockImplementation(() => null)
     const items: FeedEvent[] = [
-      { id: 'event-1', title: 'Vortrag', tag: 'Vortrag', time: 'Heute', kind: 'event', lat: 48.2, lng: 16.37, googleMapsUrl: 'https://maps.app.goo.gl/abc' },
+      { id: 'event-1', title: 'Vortrag', tag: 'Vortrag', time: 'Heute', kind: 'event', address: 'Am Bruckhaufen 3', district: '1210 Wien', lat: 48.2, lng: 16.37 },
     ]
     render(<NearbyFeed items={items} />)
     fireEvent.click(screen.getByRole('button', { name: /route/i }))
-    expect(openSpy).toHaveBeenCalledWith('https://maps.app.goo.gl/abc', '_blank', 'noopener,noreferrer')
+    expect(openSpy).toHaveBeenCalledWith(
+      'https://maps.google.com/maps?daddr=Am%20Bruckhaufen%203%2C%201210%20Wien&travelmode=transit',
+      '_blank',
+      'noopener,noreferrer',
+    )
     openSpy.mockRestore()
+  })
+
+  it('hides the route button when neither address nor coordinates are known', () => {
+    const items: FeedEvent[] = [
+      { id: 'event-2', title: 'Online-Vortrag', tag: 'Vortrag', time: 'Heute', kind: 'event' },
+    ]
+    render(<NearbyFeed items={items} />)
+    expect(screen.queryByRole('button', { name: /route/i })).not.toBeInTheDocument()
   })
 })

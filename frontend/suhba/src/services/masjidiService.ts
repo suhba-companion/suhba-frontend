@@ -25,7 +25,6 @@ type BackendPrayerSpot = {
   prayerClothesAvailable: boolean | null
   openingHours: string | null
   language: string | null
-  googleMapsUrl: string | null
   verified: boolean | null
   distanceKm?: number | null
 }
@@ -61,7 +60,6 @@ function toFrontendSpot(dto: BackendPrayerSpot, userPos: GeoPosition): PrayerSpo
     prayerClothes: dto.prayerClothesAvailable ?? false,
     openingHours: dto.openingHours ?? undefined,
     language: dto.language ?? undefined,
-    googleMapsUrl: dto.googleMapsUrl ?? undefined,
     verified: dto.verified ?? undefined,
     distanceKm,
   }

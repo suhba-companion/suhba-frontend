@@ -53,12 +53,12 @@ describe('HalalBusinessCard', () => {
     expect(screen.getByRole('button', { name: /route/i })).toBeInTheDocument()
   })
 
-  it('opens google maps on route button click', () => {
+  it('opens google maps directions to the saved address on route button click', () => {
     const open = vi.spyOn(window, 'open').mockImplementation(() => null)
     render(<ul><HalalBusinessCard business={BASE_BUSINESS} /></ul>)
     fireEvent.click(screen.getByRole('button', { name: /route/i }))
     expect(open).toHaveBeenCalledWith(
-      expect.stringContaining('48.191'),
+      'https://maps.google.com/maps?daddr=Testgasse%205%2C%201050%20Wien&travelmode=transit',
       '_blank',
       'noopener,noreferrer',
     )

@@ -20,7 +20,6 @@ type BackendEvent = {
   organizer: string | null
   contactInfo: string | null
   isFree: boolean
-  googleMapsUrl: string | null
   status: string
   upvotes: number
   distanceKm: number | null
@@ -52,7 +51,6 @@ function toFrontendEvent(dto: BackendEvent): Event {
     organizer: dto.organizer ?? undefined,
     contactInfo: dto.contactInfo ?? undefined,
     isFree: dto.isFree,
-    googleMapsUrl: dto.googleMapsUrl ?? undefined,
     distanceKm: dto.distanceKm != null ? roundKm(dto.distanceKm) : undefined,
   }
 }

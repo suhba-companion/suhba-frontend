@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next'
+import { buildDirectionsUrl } from '@utils/maps'
 import type { FeedEvent } from '../../types'
 
 interface NearbyFeedProps {
@@ -9,11 +10,9 @@ interface NearbyFeedProps {
 }
 
 function routeUrl(item: FeedEvent): string | undefined {
-  if (item.googleMapsUrl) return item.googleMapsUrl
-  if (item.lat !== undefined && item.lng !== undefined) {
-    return `https://maps.google.com/maps?daddr=${item.lat},${item.lng}&travelmode=transit`
-  }
-  return undefined
+  const hasDestination =
+    (item.address?.trim() ?? '') !== '' || (item.lat !== undefined && item.lng !== undefined)
+  return hasDestination ? buildDirectionsUrl(item) : undefined
 }
 
 function openRoute(e: React.MouseEvent, item: FeedEvent): void {

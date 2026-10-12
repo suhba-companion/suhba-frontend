@@ -4,6 +4,7 @@ import {
   HandHeart, Question, MapPin, Clock
 } from '@phosphor-icons/react'
 import type { Icon } from '@phosphor-icons/react'
+import { buildDirectionsUrl } from '@utils/maps'
 import type { Event, EventCategory } from '../../types'
 
 const CATEGORY_ICONS: Record<EventCategory, Icon> = {
@@ -34,6 +35,11 @@ function formatTime(isoStr: string): string {
 interface EventCardProps {
   event: Event
   onSelect?: (id: string) => void
+}
+
+function openRoute(e: React.MouseEvent, event: Event): void {
+  e.stopPropagation()
+  window.open(buildDirectionsUrl(event), '_blank', 'noopener,noreferrer')
 }
 
 export function EventCard({ event, onSelect }: EventCardProps): JSX.Element {
@@ -72,18 +78,25 @@ export function EventCard({ event, onSelect }: EventCardProps): JSX.Element {
         </div>
       </div>
 
-      {(event.distanceKm !== undefined || event.isFree) && (
-        <div className="flex items-center justify-between pt-0.5">
-          <span className="text-text-muted text-xs">
-            {event.distanceKm !== undefined && `${event.distanceKm} km`}
-          </span>
+      <div className="flex items-center justify-between gap-2 pt-0.5">
+        <div className="flex items-center gap-2 min-w-0">
+          {event.distanceKm !== undefined && (
+            <span className="text-text-muted text-xs">{`${event.distanceKm} km`}</span>
+          )}
           {event.isFree && (
             <span className="text-[11px] font-medium text-moss bg-sage-tint px-2 py-0.5 rounded-pill">
               {t('events.free')}
             </span>
           )}
         </div>
-      )}
+        <button
+          type="button"
+          onClick={(e) => openRoute(e, event)}
+          className="bg-primary text-cream-card text-xs font-medium px-4 py-2 rounded-pill hover:bg-moss active:bg-moss transition-colors shrink-0 min-h-[36px]"
+        >
+          {t('spots.route')}
+        </button>
+      </div>
     </li>
   )
 }

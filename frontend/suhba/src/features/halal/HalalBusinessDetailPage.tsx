@@ -4,6 +4,7 @@ import { ForkKnife, Coffee, Knife, ShoppingBag, Moon, Phone, Globe, Check } from
 import type { Icon } from '@phosphor-icons/react'
 import { Sect, Spinner } from '@components'
 import { getHalalBusinessById } from '@services/halalService'
+import { buildDirectionsUrl } from '@utils/maps'
 import type { HalalBusiness, BusinessType, CertStatus } from '../../types'
 
 const HalalBusinessDetailMap = lazy(() =>
@@ -70,11 +71,7 @@ export function HalalBusinessDetailPage({ businessId }: HalalBusinessDetailPageP
   const TypeIcon = TYPE_ICONS[business.type]
 
   function handleRoute(): void {
-    window.open(
-      `https://maps.google.com/maps?daddr=${business!.lat},${business!.lng}`,
-      '_blank',
-      'noopener,noreferrer',
-    )
+    window.open(buildDirectionsUrl(business!), '_blank', 'noopener,noreferrer')
   }
 
   return (

@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next'
+import { buildDirectionsUrl } from '@utils/maps'
 import type { PrayerSpot } from '../../types'
 import { SpotAmenityIcons } from './SpotAmenityIcons'
 
@@ -7,13 +8,9 @@ interface SpotCardProps {
   onSelect?: (id: string, name: string) => void
 }
 
-function handleRoute(e: React.MouseEvent, lat: number, lng: number): void {
+function handleRoute(e: React.MouseEvent, spot: PrayerSpot): void {
   e.stopPropagation()
-  window.open(
-    `https://maps.google.com/maps?daddr=${lat},${lng}&travelmode=transit`,
-    '_blank',
-    'noopener,noreferrer',
-  )
+  window.open(buildDirectionsUrl(spot), '_blank', 'noopener,noreferrer')
 }
 
 export function SpotCard({ spot, onSelect }: SpotCardProps): JSX.Element {
@@ -45,7 +42,7 @@ export function SpotCard({ spot, onSelect }: SpotCardProps): JSX.Element {
         </span>
         <button
           type="button"
-          onClick={(e) => handleRoute(e, spot.lat, spot.lng)}
+          onClick={(e) => handleRoute(e, spot)}
           className="bg-primary text-cream-card text-xs font-medium px-4 py-2 rounded-pill hover:bg-moss active:bg-moss transition-colors shrink-0 min-h-[36px]"
         >
           {t('spots.route')}

@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import { CheckCircle } from '@phosphor-icons/react'
+import { buildDirectionsUrl } from '@utils/maps'
 import type { PrayerSpot } from '../../types'
 
 interface InfoRowProps {
@@ -52,19 +53,17 @@ export function SpotDetailInfo({ spot }: SpotDetailInfoProps): JSX.Element {
         {spot.language && (
           <InfoRow label={t('spots.detail.language')} value={spot.language} />
         )}
-        {spot.googleMapsUrl && (
-          <div className="flex gap-3">
-            <span className="text-text-muted text-xs w-28 shrink-0 pt-0.5">{t('spots.detail.directions')}</span>
-            <a
-              href={spot.googleMapsUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-primary text-xs underline"
-            >
-              Google Maps →
-            </a>
-          </div>
-        )}
+        <div className="flex gap-3">
+          <span className="text-text-muted text-xs w-28 shrink-0 pt-0.5">{t('spots.detail.directions')}</span>
+          <a
+            href={buildDirectionsUrl(spot)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-primary text-xs underline"
+          >
+            Google Maps →
+          </a>
+        </div>
       </div>
     </section>
   )

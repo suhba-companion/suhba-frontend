@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { Star, Check, Garage } from '@phosphor-icons/react'
 import { Tooltip } from '@components'
+import { buildDirectionsUrl } from '@utils/maps'
 import type { HalalBusiness, CertStatus, BusinessType } from '../../types'
 
 const TYPE_LABEL: Record<BusinessType, string> = {
@@ -52,13 +53,9 @@ interface HalalBusinessCardProps {
   onSelect?: (id: string) => void
 }
 
-function openRoute(e: React.MouseEvent, lat: number, lng: number): void {
+function openRoute(e: React.MouseEvent, business: HalalBusiness): void {
   e.stopPropagation()
-  window.open(
-    `https://maps.google.com/maps?daddr=${lat},${lng}&travelmode=transit`,
-    '_blank',
-    'noopener,noreferrer',
-  )
+  window.open(buildDirectionsUrl(business), '_blank', 'noopener,noreferrer')
 }
 
 export function HalalBusinessCard({ business, onSelect }: HalalBusinessCardProps): JSX.Element {
@@ -94,7 +91,7 @@ export function HalalBusinessCard({ business, onSelect }: HalalBusinessCardProps
         </p>
         <button
           type="button"
-          onClick={(e) => openRoute(e, business.lat, business.lng)}
+          onClick={(e) => openRoute(e, business)}
           className="bg-primary text-cream-card text-xs font-medium px-4 py-2 rounded-pill hover:bg-moss active:bg-moss transition-colors shrink-0 min-h-[36px]"
         >
           {t('spots.route')}

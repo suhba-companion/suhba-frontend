@@ -48,12 +48,12 @@ describe('SpotCard', () => {
     expect(screen.queryByTitle('Frauenbereich')).not.toBeInTheDocument()
   })
 
-  it('Route button opens google maps', async () => {
+  it('Route button opens google maps directions to the saved address', async () => {
     const openSpy = vi.spyOn(window, 'open').mockImplementation(() => null)
     render(<ul><SpotCard spot={MOCK_SPOT} /></ul>)
     await userEvent.click(screen.getByRole('button', { name: /route/i }))
     expect(openSpy).toHaveBeenCalledWith(
-      expect.stringContaining('maps.google.com'),
+      'https://maps.google.com/maps?daddr=Testgasse%201%2C%201010%20Wien&travelmode=transit',
       '_blank',
       'noopener,noreferrer',
     )

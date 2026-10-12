@@ -36,7 +36,6 @@ export interface PrayerSpot {
   prayerClothes?: boolean;
   openingHours?: string;
   language?: string;
-  googleMapsUrl?: string;
   verified?: boolean;
   distanceKm?: number;
 }
@@ -75,13 +74,14 @@ export interface FeedEvent {
   id: string;
   title: string;
   location?: string;
+  address?: string;
+  district?: string;
   distanceKm?: number;
   tag: string;
   time: string;
   kind?: 'spot' | 'halal' | 'event';
   lat?: number;
   lng?: number;
-  googleMapsUrl?: string;
 }
 
 export type EventCategory =
@@ -108,6 +108,5 @@ export interface Event {
   organizer?: string;
   contactInfo?: string;
   isFree: boolean;
-  googleMapsUrl?: string;
   distanceKm?: number;
 }
