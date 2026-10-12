@@ -53,7 +53,7 @@ describe('SpotCard', () => {
     render(<ul><SpotCard spot={MOCK_SPOT} /></ul>)
     await userEvent.click(screen.getByRole('button', { name: /route/i }))
     expect(openSpy).toHaveBeenCalledWith(
-      'https://maps.google.com/maps?daddr=Testgasse%201%2C%201010%20Wien&travelmode=transit',
+      'https://maps.google.com/maps?daddr=Testgasse%201%2C%201010%20Wien%2C%20%C3%96sterreich&travelmode=transit',
       '_blank',
       'noopener,noreferrer',
     )

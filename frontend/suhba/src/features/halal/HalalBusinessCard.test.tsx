@@ -58,7 +58,7 @@ describe('HalalBusinessCard', () => {
     render(<ul><HalalBusinessCard business={BASE_BUSINESS} /></ul>)
     fireEvent.click(screen.getByRole('button', { name: /route/i }))
     expect(open).toHaveBeenCalledWith(
-      'https://maps.google.com/maps?daddr=Testgasse%205%2C%201050%20Wien&travelmode=transit',
+      'https://maps.google.com/maps?daddr=Testgasse%205%2C%201050%20Wien%2C%20%C3%96sterreich&travelmode=transit',
       '_blank',
       'noopener,noreferrer',
     )

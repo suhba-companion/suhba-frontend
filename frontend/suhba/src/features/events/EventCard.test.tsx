@@ -26,7 +26,7 @@ describe('EventCard', () => {
     render(<ul><EventCard event={MOCK_EVENT} /></ul>)
     fireEvent.click(screen.getByRole('button', { name: /route/i }))
     expect(openSpy).toHaveBeenCalledWith(
-      'https://maps.google.com/maps?daddr=Am%20Bruckhaufen%203%2C%201210%20Wien&travelmode=transit',
+      'https://maps.google.com/maps?daddr=Am%20Bruckhaufen%203%2C%201210%20Wien%2C%20%C3%96sterreich&travelmode=transit',
       '_blank',
       'noopener,noreferrer',
     )
