@@ -10,7 +10,7 @@
   },
   "topBar": {
     "appName": "Suhba",
-    "details": "Details",
+    "openCounter": "Dhikr zählen",
     "formSpot": "Ort hinzufügen",
     "formBusiness": "Betrieb hinzufügen",
     "formEvent": "Event vorschlagen"
@@ -32,14 +32,10 @@
     }
   },
   "dhikr": {
-    "infoButton": "Hadith-Quelle anzeigen",
     "navGroup": "Dhikr-Auswahl",
     "navItem": "Dhikr {{number}} von {{total}}",
     "next": "Weiter",
-    "details": "Details",
-    "detailTitle": "Dhikr",
-    "hadithLabel": "Quelle & Tugend",
-    "countLabel": "Wiederholungen"
+    "openCounter": "Dhikr zählen"
   },
   "spots": {
     "searchPlaceholder": "Suche nach Gebetsort…",

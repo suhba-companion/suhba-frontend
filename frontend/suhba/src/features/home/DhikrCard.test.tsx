@@ -47,22 +47,30 @@ describe('DhikrCard', () => {
     expect(screen.getByText('33×')).toBeInTheDocument()
   })
 
-  it('details modal is hidden by default', () => {
+  it('opens the tasbih counter when the card is tapped', async () => {
     renderCard()
-    expect(screen.queryByText('Hadith-Quelle für Tests.')).not.toBeInTheDocument()
+    await userEvent.click(screen.getByRole('button', { name: /dhikr zählen/i }))
+    expect(screen.getByRole('dialog')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /tippe zum zählen/i })).toBeInTheDocument()
   })
 
-  it('Details button opens modal with hadith info', async () => {
+  it('does not open the counter when Weiter is tapped', async () => {
     renderCard()
-    const detailsBtn = screen.getByRole('button', { name: /details/i })
-    await userEvent.click(detailsBtn)
-    expect(screen.getByText('Hadith-Quelle für Tests.')).toBeInTheDocument()
+    await userEvent.click(screen.getByRole('button', { name: /weiter/i }))
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
   })
 
-  it('modal closes when X button clicked', async () => {
+  it('does not open the counter when a dot is tapped', async () => {
     renderCard()
-    await userEvent.click(screen.getByRole('button', { name: /details/i }))
-    await userEvent.click(screen.getByRole('button', { name: /schließen/i }))
+    const dots = screen.getAllByRole('button', { name: /dhikr \d+ von \d+/i })
+    await userEvent.click(dots[1])
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+  })
+
+  it('no longer shows the hadith details panel', async () => {
+    renderCard()
+    expect(screen.queryByRole('button', { name: /^details$/i })).not.toBeInTheDocument()
+    await userEvent.click(screen.getByRole('button', { name: /dhikr zählen/i }))
     expect(screen.queryByText('Hadith-Quelle für Tests.')).not.toBeInTheDocument()
   })
 
