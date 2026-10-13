@@ -5,6 +5,7 @@ import type { Icon } from '@phosphor-icons/react'
 import { Sect, Spinner } from '@components'
 import { getHalalBusinessById } from '@services/halalService'
 import { buildDirectionsUrl } from '@utils/maps'
+import { formatAddress } from '@utils/address'
 import type { HalalBusiness, BusinessType, CertStatus } from '../../types'
 
 const HalalBusinessDetailMap = lazy(() =>
@@ -101,7 +102,7 @@ export function HalalBusinessDetailPage({ businessId }: HalalBusinessDetailPageP
           <Sect label={t('halal.detail.info')} />
           <div className="mt-3 bg-cream-card border border-divider rounded-card divide-y divide-divider">
             <InfoRow label={t('halal.detail.address')}>
-              {business.address}, {business.district}
+              {formatAddress(business.address, business.district)}
             </InfoRow>
             {business.openingHours !== undefined && (
               <InfoRow label={t('halal.detail.hours')}>{business.openingHours}</InfoRow>

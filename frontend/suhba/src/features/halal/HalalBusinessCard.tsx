@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next'
 import { Star, Check, Garage } from '@phosphor-icons/react'
 import { Tooltip } from '@components'
 import { buildDirectionsUrl } from '@utils/maps'
+import { formatAddress } from '@utils/address'
 import type { HalalBusiness, CertStatus, BusinessType } from '../../types'
 
 const TYPE_LABEL: Record<BusinessType, string> = {
@@ -86,7 +87,7 @@ export function HalalBusinessCard({ business, onSelect }: HalalBusinessCardProps
       </div>
       <div className="flex items-center justify-between gap-2">
         <p className="text-text-muted text-xs m-0 flex-1 min-w-0 truncate">
-          {business.address}, {business.district}
+          {formatAddress(business.address, business.district)}
           {business.distanceKm !== undefined && ` · ~${business.distanceKm} km`}
         </p>
         <button
