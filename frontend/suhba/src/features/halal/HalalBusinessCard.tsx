@@ -1,7 +1,8 @@
 import { useTranslation } from 'react-i18next'
-import { Star, Check, Garage } from '@phosphor-icons/react'
+import { Star, Garage, Phone, SealCheck, Users } from '@phosphor-icons/react'
 import { Tooltip } from '@components'
 import { buildDirectionsUrl } from '@utils/maps'
+import { formatAddress } from '@utils/address'
 import type { HalalBusiness, CertStatus, BusinessType } from '../../types'
 
 const TYPE_LABEL: Record<BusinessType, string> = {
@@ -18,11 +19,27 @@ interface CertBadgeProps {
 
 function CertBadge({ certStatus }: CertBadgeProps): JSX.Element {
   const { t } = useTranslation()
-  if (certStatus === 'HMA-Zertifiziert') {
+  if (certStatus === 'Halal-zertifiziert') {
     return (
-      <span className="text-text-muted text-[10px] font-semibold shrink-0 flex items-center gap-1">
-        <Check size={10} weight="bold" aria-hidden="true" />
-        {t('halal.certHMA')}
+      <span className="text-moss text-[10px] font-semibold shrink-0 flex items-center gap-1">
+        <SealCheck size={11} weight="fill" aria-hidden="true" />
+        {t('halal.certCertified')}
+      </span>
+    )
+  }
+  if (certStatus === 'Community-gelistet') {
+    return (
+      <span className="text-text-muted text-[10px] shrink-0 flex items-center gap-1">
+        <Users size={10} weight="bold" aria-hidden="true" />
+        {t('halal.certCommunity')}
+      </span>
+    )
+  }
+  if (certStatus === 'Auf Anfrage') {
+    return (
+      <span className="text-sand text-[10px] font-semibold shrink-0 flex items-center gap-1">
+        <Phone size={10} weight="bold" aria-hidden="true" />
+        {t('halal.certOnRequest')}
       </span>
     )
   }
@@ -86,7 +103,7 @@ export function HalalBusinessCard({ business, onSelect }: HalalBusinessCardProps
       </div>
       <div className="flex items-center justify-between gap-2">
         <p className="text-text-muted text-xs m-0 flex-1 min-w-0 truncate">
-          {business.address}, {business.district}
+          {formatAddress(business.address, business.district)}
           {business.distanceKm !== undefined && ` · ~${business.distanceKm} km`}
         </p>
         <button

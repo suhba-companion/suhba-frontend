@@ -136,9 +136,10 @@ export function SubmitBusinessPage({ onBack }: SubmitBusinessPageProps): JSX.Ele
             className={SELECT_CLASS}
           >
             <option value="">{t('submit.business.certPlaceholder')}</option>
-            <option value="HMA-Zertifiziert">{t('submit.business.certHMA')}</option>
+            <option value="Halal-zertifiziert">{t('submit.business.certCertified')}</option>
             <option value="Selbst-zertifiziert">{t('submit.business.certSelf')}</option>
             <option value="Muslim-Owned">{t('submit.business.certOwned')}</option>
+            <option value="Auf Anfrage">{t('submit.business.certOnRequest')}</option>
           </select>
         </FormField>
 

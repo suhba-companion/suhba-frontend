@@ -70,9 +70,11 @@ const CATEGORY_MAP: Record<BusinessType, string> = {
 }
 
 const CERT_MAP: Record<CertStatus, { certified: boolean; certificationBody: string | null }> = {
-  'HMA-Zertifiziert': { certified: true, certificationBody: 'HMA' },
+  'Halal-zertifiziert': { certified: true, certificationBody: 'Halal Zertifiziert' },
+  'Community-gelistet': { certified: false, certificationBody: 'Auf Zabihah.com als halal gelistet' },
   'Selbst-zertifiziert': { certified: false, certificationBody: null },
   'Muslim-Owned': { certified: false, certificationBody: 'Muslim-Owned' },
+  'Auf Anfrage': { certified: false, certificationBody: 'Hotel arrangiert auf Anfrage' },
 }
 
 function validate(data: BusinessFormData): BusinessFormErrors {

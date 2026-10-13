@@ -5,8 +5,8 @@ import type { HalalBusiness } from '../../types'
 
 vi.mock('@services/halalService', () => ({
   getHalalBusinesses: vi.fn().mockResolvedValue([
-    { id: '1', name: 'Taqwa Restaurant', type: 'Restaurant', address: 'Quellenstraße 26', district: '1100 Wien', lat: 48.193, lng: 16.367, certStatus: 'HMA-Zertifiziert', rating: 4.7, featured: true, distanceKm: 1.2 },
-    { id: '2', name: 'Vienna Halal Market', type: 'Lebensmittel', address: 'Mariahilfer Str. 140', district: '1150 Wien', lat: 48.198, lng: 16.330, certStatus: 'HMA-Zertifiziert', rating: 4.5, featured: true, distanceKm: 2.3 },
+    { id: '1', name: 'Taqwa Restaurant', type: 'Restaurant', address: 'Quellenstraße 26', district: '1100 Wien', lat: 48.193, lng: 16.367, certStatus: 'Halal-zertifiziert', rating: 4.7, featured: true, distanceKm: 1.2 },
+    { id: '2', name: 'Vienna Halal Market', type: 'Lebensmittel', address: 'Mariahilfer Str. 140', district: '1150 Wien', lat: 48.198, lng: 16.330, certStatus: 'Halal-zertifiziert', rating: 4.5, featured: true, distanceKm: 2.3 },
     { id: '3', name: 'Istanbul Grill', type: 'Restaurant', address: 'Reinprechtsdorfer Str. 21', district: '1050 Wien', lat: 48.195, lng: 16.355, certStatus: 'Selbst-zertifiziert', featured: false, distanceKm: 1.8 },
   ] as HalalBusiness[]),
 }))

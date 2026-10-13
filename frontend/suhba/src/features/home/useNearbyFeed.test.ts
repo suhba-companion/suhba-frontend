@@ -11,7 +11,7 @@ vi.mock('@services/masjidiService', () => ({
 
 vi.mock('@services/halalService', () => ({
   getHalalBusinesses: vi.fn().mockResolvedValue([
-    { id: '20', name: 'Kebap Haus', type: 'Restaurant', address: 'Mariahilf', district: '1060 Wien', lat: 48.19, lng: 16.35, certStatus: 'HMA-Zertifiziert', rating: 4.6, featured: false, distanceKm: 1.5 },
+    { id: '20', name: 'Kebap Haus', type: 'Restaurant', address: 'Mariahilf', district: '1060 Wien', lat: 48.19, lng: 16.35, certStatus: 'Halal-zertifiziert', rating: 4.6, featured: false, distanceKm: 1.5 },
     { id: '21', name: 'Halal Markt', type: 'Lebensmittel', address: 'Favoriten', district: '1100 Wien', lat: 48.18, lng: 16.37, certStatus: 'Selbst-zertifiziert', featured: false, distanceKm: 3.2 },
   ] as HalalBusiness[]),
 }))

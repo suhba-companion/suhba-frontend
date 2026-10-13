@@ -10,7 +10,7 @@ const BASE_BUSINESS: HalalBusiness = {
   district: '1050 Wien',
   lat: 48.191,
   lng: 16.358,
-  certStatus: 'HMA-Zertifiziert',
+  certStatus: 'Halal-zertifiziert',
   rating: 4.3,
   featured: false,
   distanceKm: 2.5,
@@ -27,15 +27,26 @@ describe('HalalBusinessCard', () => {
     expect(screen.getByText('Restaurant')).toBeInTheDocument()
   })
 
-  it('renders HMA cert badge for HMA-Zertifiziert', () => {
+  it('renders the certified badge for Halal-zertifiziert', () => {
     render(<ul><HalalBusinessCard business={BASE_BUSINESS} /></ul>)
-    expect(screen.getByText('HMA')).toBeInTheDocument()
+    expect(screen.getByText('Zertifiziert')).toBeInTheDocument()
   })
 
   it('renders plain cert label for Selbst-zertifiziert', () => {
     render(<ul><HalalBusinessCard business={{ ...BASE_BUSINESS, certStatus: 'Selbst-zertifiziert' }} /></ul>)
     expect(screen.getByText('Selbst-zertifiziert')).toBeInTheDocument()
-    expect(screen.queryByText('HMA')).not.toBeInTheDocument()
+    expect(screen.queryByText('Zertifiziert')).not.toBeInTheDocument()
+  })
+
+  it('marks a hotel that only arranges halal on request', () => {
+    render(<ul><HalalBusinessCard business={{ ...BASE_BUSINESS, certStatus: 'Auf Anfrage' }} /></ul>)
+    expect(screen.getByText('Auf Anfrage')).toBeInTheDocument()
+  })
+
+  it('keeps a Zabihah community listing apart from a certificate', () => {
+    render(<ul><HalalBusinessCard business={{ ...BASE_BUSINESS, certStatus: 'Community-gelistet' }} /></ul>)
+    expect(screen.getByText('Community')).toBeInTheDocument()
+    expect(screen.queryByText('Zertifiziert')).not.toBeInTheDocument()
   })
 
   it('renders star rating', () => {

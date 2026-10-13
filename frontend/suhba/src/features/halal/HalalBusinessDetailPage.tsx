@@ -1,11 +1,12 @@
 import { useState, useEffect, Suspense, lazy } from 'react'
 import { useTranslation } from 'react-i18next'
-import { ForkKnife, Coffee, Knife, ShoppingBag, Moon, Phone, Globe, Check } from '@phosphor-icons/react'
+import { ForkKnife, Coffee, Knife, ShoppingBag, Moon, Phone, Globe, SealCheck, Users } from '@phosphor-icons/react'
 import type { Icon } from '@phosphor-icons/react'
 import { Sect, Spinner } from '@components'
 import { getHalalBusinessById } from '@services/halalService'
 import { buildDirectionsUrl } from '@utils/maps'
 import type { HalalBusiness, BusinessType, CertStatus } from '../../types'
+import { formatAddress } from '@utils/address'
 
 const HalalBusinessDetailMap = lazy(() =>
   import('./HalalBusinessDetailMap').then((m) => ({ default: m.HalalBusinessDetailMap })),
@@ -21,11 +22,27 @@ const TYPE_ICONS: Record<BusinessType, Icon> = {
 
 function CertPill({ certStatus }: { certStatus: CertStatus }): JSX.Element {
   const { t } = useTranslation()
-  if (certStatus === 'HMA-Zertifiziert') {
+  if (certStatus === 'Halal-zertifiziert') {
     return (
-      <span className="bg-sage-tint text-primary text-xs font-semibold px-2.5 py-1 rounded-pill flex items-center gap-1">
-        <Check size={11} weight="bold" aria-hidden="true" />
-        {t('halal.certHMA')}
+      <span className="bg-moss text-cream-card text-xs font-semibold px-2.5 py-1 rounded-pill flex items-center gap-1">
+        <SealCheck size={12} weight="fill" aria-hidden="true" />
+        {t('halal.certCertifiedLong')}
+      </span>
+    )
+  }
+  if (certStatus === 'Community-gelistet') {
+    return (
+      <span className="bg-sage-tint text-primary text-xs px-2.5 py-1 rounded-pill flex items-center gap-1">
+        <Users size={12} weight="bold" aria-hidden="true" />
+        {t('halal.certCommunityLong')}
+      </span>
+    )
+  }
+  if (certStatus === 'Auf Anfrage') {
+    return (
+      <span className="bg-sand text-cream-card text-xs font-semibold px-2.5 py-1 rounded-pill flex items-center gap-1">
+        <Phone size={11} weight="bold" aria-hidden="true" />
+        {t('halal.certOnRequestLong')}
       </span>
     )
   }
@@ -101,7 +118,7 @@ export function HalalBusinessDetailPage({ businessId }: HalalBusinessDetailPageP
           <Sect label={t('halal.detail.info')} />
           <div className="mt-3 bg-cream-card border border-divider rounded-card divide-y divide-divider">
             <InfoRow label={t('halal.detail.address')}>
-              {business.address}, {business.district}
+              {formatAddress(business.address, business.district)}
             </InfoRow>
             {business.openingHours !== undefined && (
               <InfoRow label={t('halal.detail.hours')}>{business.openingHours}</InfoRow>

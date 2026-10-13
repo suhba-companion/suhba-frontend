@@ -32,9 +32,21 @@ function toBusinessType(category: BackendHalalSpot['category']): BusinessType {
   return 'Sonstige'
 }
 
+const ON_REQUEST_BODY = 'Hotel arrangiert auf Anfrage'
+// The import writes free text, not an enum: "Halal Zertifiziert (seit 2023)", "100% Halal",
+// "Auf Zabihah.com als halal gelistet". Match the text, not an exact value.
+const CERTIFIED = /zertifiziert|100\s*%\s*halal/i
+const SELF_DECLARED = /self-declared|selbstdeklariert|selbst/i
+const COMMUNITY_LISTED = /zabihah/i
+
 function toCertStatus(certified: boolean | null, body: string | null): CertStatus {
-  if (certified && body === 'HMA') return 'HMA-Zertifiziert'
+  if (body === null) return 'Selbst-zertifiziert'
+  if (body === ON_REQUEST_BODY) return 'Auf Anfrage'
   if (body === 'Muslim-Owned') return 'Muslim-Owned'
+  if (COMMUNITY_LISTED.test(body)) return 'Community-gelistet'
+  if (certified !== false && CERTIFIED.test(body) && !SELF_DECLARED.test(body)) {
+    return 'Halal-zertifiziert'
+  }
   return 'Selbst-zertifiziert'
 }
 

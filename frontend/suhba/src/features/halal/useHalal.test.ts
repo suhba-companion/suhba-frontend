@@ -4,11 +4,11 @@ import type { HalalBusiness } from '../../types'
 
 vi.mock('@services/halalService', () => ({
   getHalalBusinesses: vi.fn().mockResolvedValue([
-    { id: '1', name: 'Taqwa Restaurant', type: 'Restaurant', address: 'Quellenstraße 26', district: '1100 Wien', lat: 48.193, lng: 16.367, certStatus: 'HMA-Zertifiziert', rating: 4.7, featured: true, distanceKm: 2.1 },
-    { id: '2', name: 'Vienna Halal Market', type: 'Lebensmittel', address: 'Mariahilfer Str. 140', district: '1150 Wien', lat: 48.198, lng: 16.330, certStatus: 'HMA-Zertifiziert', rating: 4.5, featured: true, distanceKm: 3.2 },
+    { id: '1', name: 'Taqwa Restaurant', type: 'Restaurant', address: 'Quellenstraße 26', district: '1100 Wien', lat: 48.193, lng: 16.367, certStatus: 'Halal-zertifiziert', rating: 4.7, featured: true, distanceKm: 2.1 },
+    { id: '2', name: 'Vienna Halal Market', type: 'Lebensmittel', address: 'Mariahilfer Str. 140', district: '1150 Wien', lat: 48.198, lng: 16.330, certStatus: 'Halal-zertifiziert', rating: 4.5, featured: true, distanceKm: 3.2 },
     { id: '3', name: 'Özlem Café', type: 'Café', address: 'Praterstraße 34', district: '1020 Wien', lat: 48.214, lng: 16.390, certStatus: 'Selbst-zertifiziert', rating: 4.3, featured: true, distanceKm: 1.5 },
     { id: '4', name: 'Al-Sham Restaurant', type: 'Restaurant', address: 'Favoritenstraße 62', district: '1100 Wien', lat: 48.185, lng: 16.370, certStatus: 'Selbst-zertifiziert', rating: 4.1, featured: false, distanceKm: 3.0 },
-    { id: '5', name: 'Halal Metzgerei Özkan', type: 'Metzgerei', address: 'Schönbrunner Str. 77', district: '1050 Wien', lat: 48.189, lng: 16.340, certStatus: 'HMA-Zertifiziert', rating: 4.6, featured: false, distanceKm: 2.5 },
+    { id: '5', name: 'Halal Metzgerei Özkan', type: 'Metzgerei', address: 'Schönbrunner Str. 77', district: '1050 Wien', lat: 48.189, lng: 16.340, certStatus: 'Halal-zertifiziert', rating: 4.6, featured: false, distanceKm: 2.5 },
   ] as HalalBusiness[]),
 }))
 

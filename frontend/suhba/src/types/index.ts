@@ -48,9 +48,11 @@ export type BusinessType =
   | 'Sonstige';
 
 export type CertStatus =
-  | 'HMA-Zertifiziert'
+  | 'Halal-zertifiziert'
+  | 'Community-gelistet'
   | 'Selbst-zertifiziert'
-  | 'Muslim-Owned';
+  | 'Muslim-Owned'
+  | 'Auf Anfrage';
 
 export interface HalalBusiness {
   id: string;
