@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next'
 import { CheckCircle } from '@phosphor-icons/react'
 import { buildDirectionsUrl } from '@utils/maps'
 import type { PrayerSpot } from '../../types'
+import { formatAddress } from '@utils/address'
 
 interface InfoRowProps {
   label: string
@@ -38,7 +39,7 @@ export function SpotDetailInfo({ spot }: SpotDetailInfoProps): JSX.Element {
         )}
       </div>
       <div className="bg-cream-card border border-divider rounded-card p-4 space-y-3 mt-1">
-        <InfoRow label={t('spots.detail.address')} value={`${spot.address}, ${spot.district}`} />
+        <InfoRow label={t('spots.detail.address')} value={formatAddress(spot.address, spot.district)} />
         {spot.jumaTimeSummer && spot.jumaTimeWinter ? (
           <>
             <InfoRow label={t('spots.detail.jumaSummer')} value={spot.jumaTimeSummer} />

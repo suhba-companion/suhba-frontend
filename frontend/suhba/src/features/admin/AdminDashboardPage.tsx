@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { Modal } from '@components/Modal'
 import { instantToDatetimeLocal, datetimeLocalToInstant } from '@utils/datetimeLocal'
 import { CaretRight, Check, X, PencilSimple, Trash } from '@phosphor-icons/react'
+import { formatAddress } from '@utils/address'
 import {
   adminService,
   type PendingSpot,
@@ -316,7 +317,7 @@ export function AdminDashboardPage({ username, onLogout }: AdminDashboardPagePro
                 key={s.id}
                 title={s.name}
                 badge={s.type}
-                sub={`${s.address}, ${s.district}`}
+                sub={formatAddress(s.address, s.district)}
                 status={s.status}
                 onClick={() => { setSelected({ kind: 'spot', data: s }); setEditMode(false); setConfirmDelete(false) }}
               />
@@ -332,7 +333,7 @@ export function AdminDashboardPage({ username, onLogout }: AdminDashboardPagePro
                 key={h.id}
                 title={h.name}
                 badge={h.category}
-                sub={`${h.address}, ${h.district}`}
+                sub={formatAddress(h.address, h.district)}
                 status={h.status}
                 onClick={() => { setSelected({ kind: 'halal', data: h }); setEditMode(false); setConfirmDelete(false) }}
               />
@@ -348,7 +349,7 @@ export function AdminDashboardPage({ username, onLogout }: AdminDashboardPagePro
                 key={e.id}
                 title={e.title}
                 badge={e.category}
-                sub={`${e.address}, ${e.district} · ${new Date(e.startTime).toLocaleDateString('de-AT', { day: '2-digit', month: '2-digit', year: 'numeric' })}`}
+                sub={`${formatAddress(e.address, e.district)} · ${new Date(e.startTime).toLocaleDateString('de-AT', { day: '2-digit', month: '2-digit', year: 'numeric' })}`}
                 status={e.status}
                 isPast={new Date(e.startTime) < new Date()}
                 onClick={() => { setSelected({ kind: 'event', data: e }); setEditMode(false); setConfirmDelete(false) }}
@@ -548,7 +549,7 @@ function SpotDetail({ data }: { data: PendingSpot }): JSX.Element {
   return (
     <>
       <Row label="Status"       value={STATUS_LABEL[data.status]} />
-      <Row label="Address"      value={`${data.address}, ${data.district}`} />
+      <Row label="Address"      value={formatAddress(data.address, data.district)} />
       <Row label="Type"         value={data.type} />
       <Row label="Description"  value={data.description} />
       <Row label="Juma time"    value={data.jumaTime} />
@@ -568,7 +569,7 @@ function HalalDetail({ data }: { data: PendingHalal }): JSX.Element {
   return (
     <>
       <Row label="Status"       value={STATUS_LABEL[data.status]} />
-      <Row label="Address"      value={`${data.address}, ${data.district}`} />
+      <Row label="Address"      value={formatAddress(data.address, data.district)} />
       <Row label="Category"     value={data.category} />
       <Row label="Description"  value={data.description} />
       <Row label="Certified"    value={data.certified === true ? `Yes${data.certificationBody ? ` — ${data.certificationBody}` : ''}` : data.certified === false ? 'No' : undefined} />
@@ -592,7 +593,7 @@ function EventDetail({ data }: { data: PendingEvent }): JSX.Element {
   return (
     <>
       <Row label="Status"      value={STATUS_LABEL[data.status]} />
-      <Row label="Address"     value={`${data.address}, ${data.district}`} />
+      <Row label="Address"     value={formatAddress(data.address, data.district)} />
       <Row label="Category"    value={data.category} />
       <Row label="Start"       value={fmt(data.startTime)} />
       <Row label="End"         value={data.endTime !== null && data.endTime !== undefined ? fmt(data.endTime) : undefined} />
