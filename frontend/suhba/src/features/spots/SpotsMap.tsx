@@ -2,6 +2,7 @@ import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import type { PrayerSpot, SpotType } from '../../types'
+import { formatAddress } from '@utils/address'
 
 const VIENNA_CENTER: [number, number] = [48.2082, 16.3738]
 const DEFAULT_ZOOM = 12
@@ -55,7 +56,7 @@ export function SpotsMap({ spots }: SpotsMapProps): JSX.Element {
             <Popup>
               <strong>{spot.name}</strong>
               <br />
-              {spot.address}, {spot.district}
+              {formatAddress(spot.address, spot.district)}
             </Popup>
           </Marker>
         ))}

@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next'
 import { buildDirectionsUrl } from '@utils/maps'
 import type { PrayerSpot } from '../../types'
 import { SpotAmenityIcons } from './SpotAmenityIcons'
+import { formatAddress } from '@utils/address'
 
 interface SpotCardProps {
   spot: PrayerSpot
@@ -27,7 +28,7 @@ export function SpotCard({ spot, onSelect }: SpotCardProps): JSX.Element {
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0 flex-1">
           <p className="font-semibold text-text-dark text-sm m-0 truncate">{spot.name}</p>
-          <p className="text-text-muted text-xs mt-0.5 m-0 truncate">{spot.address}, {spot.district}</p>
+          <p className="text-text-muted text-xs mt-0.5 m-0 truncate">{formatAddress(spot.address, spot.district)}</p>
         </div>
         <span className="text-text-muted text-xs font-medium shrink-0">
           {spot.type}
