@@ -1,0 +1,1585 @@
+<title>Suhba Field Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+
+<style>
+:root {
+  /* Palette derived from the app's own design tokens (tailwind.config.js:7-25) */
+  --ink:        #0F172A;
+  --ink-soft:   #46536B;
+  --ink-faint:  #6B7789;
+  --ground:     #FBFCFA;
+  --panel:      #FFFFFF;
+  --panel-2:    #F4F7F3;
+  --rule:       #DFE6DC;
+  --rule-soft:  #EDF1EB;
+
+  --forest:     #051F20;
+  --pine:       #235347;
+  --teal:       #4A7C6E;
+  --sage:       #8EB69B;
+  --mint:       #DAF1DE;
+
+  --accent:     var(--pine);
+  --accent-ink: #FFFFFF;
+
+  --crit:       #A4243B;
+  --crit-bg:    #FBEAED;
+  --high:       #B4531A;
+  --high-bg:    #FCEFE5;
+  --med:        #8A6A12;
+  --med-bg:     #FAF3DF;
+  --low:        #3A6B8A;
+  --low-bg:     #EAF2F7;
+  --ok:         #2C6E4B;
+  --ok-bg:      #E6F2EA;
+
+  --shadow: 0 1px 2px rgba(5,31,32,.05), 0 8px 24px -12px rgba(5,31,32,.14);
+
+  --font-display: "Amiri", Georgia, "Times New Roman", serif;
+  --font-body: "Source Sans 3", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  --measure: 68ch;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ink:        #E7EDE6;
+    --ink-soft:   #AEBBB2;
+    --ink-faint:  #86978C;
+    --ground:     #0A1412;
+    --panel:      #101D1A;
+    --panel-2:    #16241F;
+    --rule:       #24352E;
+    --rule-soft:  #1B2A25;
+
+    --accent:     #8EB69B;
+    --accent-ink: #051F20;
+
+    --crit:       #FF9BA8;
+    --crit-bg:    #2E1519;
+    --high:       #F0B183;
+    --high-bg:    #2C1D12;
+    --med:        #E3C878;
+    --med-bg:     #2A2413;
+    --low:        #9CC8E4;
+    --low-bg:     #14232C;
+    --ok:         #8FD3AC;
+    --ok-bg:      #12251A;
+
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 30px -14px rgba(0,0,0,.7);
+  }
+}
+
+:root[data-theme="dark"] {
+  --ink:        #E7EDE6;
+  --ink-soft:   #AEBBB2;
+  --ink-faint:  #86978C;
+  --ground:     #0A1412;
+  --panel:      #101D1A;
+  --panel-2:    #16241F;
+  --rule:       #24352E;
+  --rule-soft:  #1B2A25;
+
+  --accent:     #8EB69B;
+  --accent-ink: #051F20;
+
+  --crit:       #FF9BA8;
+  --crit-bg:    #2E1519;
+  --high:       #F0B183;
+  --high-bg:    #2C1D12;
+  --med:        #E3C878;
+  --med-bg:     #2A2413;
+  --low:        #9CC8E4;
+  --low-bg:     #14232C;
+  --ok:         #8FD3AC;
+  --ok-bg:      #12251A;
+
+  --shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 30px -14px rgba(0,0,0,.7);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16.5px;
+  line-height: 1.62;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.wrap {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 clamp(1rem, 3vw, 2.5rem);
+}
+
+@media (min-width: 1000px) {
+  .wrap { grid-template-columns: 15.5rem minmax(0, 1fr); gap: 3.5rem; }
+}
+
+/* ---------- masthead ---------- */
+
+.mast {
+  grid-column: 1 / -1;
+  padding: clamp(3rem, 7vw, 5.5rem) 0 2.5rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: .705rem;
+  letter-spacing: .17em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 1.1rem;
+}
+
+.mast h1 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2.6rem, 7vw, 4.6rem);
+  line-height: 1.02;
+  letter-spacing: -.015em;
+  margin: 0 0 .3rem;
+  text-wrap: balance;
+}
+
+.mast .arabic {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  color: var(--sage);
+  line-height: 1;
+  margin: 0 0 1.4rem;
+}
+
+.mast .standfirst {
+  font-size: clamp(1.05rem, 2vw, 1.24rem);
+  color: var(--ink-soft);
+  max-width: 60ch;
+  margin: 0 0 2rem;
+  font-weight: 300;
+}
+
+.factbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 2.6rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--rule-soft);
+}
+
+.fact { padding: .35rem 0; }
+.fact dt {
+  font-family: var(--font-mono);
+  font-size: .66rem;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin: 0 0 .18rem;
+}
+.fact dd {
+  margin: 0;
+  font-size: .96rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- table of contents ---------- */
+
+nav.toc {
+  display: none;
+  font-size: .875rem;
+}
+
+@media (min-width: 1000px) {
+  nav.toc {
+    display: block;
+    position: sticky;
+    top: 0;
+    align-self: start;
+    max-height: 100vh;
+    overflow-y: auto;
+    padding: 3rem 0;
+  }
+}
+
+nav.toc h2 {
+  font-family: var(--font-mono);
+  font-size: .66rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin: 0 0 .9rem;
+  font-weight: 500;
+}
+
+nav.toc ol { list-style: none; margin: 0; padding: 0; }
+nav.toc li { margin: 0; }
+
+nav.toc a {
+  display: block;
+  padding: .3rem 0 .3rem .8rem;
+  border-left: 2px solid var(--rule);
+  color: var(--ink-soft);
+  text-decoration: none;
+}
+nav.toc a:hover, nav.toc a:focus-visible {
+  color: var(--accent);
+  border-left-color: var(--accent);
+  background: var(--panel-2);
+}
+nav.toc .sub a { padding-left: 1.7rem; font-size: .82rem; color: var(--ink-faint); }
+
+/* ---------- article ---------- */
+
+main { padding: 3rem 0 6rem; min-width: 0; }
+
+section { margin: 0 0 4.5rem; scroll-margin-top: 1.5rem; }
+
+h2.sec {
+  font-family: var(--font-display);
+  font-size: clamp(1.85rem, 3.6vw, 2.55rem);
+  font-weight: 700;
+  line-height: 1.12;
+  letter-spacing: -.01em;
+  margin: 0 0 .5rem;
+  padding-bottom: .6rem;
+  border-bottom: 2px solid var(--forest);
+  text-wrap: balance;
+}
+:root[data-theme="dark"] h2.sec { border-bottom-color: var(--sage); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) h2.sec { border-bottom-color: var(--sage); }
+}
+
+.sec-note {
+  color: var(--ink-faint);
+  font-size: .9rem;
+  margin: 0 0 2rem;
+  font-style: italic;
+}
+
+h3 {
+  font-size: 1.22rem;
+  font-weight: 700;
+  letter-spacing: -.005em;
+  margin: 2.6rem 0 .7rem;
+  text-wrap: balance;
+}
+
+h4 {
+  font-family: var(--font-mono);
+  font-size: .74rem;
+  letter-spacing: .11em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 2rem 0 .6rem;
+  font-weight: 500;
+}
+
+p { margin: 0 0 1.05rem; max-width: var(--measure); }
+ul, ol { max-width: var(--measure); padding-left: 1.35rem; margin: 0 0 1.15rem; }
+li { margin: 0 0 .42rem; }
+
+a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+a:focus-visible, button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+strong { font-weight: 700; }
+
+code {
+  font-family: var(--font-mono);
+  font-size: .845em;
+  background: var(--panel-2);
+  border: 1px solid var(--rule-soft);
+  border-radius: 3px;
+  padding: .09em .34em;
+  word-break: break-word;
+}
+
+pre {
+  font-family: var(--font-mono);
+  font-size: .8rem;
+  line-height: 1.62;
+  background: var(--forest);
+  color: #D7E4D9;
+  border-radius: 7px;
+  padding: 1.15rem 1.3rem;
+  overflow-x: auto;
+  margin: 0 0 1.4rem;
+  box-shadow: var(--shadow);
+}
+pre code { background: none; border: 0; padding: 0; color: inherit; font-size: inherit; }
+pre .c { color: #7FA089; }
+pre .k { color: var(--sage); font-weight: 500; }
+pre .s { color: #E0C48A; }
+
+/* ---------- tables ---------- */
+
+.scroller { overflow-x: auto; margin: 0 0 1.5rem; border-radius: 7px; border: 1px solid var(--rule); }
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: .875rem;
+  background: var(--panel);
+  min-width: 34rem;
+}
+
+thead th {
+  text-align: left;
+  font-family: var(--font-mono);
+  font-size: .66rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  font-weight: 500;
+  padding: .7rem .85rem;
+  background: var(--panel-2);
+  border-bottom: 1px solid var(--rule);
+  white-space: nowrap;
+}
+
+tbody td {
+  padding: .62rem .85rem;
+  border-bottom: 1px solid var(--rule-soft);
+  vertical-align: top;
+}
+tbody tr:last-child td { border-bottom: 0; }
+tbody tr:hover { background: var(--panel-2); }
+td.num { font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
+td code, th code { font-size: .8rem; }
+
+/* ---------- finding cards ---------- */
+
+.finding {
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-left: 4px solid var(--sev);
+  border-radius: 6px;
+  padding: 1.15rem 1.3rem;
+  margin: 0 0 1.1rem;
+  box-shadow: var(--shadow);
+}
+.finding.crit { --sev: var(--crit); }
+.finding.high { --sev: var(--high); }
+.finding.med  { --sev: var(--med); }
+.finding.low  { --sev: var(--low); }
+
+.finding-head {
+  display: flex;
+  align-items: baseline;
+  gap: .7rem;
+  flex-wrap: wrap;
+  margin-bottom: .5rem;
+}
+
+.finding h3 { margin: 0; font-size: 1.05rem; }
+
+.chip {
+  font-family: var(--font-mono);
+  font-size: .62rem;
+  letter-spacing: .11em;
+  text-transform: uppercase;
+  padding: .2rem .5rem;
+  border-radius: 3px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.chip.crit { background: var(--crit-bg); color: var(--crit); }
+.chip.high { background: var(--high-bg); color: var(--high); }
+.chip.med  { background: var(--med-bg);  color: var(--med); }
+.chip.low  { background: var(--low-bg);  color: var(--low); }
+.chip.ok   { background: var(--ok-bg);   color: var(--ok); }
+
+.finding p { margin: 0 0 .7rem; font-size: .945rem; }
+.finding p:last-child { margin-bottom: 0; }
+.finding .cites {
+  font-family: var(--font-mono);
+  font-size: .74rem;
+  color: var(--ink-faint);
+  margin-top: .6rem;
+}
+
+/* ---------- callout ---------- */
+
+.callout {
+  background: var(--panel-2);
+  border: 1px solid var(--rule);
+  border-radius: 7px;
+  padding: 1.1rem 1.25rem;
+  margin: 0 0 1.5rem;
+  max-width: var(--measure);
+}
+.callout > :last-child { margin-bottom: 0; }
+.callout h4 { margin-top: 0; }
+
+/* ---------- topology diagram ---------- */
+
+.diagram {
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  padding: 1.5rem 1rem;
+  margin: 0 0 1.5rem;
+  overflow-x: auto;
+  box-shadow: var(--shadow);
+}
+.diagram svg { display: block; margin: 0 auto; min-width: 620px; }
+.d-box  { fill: var(--panel-2); stroke: var(--rule); stroke-width: 1.5; }
+.d-box-a{ fill: var(--mint); stroke: var(--pine); stroke-width: 1.5; }
+:root[data-theme="dark"] .d-box-a { fill: #1B3A2C; stroke: var(--sage); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .d-box-a { fill: #1B3A2C; stroke: var(--sage); }
+}
+.d-t   { fill: var(--ink); font-family: var(--font-body); font-size: 12.5px; font-weight: 600; }
+.d-s   { fill: var(--ink-faint); font-family: var(--font-mono); font-size: 9.5px; }
+.d-l   { fill: var(--ink-soft); font-family: var(--font-mono); font-size: 9px; }
+.d-arrow { stroke: var(--teal); stroke-width: 1.6; fill: none; }
+.d-arrow-d { stroke: var(--ink-faint); stroke-width: 1.3; fill: none; stroke-dasharray: 4 3; }
+
+/* ---------- misc ---------- */
+
+.grid2 { display: grid; gap: 1rem; margin-bottom: 1.5rem; }
+@media (min-width: 680px) { .grid2 { grid-template-columns: 1fr 1fr; } }
+
+.statline {
+  display: flex; flex-wrap: wrap; gap: .5rem;
+  margin: 0 0 1.5rem; padding: 0; list-style: none;
+}
+.statline li {
+  background: var(--panel); border: 1px solid var(--rule);
+  border-radius: 5px; padding: .45rem .75rem; margin: 0;
+  font-size: .82rem; font-variant-numeric: tabular-nums;
+}
+.statline b { font-family: var(--font-mono); color: var(--accent); }
+
+footer {
+  grid-column: 1 / -1;
+  border-top: 1px solid var(--rule);
+  padding: 2rem 0 3.5rem;
+  color: var(--ink-faint);
+  font-size: .84rem;
+}
+footer p { max-width: var(--measure); }
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
+html { scroll-behavior: smooth; }
+</style>
+
+<div class="wrap">
+
+<header class="mast">
+  <p class="eyebrow">Engineering reference · September 2026</p>
+  <h1>Suhba Field Guide</h1>
+  <p class="arabic">صحبة</p>
+  <p class="standfirst">
+    A Vienna-focused Muslim community PWA: prayer times, mosque and prayer-spot directory,
+    halal business listings, and community events. React front end, Spring Boot API,
+    Supabase Postgres. This is what the code actually does — verified against source,
+    not against the older design docs.
+  </p>
+  <dl class="factbar">
+    <div class="fact"><dt>Front end</dt><dd>React 18 · Vite 5</dd></div>
+    <div class="fact"><dt>Back end</dt><dd>Spring Boot 3.3.4 · Java 17</dd></div>
+    <div class="fact"><dt>Database</dt><dd>Postgres 15 · Flyway V1–V15</dd></div>
+    <div class="fact"><dt>Hosting</dt><dd>Cloudflare Pages · Render</dd></div>
+    <div class="fact"><dt>Directory size</dt><dd>412 halal · 76 spots</dd></div>
+  </dl>
+</header>
+
+<nav class="toc" aria-label="Contents">
+  <h2>Contents</h2>
+  <ol>
+    <li><a href="#topology">1 · Topology</a></li>
+    <li><a href="#findings">2 · Findings</a></li>
+    <li class="sub"><a href="#f-critical">Critical &amp; high</a></li>
+    <li class="sub"><a href="#f-correctness">Correctness</a></li>
+    <li><a href="#frontend">3 · Front end</a></li>
+    <li class="sub"><a href="#fe-routing">Routing</a></li>
+    <li class="sub"><a href="#fe-services">Service layer</a></li>
+    <li class="sub"><a href="#fe-features">Features</a></li>
+    <li class="sub"><a href="#fe-state">State &amp; i18n</a></li>
+    <li class="sub"><a href="#fe-pwa">PWA &amp; maps</a></li>
+    <li><a href="#backend">4 · Back end</a></li>
+    <li class="sub"><a href="#be-model">Domain model</a></li>
+    <li class="sub"><a href="#be-api">REST API</a></li>
+    <li class="sub"><a href="#be-logic">Geo &amp; moderation</a></li>
+    <li class="sub"><a href="#be-security">Security</a></li>
+    <li><a href="#config">5 · Configuration</a></li>
+    <li class="sub"><a href="#cfg-profiles">Profiles</a></li>
+    <li class="sub"><a href="#cfg-env">Environment</a></li>
+    <li class="sub"><a href="#cfg-pool">Pool &amp; Flyway</a></li>
+    <li><a href="#migrations">6 · Migrations</a></li>
+    <li><a href="#deadcode">7 · Dead code</a></li>
+    <li><a href="#gotchas">8 · Gotchas</a></li>
+  </ol>
+</nav>
+
+<main>
+
+<!-- ============ 1 TOPOLOGY ============ -->
+<section id="topology">
+  <h2 class="sec">1 · Topology</h2>
+  <p class="sec-note">One monorepo, two deploy targets, one database — and two API paths that behave differently.</p>
+
+  <p>
+    The repository is named <code>suhba-frontend</code> but holds both applications. Render builds
+    the backend from <code>backend/Suhba</code>; Cloudflare Pages builds the front end from
+    <code>frontend/suhba</code>. Both deploy on push to <code>main</code> via each provider's own git
+    integration — <strong>there is no CI</strong> anywhere in the repo.
+  </p>
+
+  <div class="diagram">
+    <svg viewBox="0 0 660 400" role="img" aria-labelledby="topo-title topo-desc">
+      <title id="topo-title">Request topology</title>
+      <desc id="topo-desc">Browser reaches Cloudflare Pages. Public API reads go directly to
+      Render. Admin calls are proxied through a Cloudflare Pages Function so session cookies
+      stay first-party. Render connects to Supabase Postgres through a session-mode pooler.</desc>
+
+      <rect class="d-box-a" x="200" y="12" width="260" height="52" rx="6"/>
+      <text class="d-t" x="330" y="34" text-anchor="middle">Browser · iOS PWA</text>
+      <text class="d-s" x="330" y="50" text-anchor="middle">suhba-companion.com</text>
+
+      <path class="d-arrow" d="M330 64 L330 96" marker-end="url(#ar)"/>
+
+      <rect class="d-box" x="150" y="96" width="360" height="60" rx="6"/>
+      <text class="d-t" x="330" y="119" text-anchor="middle">Cloudflare Pages</text>
+      <text class="d-s" x="330" y="136" text-anchor="middle">static SPA · _middleware.js 301s pages.dev</text>
+
+      <path class="d-arrow" d="M240 156 L240 200" marker-end="url(#ar)"/>
+      <text class="d-l" x="150" y="182">/api/admin/*</text>
+      <text class="d-l" x="150" y="194">relative, cookies</text>
+
+      <path class="d-arrow-d" d="M470 156 C 560 190, 560 240, 470 268" marker-end="url(#ar2)"/>
+      <text class="d-l" x="560" y="205">/api/v1/**</text>
+      <text class="d-l" x="560" y="217">direct, no</text>
+      <text class="d-l" x="560" y="229">cookies</text>
+
+      <rect class="d-box" x="110" y="200" width="260" height="56" rx="6"/>
+      <text class="d-t" x="240" y="222" text-anchor="middle">Pages Function proxy</text>
+      <text class="d-s" x="240" y="239" text-anchor="middle">strips Origin + Host · passes Set-Cookie</text>
+
+      <path class="d-arrow" d="M240 256 L240 288" marker-end="url(#ar)"/>
+
+      <rect class="d-box-a" x="110" y="288" width="400" height="56" rx="6"/>
+      <text class="d-t" x="310" y="310" text-anchor="middle">Render · Spring Boot (plan: free)</text>
+      <text class="d-s" x="310" y="327" text-anchor="middle">profile=prod · health /actuator/health</text>
+
+      <path class="d-arrow" d="M310 344 L310 372" marker-end="url(#ar)"/>
+      <text class="d-l" x="325" y="362">Hikari max 3</text>
+
+      <rect class="d-box" x="110" y="372" width="400" height="26" rx="5"/>
+      <text class="d-t" x="310" y="390" text-anchor="middle">Supabase Postgres · session pooler, cap 15</text>
+
+      <defs>
+        <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+          <path d="M0 0 L10 5 L0 10 z" fill="var(--teal)"/>
+        </marker>
+        <marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+          <path d="M0 0 L10 5 L0 10 z" fill="var(--ink-faint)"/>
+        </marker>
+      </defs>
+    </svg>
+  </div>
+
+  <h3>Why the proxy exists</h3>
+  <p>
+    This is the most important structural decision in the codebase, and it is well documented in
+    the source. Admin authentication uses session plus CSRF cookies. The front end (Cloudflare) and
+    backend (Render) are <em>different sites</em>, so those cookies are cross-site — and
+    <strong>Safari and iOS block cross-site cookies outright, regardless of
+    <code>SameSite=None; Secure</code></strong>. Routing <code>/api/*</code> through the front end's
+    own origin makes them first-party, so admin login works in the iOS PWA.
+  </p>
+  <p>
+    Public reads skip the proxy: the four public services build absolute URLs from
+    <code>VITE_API_BASE_URL</code> and hit Render directly. That is safe because
+    <code>/api/v1/**</code> is configured <code>allowCredentials: false</code>, so no cookie can
+    ride along. Note the asymmetry, though — the Function is a catch-all that <em>would</em> proxy
+    any <code>/api/*</code> path. Only client convention keeps public traffic off it.
+  </p>
+  <p class="cites" style="font-family:var(--font-mono);font-size:.78rem;color:var(--ink-faint)">
+    functions/api/[[path]].ts:1-11, 25-48 · functions/_middleware.js:5-18 · src/services/adminService.ts:1-6
+  </p>
+
+  <h3>Repository layout</h3>
+  <div class="scroller">
+  <table>
+    <thead><tr><th>Path</th><th>Contents</th><th>Deployed by</th></tr></thead>
+    <tbody>
+      <tr><td><code>backend/Suhba/</code></td><td>Spring Boot app, 15 Flyway migrations, Dockerfile, render.yaml</td><td>Render</td></tr>
+      <tr><td><code>frontend/suhba/</code></td><td>Vite React PWA, Pages Functions, nginx.conf (unused in prod)</td><td>Cloudflare Pages</td></tr>
+      <tr><td><code>frontend/CLAUDE.md</code>, <code>PRD.md</code></td><td>Planning docs — partly stale, see §7</td><td>—</td></tr>
+      <tr><td><code>docker-compose.yml</code></td><td>Local full stack — <strong>cannot boot the backend</strong>, see §8</td><td>—</td></tr>
+      <tr><td><code>frontend-repo/</code></td><td>Empty orphan <code>.git</code>, zero commits. Safe to delete.</td><td>—</td></tr>
+      <tr><td><code>.env</code></td><td>Real local values. Gitignored, never committed.</td><td>—</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<!-- ============ 2 FINDINGS ============ -->
+<section id="findings">
+  <h2 class="sec">2 · Findings</h2>
+  <p class="sec-note">Ranked by exploitability, then by user-visible impact. Every item was traced to source.</p>
+
+  <h3 id="f-critical">Critical &amp; high</h3>
+
+  <div class="finding crit">
+    <div class="finding-head">
+      <h3>Anyone can overwrite any listing</h3>
+      <span class="chip crit">Critical</span>
+      <span class="chip high">Unauthenticated</span>
+    </div>
+    <p>
+      All three DTOs expose <code>id</code>, and no mapper ignores it on the inbound path. The
+      mappers ignore <code>status</code>, <code>upvotes</code>, <code>featured</code> and the
+      timestamps — but <code>id</code> passes straight through. <code>submit()</code> then calls
+      <code>repository.save(entity)</code>, and Spring Data's <code>save()</code> with a non-null id
+      performs a <strong>merge — an UPDATE, not an INSERT</strong>.
+    </p>
+    <pre><code><span class="c"># Unauthenticated. Overwrites prayer spot 5 and hides it from every listing.</span>
+curl -X POST https://suhba-backend.onrender.com/api/v1/prayer-spots \
+  -H <span class="s">'Content-Type: application/json'</span> \
+  -d <span class="s">'{"id":5,"name":"…","address":"…","district":"…",
+       "latitude":48.2,"longitude":16.3,"type":"MOSQUE"}'</span></code></pre>
+    <p>
+      Ids are sequential, so all 412 halal spots, 76 prayer spots and every event are individually
+      addressable. The whole community-curated directory is editable by anyone who finds the
+      endpoint. <code>created_at</code> survives only because that column is
+      <code>updatable = false</code>.
+    </p>
+    <p><strong>Fix:</strong> one line per mapper — <code>@Mapping(target = "id", ignore = true)</code>.</p>
+    <p class="cites">PrayerSpotDto.java:13 · PrayerSpotMapper.java:15-19 · PrayerSpotServiceImpl.java:55-61 · same shape in HalalSpotMapper, EventMapper</p>
+  </div>
+
+  <div class="finding high">
+    <div class="finding-head">
+      <h3>Public schema was exposed through Supabase PostgREST</h3>
+      <span class="chip ok">Fixed in V15</span>
+    </div>
+    <p>
+      Supabase auto-exposes the <code>public</code> schema as a REST API and pre-grants
+      <code>anon</code>/<code>authenticated</code> table privileges, gated only by row-level
+      security. Because Flyway creates tables with plain <code>CREATE TABLE</code> — unlike the
+      dashboard's table editor, which enables RLS by default — RLS was off on all six app tables
+      <em>and</em> on <code>flyway_schema_history</code>. That made the BCrypt hashes in
+      <code>admin_users</code> readable with the project's public anon key.
+    </p>
+    <p>
+      <code>V15__lock_down_public_schema.sql</code> enables RLS on all seven tables and revokes the
+      grants outright, including schema-level <code>USAGE</code> and the default privileges that
+      would re-expose future tables. Statements are idempotent and guarded on role existence, so the
+      migration is a no-op on the plain Postgres used for local dev.
+    </p>
+    <p>
+      <strong>Mitigating context:</strong> the anon key was never published. No client ever used
+      Supabase directly, and full git-history scans found no key, password, or connection string in
+      any commit. The door was unlocked; the address was never handed out.
+    </p>
+    <p class="cites">db/migration/V15__lock_down_public_schema.sql · verified: anon denied, owner unaffected, idempotent, safe on local dev</p>
+  </div>
+
+  <div class="finding high">
+    <div class="finding-head">
+      <h3>Unmoderated content is publicly readable by id</h3>
+      <span class="chip high">High</span>
+    </div>
+    <p>
+      Every listing endpoint filters <code>status = APPROVED</code>, but <code>getById</code> has no
+      status filter on any of the three resources. <code>PENDING</code> and <code>REJECTED</code>
+      submissions — including anything a moderator explicitly rejected — are fetchable by sequential
+      id from the public API.
+    </p>
+    <p class="cites">PrayerSpotServiceImpl.java:65-69 · HalalSpotServiceImpl.java:76-80 · EventServiceImpl.java:63-67</p>
+  </div>
+
+  <div class="finding high">
+    <div class="finding-head">
+      <h3>Upvotes are unauthenticated, undeduplicated, and racy</h3>
+      <span class="chip high">High</span>
+    </div>
+    <p>
+      <code>upvote(id)</code> is a read-modify-write with no <code>@Transactional</code>, no
+      <code>@Version</code>, no per-user dedupe, and no rate limit. Anyone can drive any record's
+      <code>upvotes</code> arbitrarily high — and <code>upvotes DESC</code> is the second sort key in
+      the halal bounding-box query, so this directly manipulates directory ranking. It also works on
+      <code>PENDING</code> and <code>REJECTED</code> records.
+    </p>
+    <p class="cites">PrayerSpotServiceImpl.java:86-90 · HalalSpotRepository.java:21</p>
+  </div>
+
+  <div class="finding med">
+    <div class="finding-head">
+      <h3>Swagger UI is public in production</h3>
+      <span class="chip med">Medium</span>
+    </div>
+    <p>
+      <code>/swagger-ui.html</code> and <code>/v3/api-docs/**</code> are <code>permitAll()</code>
+      with no profile-conditional disable, so the full admin API surface is documented at a public
+      URL on the live backend.
+    </p>
+    <p class="cites">SecurityConfig.java:119 · application.yml:42-46</p>
+  </div>
+
+  <div class="finding med">
+    <div class="finding-head">
+      <h3>CSRF is disabled across <code>/api/v1/**</code>, which includes admin-gated paths</h3>
+      <span class="chip med">Medium</span>
+    </div>
+    <p>
+      CSRF is ignored for <code>/api/v1/**</code> on the reasoning that the public API is
+      session-free. But <code>/api/v1/*/approve</code>, <code>/reject</code> and <code>/pending</code>
+      live under that same prefix and <em>are</em> session-authenticated. Cross-site exploitation is
+      blocked only by <code>allowCredentials: false</code> on that CORS registration. These endpoints
+      duplicate <code>/api/admin/*</code> and could simply be deleted.
+    </p>
+    <p class="cites">SecurityConfig.java:74, 113</p>
+  </div>
+
+  <div class="finding med">
+    <div class="finding-head">
+      <h3><code>X-Forwarded-For</code> is trusted unconditionally</h3>
+      <span class="chip med">Medium</span>
+    </div>
+    <p>
+      The login rate limiter keys on the first <code>X-Forwarded-For</code> entry with no check that
+      the request actually came through Render's proxy, so the 5-failure lockout can be sidestepped
+      by rotating the header. The limiter is also per-instance and in-memory, and free-tier cold
+      starts reset it constantly.
+    </p>
+    <p class="cites">AdminController.java:214-220 · LoginRateLimitService.java:12-15</p>
+  </div>
+
+  <div class="finding low">
+    <div class="finding-head">
+      <h3>No spam protection on the three public submit endpoints</h3>
+      <span class="chip low">Low</span>
+    </div>
+    <p>
+      No honeypot, CAPTCHA, server-side rate limit, or client throttle on
+      <code>POST /api/v1/{prayer-spots,halal-spots,events}</code>. The only guard is a disabled
+      button while a request is in flight. Moderation is the sole line of defence.
+    </p>
+  </div>
+
+  <h3 id="f-correctness">Correctness bugs worth fixing</h3>
+
+  <div class="scroller">
+  <table>
+    <thead><tr><th>Bug</th><th>Effect</th><th>Where</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>Event times labelled <code>Z</code></td>
+        <td><code>datetime-local</code> gives local wall clock; appending <code>Z</code> calls it UTC. Every event start/end renders 1–2 h late in Vienna. Reproduced in the admin editor.</td>
+        <td><code>useSubmitEvent.ts:22-25</code>, <code>AdminDashboardPage.tsx:739-740</code></td>
+      </tr>
+      <tr>
+        <td>All events pinned to Vienna centre</td>
+        <td>No geocoding on the event form; lat/lng hardcoded. Distance sort is meaningless, and users &gt;15 km out never see them. The admin event editor has <em>no lat/lng fields</em> to fix it.</td>
+        <td><code>useSubmitEvent.ts:103-104</code>, <code>adminService.ts:79-92</code></td>
+      </tr>
+      <tr>
+        <td><code>getNextPrayer</code> uses browser-local time</td>
+        <td>Compared against Vienna prayer times, and reuses today's Fajr for tomorrow's wrap — 60 min off across DST.</td>
+        <td><code>prayerUtils.ts:35-47</code></td>
+      </tr>
+      <tr>
+        <td>Admin edit coerces <code>false</code>/<code>0</code> to <code>null</code></td>
+        <td><code>value || null</code> — unchecking any checkbox or typing <code>0</code> for rating/lat/lng writes null.</td>
+        <td><code>AdminDashboardPage.tsx:619</code></td>
+      </tr>
+      <tr>
+        <td><code>open: true</code> hardcoded</td>
+        <td>The <code>openNow</code> filter cannot exclude anything; the detail-page status dot is permanently green.</td>
+        <td><code>masjidiService.ts:54</code></td>
+      </tr>
+      <tr>
+        <td>Certification downgraded</td>
+        <td>Only <code>'HMA'</code> and <code>'Muslim-Owned'</code> map through; a genuinely certified business with any other body becomes "Selbst-zertifiziert". <code>BAKERY</code> silently collapses to <code>Sonstige</code>.</td>
+        <td><code>halalService.ts:33, 36-40</code></td>
+      </tr>
+      <tr>
+        <td><code>error</code> computed, never rendered</td>
+        <td>All four list surfaces discard it, so a failed fetch is indistinguishable from an empty result.</td>
+        <td><code>SpotsPage.tsx:20</code>, <code>HalalPage.tsx:18</code>, <code>EventsPage.tsx:18</code>, <code>PrayerTimesWidget.tsx:54</code></td>
+      </tr>
+      <tr>
+        <td>Three detail pages lack <code>.catch()</code></td>
+        <td>Unhandled rejection; silently renders "not found".</td>
+        <td><code>SpotDetailPage.tsx:24</code>, <code>HalalBusinessDetailPage.tsx:49</code>, <code>EventDetailPage.tsx:17</code></td>
+      </tr>
+      <tr>
+        <td>Guaranteed double fetch</td>
+        <td><code>useGeolocation</code> returns the Vienna fallback first, then the real fix — and effects key on it with no abort. A Home mount issues up to 12 requests.</td>
+        <td><code>useSpots.ts:53-58</code>, <code>useHalal.ts:41-46</code>, <code>useEvents.ts:47-53</code></td>
+      </tr>
+      <tr>
+        <td>Prayer times never refetch across midnight</td>
+        <td>Effect deps are <code>[retryCount]</code> only; rejected promises are cached and <code>retry()</code> is unreachable from live UI.</td>
+        <td><code>usePrayerTimes.ts:63</code></td>
+      </tr>
+      <tr>
+        <td>Detail distances measured from Vienna-Mitte</td>
+        <td><code>userPos</code> omitted, so the detail page can disagree with the card the user just tapped.</td>
+        <td><code>SpotDetailPage.tsx:24</code></td>
+      </tr>
+      <tr>
+        <td>Expired admin session leaves the dashboard stuck</td>
+        <td>Error banner shows, but <code>authState</code> stays <code>authenticated</code> — the operator must sign out manually.</td>
+        <td><code>AdminDashboardPage.tsx:65-67</code></td>
+      </tr>
+      <tr>
+        <td>Google Distance Matrix called from the browser</td>
+        <td>That web-service API sends no CORS headers and caps at 25 destinations with no batching here. The key is empty by default, so distances are always haversine anyway.</td>
+        <td><code>routingService.ts:22-40</code></td>
+      </tr>
+      <tr>
+        <td>Nominatim failures write Vienna centre silently</td>
+        <td>No user feedback, no timeout, no throttle. The <code>User-Agent</code> header set here is forbidden in browsers and dropped.</td>
+        <td><code>useSubmitSpot.ts:10-27</code> (duplicated in <code>useSubmitBusiness.ts</code>)</td>
+      </tr>
+      <tr>
+        <td>Invalid <code>&lt;li&gt;</code> inside <code>&lt;li&gt;</code></td>
+        <td>All three virtualized lists wrap card components that already render <code>&lt;li&gt;</code> roots.</td>
+        <td><code>SpotsListView.tsx:38</code> + <code>SpotCard.tsx:23</code>, and two more</td>
+      </tr>
+      <tr>
+        <td>Clickable <code>&lt;li&gt;</code> with no role or key handler</td>
+        <td>Five card types are not keyboard reachable. The azkar counter modal cannot be opened by keyboard at all.</td>
+        <td><code>SpotCard.tsx:23</code>, <code>AzkarCard.tsx:14</code>, +3</td>
+      </tr>
+      <tr>
+        <td><code>FormField</code> label has no <code>htmlFor</code></td>
+        <td>Spot and business forms compensate with <code>aria-label</code>; <strong>the event form does not</strong>, so its fields have no accessible name.</td>
+        <td><code>FormField.tsx:12-17</code></td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<!-- ============ 3 FRONTEND ============ -->
+<section id="frontend">
+  <h2 class="sec">3 · Front end</h2>
+  <p class="sec-note">React 18 + Vite 5 PWA · ~10,080 lines of TS/TSX · 48 test files, 342 tests passing.</p>
+
+  <ul class="statline">
+    <li><b>0</b> router libraries</li>
+    <li><b>0</b> state libraries</li>
+    <li><b>0</b> uses of localStorage</li>
+    <li><b>1</b> locale (de)</li>
+    <li><b>5</b> dead dependencies</li>
+    <li><b>4</b> lint warnings</li>
+  </ul>
+
+  <h3>Stack</h3>
+  <p>
+    <code>react</code>/<code>react-dom</code> 18.3, <code>leaflet</code> 1.9 +
+    <code>react-leaflet</code> 4.2, <code>i18next</code> 26 + <code>react-i18next</code> 17,
+    <code>@phosphor-icons/react</code> 2.1, <code>@tanstack/react-virtual</code> 3.13. Tailwind 3.4
+    for styling; Vitest 2.1 with happy-dom for tests; <code>vite-plugin-pwa</code> 0.21 for the
+    service worker.
+  </p>
+  <div class="callout">
+    <h4>Five dependencies are installed and never imported</h4>
+    <p>
+      <code>adhan</code> (4.4.3) and all four <code>@fortawesome/*</code> packages have zero import
+      sites. <strong>Prayer times are not computed locally</strong> — no calculation method, no
+      madhab, no coordinates. They come from the backend's seeded 2026 IZW calendar. Icons are all
+      Phosphor. Removing these five is safe.
+    </p>
+  </div>
+
+  <h3 id="fe-routing">Routing — there isn't any</h3>
+  <p>
+    No <code>react-router</code>. Three mechanisms substitute:
+  </p>
+  <ol>
+    <li>
+      <strong>Root selection</strong> — <code>main.tsx:5</code> does
+      <code>window.location.pathname.startsWith('/admin')</code> and picks one of two
+      <code>createRoot</code> calls. The admin bundle therefore <em>never loads i18n</em>, which is
+      why all admin copy is hardcoded.
+    </li>
+    <li>
+      <strong>Public "routes"</strong> — five <code>useState</code> values in <code>App.tsx:16-20</code>:
+      one <code>NavTab</code> plus three selection ids plus an active-form flag. Detail views are
+      <code>&lt;Modal&gt;</code> overlays, not routes.
+    </li>
+    <li>
+      <strong>Admin "routes"</strong> — a three-state machine
+      (<code>loading | unauthenticated | authenticated</code>) in <code>AdminApp.tsx:7-49</code>, with
+      the dashboard's own tab as local state.
+    </li>
+  </ol>
+  <p>
+    Consequences: <strong>nothing is deep-linkable or shareable</strong>; switching tabs unmounts the
+    page and destroys its filters, view mode, dhikr index and counter progress; and
+    <code>AdminApp</code> treats any <code>me()</code> rejection as unauthenticated, so a 500 or
+    network outage is indistinguishable from a 401.
+  </p>
+
+  <h3 id="fe-services">Service layer</h3>
+  <p>
+    Six services in <code>src/services/</code>, all network I/O. The base URL is defined
+    <strong>seven separate times in two different shapes</strong> — four services append
+    <code>/api/v1</code>, while <code>prayerTimesService</code> and the three submit hooks inline the
+    segment at the call site. <code>http://localhost:8080</code> is the fallback everywhere, so a
+    missing env var in a production build silently targets localhost.
+  </p>
+
+  <div class="scroller">
+  <table>
+    <thead><tr><th>Service</th><th>Talks to</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td><code>prayerTimesService</code></td><td><code>/api/v1/prayer-times/{date}</code></td><td>Vienna date key via <code>Intl</code>; maps <code>shuruq</code>→<code>sunrise</code>; returns <code>hijri: null</code> always</td></tr>
+      <tr><td><code>masjidiService</code></td><td><code>/api/v1/prayer-spots/*</code></td><td><strong>Misnomer</strong> — no <code>masjidiapp.com</code> call exists anywhere</td></tr>
+      <tr><td><code>halalService</code></td><td><code>/api/v1/halal-spots/*</code></td><td>Category filtering done client-side despite backend support</td></tr>
+      <tr><td><code>eventService</code></td><td><code>/api/v1/events/nearby</code></td><td>Named "upcoming" but calls <code>/nearby</code>; drops <code>status</code> and <code>upvotes</code></td></tr>
+      <tr><td><code>routingService</code></td><td>Google Distance Matrix</td><td>Only timeout in the layer (6 s); <code>0</code> is the failure sentinel</td></tr>
+      <tr><td><code>adminService</code></td><td><code>/api/admin/*</code> (relative)</td><td>21 functions; session + CSRF; the only service with <code>credentials: 'include'</code></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h4>CSRF handling, exactly</h4>
+  <p>
+    There is no bootstrap fetch. The token arrives as a non-HttpOnly <code>XSRF-TOKEN</code> cookie
+    on any response — in practice the first <code>GET /api/admin/me</code> seeds it. It is stored
+    only in the cookie jar, regex-scraped from <code>document.cookie</code> at request time, and
+    attached as <code>X-XSRF-TOKEN</code> on non-GET/HEAD requests. A missing cookie yields a silent
+    empty string, the server 403s, and the user sees a generic "Action failed" with no retry or
+    re-bootstrap.
+  </p>
+  <p>
+    Errors are wrapped with <code>Object.assign(new Error(…), { status })</code>, which is what lets
+    the login page and dashboard branch on HTTP status. There is <strong>no runtime validation</strong>
+    of any admin response and <strong>no 401 interceptor</strong>.
+  </p>
+
+  <div class="callout">
+    <h4><code>src/api/index.ts</code> is 128 lines of dead code</h4>
+    <p>
+      A fully typed client (<code>prayerSpotsApi</code>, <code>halalSpotsApi</code>, 16 methods) with
+      zero call sites. It is also the <strong>only place the <code>X-User-Id</code> header is
+      sent</strong> — so because the submit hooks fetch inline instead, that header never actually
+      goes out and <em>every submission is attributed <code>"anonymous"</code> server-side</em>.
+    </p>
+  </div>
+
+  <h3 id="fe-features">Feature modules</h3>
+  <p>
+    Vertical slices under <code>src/features/</code>: <code>home</code>, <code>prayers</code>,
+    <code>spots</code>, <code>halal</code>, <code>events</code>, <code>azkar</code>,
+    <code>submit</code>, <code>admin</code>. Two domain models coexist — a German-labelled UI model
+    in <code>src/types/index.ts</code> (<code>SpotType = 'Moschee' | 'Gebetsort' | 'Sonstige'</code>,
+    string ids, <code>lat</code>/<code>lng</code>) and the backend wire types (uppercase enums,
+    numeric ids, <code>latitude</code>/<code>longitude</code>). Services translate between them,
+    lossily in places.
+  </p>
+
+  <div class="grid2">
+    <div class="callout">
+      <h4>Submit flows</h4>
+      <p>
+        Three single-page forms, presence-only validation on 4–5 fields. Spot and business forms
+        geocode via Nominatim (duplicated verbatim); the event form does not geocode at all. No
+        length, format, or date-ordering checks. The response body is discarded, so a submitter never
+        sees their pending entry.
+      </p>
+    </div>
+    <div class="callout">
+      <h4>Admin dashboard</h4>
+      <p>
+        779 lines containing 10 components and 14 pieces of local state, with
+        <code>editData: Record&lt;string, unknown&gt;</code> cast at each call site. It loads
+        <em>all</em> records and derives pending-ness client-side, which makes the three
+        <code>pending*</code> service functions dead. Its error handling is the most careful in the
+        codebase; its <code>PUT</code> sends the whole record including <code>status</code>.
+      </p>
+    </div>
+  </div>
+
+  <p>
+    Notable feature-level quirks: the events filter is a <em>single flat union</em>
+    (<code>'Alle' | 'Heute' | 'Diese Woche' | EventCategory</code>), so time and category filters are
+    mutually exclusive — which is why the filter badge is a hardcoded <code>1</code>. Search
+    emptiness is checked on <code>query.trim()</code> but matching uses the untrimmed value, so
+    <code>"&nbsp;&nbsp;gebet&nbsp;&nbsp;"</code> never matches. <code>'Sonstige'</code> events are
+    submittable but omitted from the filter list. There is <strong>no recurrence support
+    anywhere</strong> — a weekly Juma must be entered as N separate events.
+  </p>
+
+  <h3 id="fe-state">State &amp; i18n</h3>
+  <p>
+    No global store, no Context, no reducer — zero <code>createContext</code> hits. Everything is
+    local <code>useState</code> plus <em>one</em> module-level cache: a promise keyed by Vienna date
+    in <code>usePrayerTimes.ts:16-17</code>, which deduplicates the three prayer-time consumers into
+    a single request. Spots, halal and events refetch on every mount.
+  </p>
+  <p>
+    <strong>Nothing is persisted.</strong> No <code>localStorage</code>, <code>sessionStorage</code>,
+    or IndexedDB anywhere. The last geolocation, the dhikr index, the azkar tab, and tasbīḥ counter
+    progress are all lost on reload — and on tab switch, since pages unmount.
+  </p>
+  <p>
+    i18n is German-only: one <code>de.json</code> (304 lines), no <code>en.json</code>, no switcher,
+    no detector. There is <strong>no pluralisation</strong>, so <code>"1 Orte"</code> renders in the
+    singular case; <code>azkar.repetitions</code> is fed the <em>string</em> <code>"33×"</code>
+    through i18next's reserved <code>count</code> key. A substantial amount of German bypasses i18n
+    entirely — all five prayer names, the geolocation banner, <code>aria-label="Sortierung"</code>,
+    every raw enum rendered as a chip, and the whole <code>src/data/</code> content layer.
+  </p>
+  <p>
+    RTL is applied <em>per Arabic text node</em> across eight sites rather than at the document
+    level; <code>&lt;html lang="de"&gt;</code> has no <code>dir</code>. Amiri is loaded from Google
+    Fonts and applied through two competing idioms (a <code>font-amiri</code> class and an inline
+    <code>fontFamily</code>).
+  </p>
+
+  <h3 id="fe-pwa">PWA, maps, styling</h3>
+  <p>
+    <code>registerType: 'autoUpdate'</code> with the generateSW strategy. Precaches 25 entries.
+    Four runtime-cache rules cover Google Fonts, gstatic, and OSM tiles — <strong>plus one for
+    <code>api.masjidiapp.com</code>, an API the app never calls</strong>. There is
+    <em>no rule for the Suhba backend</em>, and no <code>localStorage</code>, so
+    <strong>the app is shell-only offline</strong>: prayer times error out, all lists are empty.
+  </p>
+  <p>
+    No <code>virtual:pwa-register</code> import and no <code>beforeinstallprompt</code> listener, so
+    there is no custom install prompt, no update toast, and no offline indicator — installation
+    relies entirely on the browser's native affordance.
+  </p>
+  <p>
+    Three Leaflet components, each lazily loaded with <code>&lt;Suspense&gt;</code> but
+    <strong>no per-boundary error boundary</strong>, so a chunk-load failure blanks the tab.
+    <code>SpotsMap</code> allocates a fresh <code>L.DivIcon</code> per marker per render, has
+    <strong>no clustering</strong> (hundreds of DOM markers over a 15 km radius), and never recenters
+    on the user or on filtered results because react-leaflet v4 treats <code>center</code>/<code>zoom</code>
+    as initial-only.
+  </p>
+  <div class="callout">
+    <h4>Palette drift</h4>
+    <p>
+      Tailwind and <code>index.css</code> describe the current dark-green scale
+      (<code>#051F20</code> … <code>#DAF1DE</code>), but an <em>older olive/cream palette survives
+      hardcoded</em> in three places: map pin colours (<code>#485530</code>, <code>#5A6840</code>,
+      <code>#B89A70</code>), the spinner's CSS-var fallbacks, and the PWA
+      <code>theme_color</code>/<code>background_color</code>. So map pins and the install splash
+      render in the previous palette while the app renders dark green.
+    </p>
+  </div>
+</section>
+
+<!-- ============ 4 BACKEND ============ -->
+<section id="backend">
+  <h2 class="sec">4 · Back end</h2>
+  <p class="sec-note">Spring Boot 3.3.4 · Java 17 · MapStruct + Lombok · 13 test classes, no <code>@SpringBootTest</code>.</p>
+
+  <h3>Layering, as actually enforced</h3>
+  <ul>
+    <li>Every service is an interface in <code>services/</code> with one <code>@Service</code> impl in <code>services/impl/</code>; controllers depend only on the interface.</li>
+    <li>Entities never leave the service layer — controllers return DTOs exclusively. <em>One leak:</em> <code>HalalSpotController:35</code> accepts an entity enum as a request param, and all DTOs import their enums from the entity classes, so nested entity enums are part of the public JSON contract.</li>
+    <li><code>jakarta.*</code> only; no <code>javax.*</code> anywhere.</li>
+    <li><code>distanceKm</code> is computed per request, never persisted.</li>
+    <li><strong>No <code>@Transactional</code> anywhere.</strong> Every repository call runs in its own transaction. This is <em>why</em> <code>HalalSpotEntity.cuisines</code> must be <code>EAGER</code> — mapping happens outside any transaction — and why <code>default_batch_fetch_size</code> was needed.</li>
+    <li><code>boundingBox()</code> and <code>haversine()</code> are private and <strong>duplicated verbatim in three impls</strong>.</li>
+  </ul>
+  <p>
+    <strong>Build-order detail worth preserving:</strong> <code>annotationProcessorPaths</code> lists
+    Lombok <em>before</em> <code>mapstruct-processor</code>. MapStruct reflects over getters and
+    setters, so Lombok's accessors must exist when it runs. Reversed, MapStruct emits mappers that
+    silently copy nothing — and there is no <code>lombok-mapstruct-binding</code> on the path, so the
+    explicit ordering is the only thing making this work.
+  </p>
+
+  <h3 id="be-model">Domain model</h3>
+  <p>
+    Five entities, <strong>zero JPA associations</strong>. The only relational mapping is an
+    <code>@ElementCollection</code> for <code>HalalSpotEntity.cuisines</code>. All five are
+    independent aggregates; <code>submitted_by</code> is free text, not a foreign key.
+  </p>
+
+  <div class="scroller">
+  <table>
+    <thead><tr><th>Table</th><th>Shape</th><th>Sensitivity</th></tr></thead>
+    <tbody>
+      <tr><td><code>prayer_spots</code></td><td>23 fields: location, type, amenity flags, summer/winter Juma times, language, verified, moderation fields</td><td>Public reference</td></tr>
+      <tr><td><code>halal_spots</code></td><td>Base + category, phone, website, certified/body, rating, featured. <code>submitted_by</code> is <code>NOT NULL</code> here, unlike the others.</td><td>Public reference</td></tr>
+      <tr><td><code>halal_spot_cuisines</code></td><td><code>(spot_id, cuisine)</code> element collection, <code>ON DELETE CASCADE</code>. Not an entity, no repository.</td><td>Public reference</td></tr>
+      <tr><td><code>events</code></td><td>title, description TEXT, start/end <code>TIMESTAMPTZ</code>, category, organizer, <code>contact_info</code>, is_free</td><td>Public; <code>contact_info</code> is free text and already holds real addresses</td></tr>
+      <tr><td><code>prayer_times</code></td><td><code>date</code> UNIQUE + six <code>LocalTime</code> columns. No timestamps, no status.</td><td>Pure reference</td></tr>
+      <tr><td><code>admin_users</code></td><td><code>id, username(50) UNIQUE, password(255), enabled, created_at</code></td><td><strong>BCrypt hashes.</strong> No email, no tokens.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p>
+    Three structurally identical but <strong>mutually incompatible <code>ApprovalStatus</code>
+    enums</strong> are nested in the three entities, so no shared moderation helper is possible.
+    <code>AdminUserEntity</code> also breaks the conventions used everywhere else —
+    <code>@Getter @Setter</code> instead of <code>@Data</code>, no <code>@Builder</code>,
+    <code>LocalDateTime</code> instead of <code>Instant</code>, and Java-side field defaults instead
+    of <code>@PrePersist</code>.
+  </p>
+
+  <h3 id="be-api">REST API</h3>
+  <p>
+    Four public resource controllers under <code>/api/v1</code> plus 22 admin endpoints under
+    <code>/api/admin</code>. Admin gating comes from <code>@PreAuthorize("hasRole('ADMIN')")</code>
+    (method security) plus a path rule; <code>anyRequest()</code> is <code>permitAll()</code>, so
+    <code>/api/v1/**</code> and <code>/actuator/**</code> are open at the chain level.
+  </p>
+
+  <div class="scroller">
+  <table>
+    <thead><tr><th>Resource</th><th>Public</th><th>Admin-gated</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><code>/api/v1/prayer-spots</code></td>
+        <td><code>GET /</code>, <code>GET /nearby</code>, <code>GET /{id}</code>, <code>POST /</code>, <code>POST /{id}/upvote</code></td>
+        <td><code>GET /pending</code>, <code>PATCH /{id}/approve</code>, <code>/reject</code></td>
+      </tr>
+      <tr>
+        <td><code>/api/v1/halal-spots</code></td>
+        <td>same + <code>GET /featured</code>, <code>?category=</code> on nearby</td>
+        <td>same</td>
+      </tr>
+      <tr>
+        <td><code>/api/v1/events</code></td>
+        <td>same + <code>GET /upcoming</code></td>
+        <td>same</td>
+      </tr>
+      <tr>
+        <td><code>/api/v1/prayer-times</code></td>
+        <td><code>GET /today</code>, <code>GET /{date}</code></td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><code>/api/admin</code></td>
+        <td><code>POST /login</code></td>
+        <td><code>GET /me</code>, plus full list/approve/reject/PUT/DELETE for all three resources</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="callout">
+    <h4>The <code>/api/v1</code> admin endpoints are unreachable from the admin SPA</h4>
+    <p>
+      <code>/api/v1/**</code> is configured <code>allowCredentials: false</code>, so a browser cannot
+      send the session cookie there. The ADMIN-gated <code>/pending</code>, <code>/approve</code> and
+      <code>/reject</code> under that prefix are therefore dead to the front end, which uses the
+      <code>/api/admin/*</code> equivalents. They are duplicate surface area — and, per §2, they are
+      also CSRF-exempt.
+    </p>
+  </div>
+
+  <h4>Error contract</h4>
+  <p>
+    Uniformly a flat <code>{"error": "…"}</code> map. <code>BLException</code> → <strong>400</strong>,
+    <code>DALException</code> → 500 (message suppressed), validation failures → 400 with joined field
+    errors. <strong>404 is never produced</strong> — a missing entity is a 400, which the tests
+    codify. <code>DALException</code> is <em>never thrown anywhere</em>, so its handler branch is
+    unreachable. There is no <code>@ExceptionHandler(Exception.class)</code>, so unexpected
+    throwables fall through to Boot's default shape.
+  </p>
+
+  <h3 id="be-logic">Geo &amp; moderation</h3>
+  <p>
+    Nearby queries use a flat bounding-box prefilter
+    (<code>latDelta = radiusKm / 111.0</code>, <code>lngDelta = radiusKm / (111.0 · cos lat)</code>)
+    so Postgres can use the location index, then exact haversine in Java on the reduced set. No
+    clamping for poles or antimeridian — correct for Vienna, wrong globally. Distances are rounded
+    to 2 dp <em>before</em> the radius filter, so a spot at 5.004 km is included at
+    <code>radiusKm=5.0</code>.
+  </p>
+  <p>
+    Sorting differs per resource, which the API shape does not hint at: prayer spots sort by pure
+    distance; halal spots sort by distance then <code>featured</code> — but only within an exact
+    2-decimal tie, so <strong>featured prominence really comes from the repository's
+    <code>ORDER BY featured DESC, upvotes DESC</code></strong>; and <code>/events/nearby</code> sorts
+    <em>chronologically, not by distance</em>.
+  </p>
+  <p>
+    Because the halal import used <strong>district centroids rather than street addresses</strong>,
+    hundreds of rows share exact coordinates — which is what makes the distance tie-break meaningful
+    at all, and what makes distance ordering within a district essentially arbitrary.
+  </p>
+  <p>
+    Moderation: <code>submit()</code> forces <code>status=PENDING</code>, <code>upvotes=0</code>,
+    <code>featured=false</code>, and <code>submittedBy</code> from the header, ignoring whatever the
+    caller sent. <code>approve</code>/<code>reject</code> are bare state sets with no guard that the
+    current status is <code>PENDING</code>, so they are freely reversible. Admin <code>update()</code>
+    is a full replace with no null-guard, and <strong>silently drops fields</strong> — the prayer-spot
+    updater never writes <code>jumaTimeSummer</code>, <code>jumaTimeWinter</code>,
+    <code>language</code>, or <code>googleMapsUrl</code>, all of which the V7 import populated.
+  </p>
+
+  <h3 id="be-security">Security</h3>
+  <div class="scroller">
+  <table>
+    <thead><tr><th>Mechanism</th><th>Configuration</th></tr></thead>
+    <tbody>
+      <tr><td>Password hashing</td><td><code>BCryptPasswordEncoder(12)</code> — above Spring's default 10</td></tr>
+      <tr><td>Authentication</td><td>Single <code>DaoAuthenticationProvider</code> over <code>admin_users</code>. No JWT, no OAuth, no remember-me. Every admin gets <code>ROLE_ADMIN</code>; there is no role column.</td></tr>
+      <tr><td>Sessions</td><td><code>IF_REQUIRED</code> + <code>sessionFixation(newSession())</code>. In-memory — every cold start or deploy logs all admins out.</td></tr>
+      <tr><td>CSRF</td><td><code>CookieCsrfTokenRepository.withHttpOnlyFalse()</code>, cookie <code>XSRF-TOKEN</code>, header <code>X-XSRF-TOKEN</code>. Uses the plain request handler, <em>not</em> Spring Security 6's XOR default — the comment explains the SPA echoes the raw UUID and the XOR comparison always fails. A <code>CsrfCookieFilter</code> forces the lazy token to materialize on every response.</td></tr>
+      <tr><td>CORS</td><td>Split: <code>/api/v1/**</code> is <code>allowedOriginPatterns("*")</code> with credentials <strong>off</strong>; <code>/api/admin/**</code> is one exact origin with credentials <strong>on</strong> and headers restricted to <code>Content-Type</code> + <code>X-XSRF-TOKEN</code>.</td></tr>
+      <tr><td>Headers</td><td><code>X-Frame-Options: DENY</code>, <code>Referrer-Policy: strict-origin-when-cross-origin</code>. <strong>No Content-Security-Policy</strong>, and no <code>_headers</code> file on the Pages side either.</td></tr>
+      <tr><td>Login limiting</td><td>5 failures per IP → 15-minute lockout, in a <code>ConcurrentHashMap</code>. Per-instance, reset on restart; entries below the threshold are never evicted.</td></tr>
+      <tr><td>Admin seeding</td><td><code>AdminInitializer</code> creates one row only if the table is empty, and <strong>never rotates an existing password</strong>. A blank <code>admin.password</code> logs a warning and creates nothing, rather than defaulting to a known credential.</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>
+    One structural oddity: <code>AdminController.login</code> deliberately bypasses Spring Security's
+    <code>UsernamePasswordAuthenticationFilter</code>, authenticating manually and persisting the
+    context through a static <code>HttpSessionSecurityContextRepository</code>. So the configured
+    <code>sessionFixation(newSession())</code> is <em>not</em> what protects that flow — a manual
+    <code>session.invalidate()</code> is. It works, but the two mechanisms must stay in sync by hand.
+  </p>
+
+  <h4>Test coverage gaps</h4>
+  <p>
+    342 front-end tests and 13 back-end test classes pass, but the security layer is untested:
+    nothing covers <code>SecurityConfig</code>, <code>AdminInitializer</code>,
+    <code>LoginRateLimitService</code>'s actual arithmetic, <code>AdminUserDetailsService</code>, any
+    mapper, or the admin CRUD endpoints. Critically, <code>@WebMvcTest</code> with
+    <code>addFilters = false</code> means <code>@EnableMethodSecurity</code> is inactive in the web
+    slice — so <strong>no test verifies that any admin-gated endpoint rejects an anonymous
+    caller</strong>. And because the test profile disables Flyway and builds the schema from entity
+    metadata on H2, <strong>the migrations are never validated by any test</strong>.
+  </p>
+</section>
+
+<!-- ============ 5 CONFIG ============ -->
+<section id="config">
+  <h2 class="sec">5 · Configuration</h2>
+  <p class="sec-note">Four Spring profiles, eight backend env vars, and one connection-pool number that everything depends on.</p>
+
+  <h3 id="cfg-profiles">Profiles</h3>
+  <div class="scroller">
+  <table>
+    <thead><tr><th>Property</th><th>(none)</th><th><code>local</code></th><th><code>prod</code></th><th><code>test</code></th></tr></thead>
+    <tbody>
+      <tr><td>datasource</td><td><code>${DB_DATASOURCE}</code></td><td>hardcoded localhost</td><td><code>${DB_DATASOURCE}</code></td><td>H2 mem</td></tr>
+      <tr><td><code>ddl-auto</code></td><td>validate</td><td>validate</td><td>validate</td><td><strong>create-drop</strong></td></tr>
+      <tr><td>Flyway</td><td>on</td><td>on</td><td>on</td><td><strong>off</strong></td></tr>
+      <tr><td>session <code>same-site</code></td><td>lax</td><td>lax</td><td><strong>none</strong></td><td>lax</td></tr>
+      <tr><td>session <code>secure</code></td><td>—</td><td>—</td><td><strong>true</strong></td><td>—</td></tr>
+      <tr><td><code>forward-headers</code></td><td>—</td><td>—</td><td><strong>framework</strong></td><td>—</td></tr>
+      <tr><td><code>admin.allowed-origin</code></td><td>localhost:5173</td><td>localhost:5173</td><td><code>${ADMIN_ALLOWED_ORIGIN}</code></td><td>localhost:5173</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>
+    <code>forward-headers-strategy: framework</code> matters more than it looks: Render terminates
+    TLS at its edge and forwards plain HTTP, so Spring must honour <code>X-Forwarded-*</code> to know
+    the request was HTTPS — which it must know before it will emit a <code>Secure</code> cookie.
+  </p>
+  <p>
+    <code>SPRING_PROFILES_ACTIVE=prod</code> is set in three places: baked into the Dockerfile,
+    declared in <code>render.yaml</code>, and defaulted in <code>docker-compose.yml</code>.
+    <code>application-local.yml</code> is <strong>gitignored and untracked</strong>, so a fresh clone
+    has no <code>local</code> profile at all.
+  </p>
+
+  <h3 id="cfg-env">Environment variables</h3>
+  <div class="scroller">
+  <table>
+    <thead><tr><th>Variable</th><th>Consumed at</th><th>Set by</th><th>Secret</th></tr></thead>
+    <tbody>
+      <tr><td><code>DB_DATASOURCE</code></td><td><code>application.yml:12</code></td><td>Render (<code>sync: false</code>)</td><td>Yes — pooler host is in the URL</td></tr>
+      <tr><td><code>DB_USERNAME</code> / <code>DB_PASSWORD</code></td><td><code>:13-14</code></td><td>Render</td><td>Yes</td></tr>
+      <tr><td><code>ADMIN_USERNAME</code> / <code>ADMIN_PASSWORD</code></td><td><code>AdminInitializer:20,23</code></td><td>Render</td><td>Yes</td></tr>
+      <tr><td><code>ADMIN_ALLOWED_ORIGIN</code></td><td><code>application-prod.yml:16</code></td><td>Render <em>only</em></td><td>No</td></tr>
+      <tr><td><code>SPRING_PROFILES_ACTIVE</code></td><td>Spring core</td><td>Dockerfile, render.yaml, compose</td><td>No</td></tr>
+      <tr><td><code>VITE_API_BASE_URL</code></td><td>8 sites in <code>src/</code></td><td><code>.env.production</code></td><td>No</td></tr>
+      <tr><td><code>VITE_GOOGLE_MAPS_API_KEY</code></td><td><code>routingService.ts:6</code></td><td><em>unset in prod</em></td><td>Would be public if set</td></tr>
+      <tr><td><code>VITE_FRONTEND_URL</code></td><td><strong>nowhere</strong></td><td><code>.env.production</code></td><td>Dead</td></tr>
+      <tr><td><code>VITE_MASJIDI_API_KEY</code></td><td><strong>nowhere</strong></td><td>—</td><td>Dead — docs only</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="callout">
+    <h4>Secrets audit — clean</h4>
+    <p>
+      Full git-history scans for passwords, keys, connection strings, and Supabase hostnames returned
+      only <code>change_me</code> placeholders from <code>.env.example</code>. The root
+      <code>.env</code> has never been committed; <code>application-local.yml</code> is untracked;
+      the two tracked <code>.env</code> files contain only public URLs. Because <code>.env</code> in
+      <code>.gitignore</code> has no leading slash, it matches at any depth. Production secrets live
+      solely in Render's encrypted store, declared but unvalued via <code>sync: false</code>.
+    </p>
+  </div>
+
+  <h3 id="cfg-pool">The pool number, and why Flyway depends on it</h3>
+  <pre><code><span class="c"># application.yml:15-24</span>
+hikari:
+  <span class="c"># The production DB sits behind a session-mode connection pooler capped at</span>
+  <span class="c"># 15 client connections. Keep this app's pool small so a rolling deploy</span>
+  <span class="c"># (old instance + new instance booting) plus Flyway stays under that limit.</span>
+  <span class="k">maximum-pool-size</span>: 3
+  <span class="k">minimum-idle</span>: 1
+  <span class="k">max-lifetime</span>: 120000</code></pre>
+  <p>
+    Supabase's <em>session-mode</em> pooler pins one upstream backend per client connection for the
+    whole session — it does not multiplex — so 15 is a hard wall. And Spring Boot's Flyway
+    auto-configuration <strong>reuses the application <code>DataSource</code></strong> when no
+    <code>spring.flyway.url</code> is set, which it isn't. So Flyway's migration connection comes
+    out of that same pool.
+  </p>
+  <p>
+    At pool 3, a rolling deploy needs 3 + 3 = 6 of 15 and Flyway gets a connection immediately. At
+    Hikari's default of 10 it needs 20 of 15: the pooler refuses, Flyway blocks for the 30-second
+    timeout and throws, and <strong>application startup aborts</strong>. The new instance never
+    passes the health check, Render keeps the old one, and the deploy silently fails to roll out.
+    That is the failure this number prevents.
+  </p>
+  <p>
+    <code>default_batch_fetch_size: 100</code> solves the companion problem. Because
+    <code>cuisines</code> is <code>EAGER</code> and there are no transactions, one query for 412
+    halal spots triggered 412 follow-ups across the internet — about 50 seconds. Batching collapses
+    that to five <code>IN</code> queries.
+  </p>
+  <p>
+    Both of these are load-bearing and non-obvious. If the backend ever moves to a paid plan with
+    multiple instances, <strong>the pool number must be re-derived</strong>, not inherited.
+  </p>
+</section>
+
+<!-- ============ 6 MIGRATIONS ============ -->
+<section id="migrations">
+  <h2 class="sec">6 · Migrations</h2>
+  <p class="sec-note">Flyway runs in-process at startup, before Hibernate's validate pass. A failed migration fails the boot.</p>
+
+  <div class="scroller">
+  <table>
+    <thead><tr><th>Version</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td><code>V1</code></td><td>Create <code>prayer_spots</code> + location and status indexes</td></tr>
+      <tr><td><code>V2</code></td><td>Create <code>halal_spots</code> + <code>halal_spot_cuisines</code> child table</td></tr>
+      <tr><td><code>V3</code></td><td>Widen <code>district</code>; add opening hours, Juma time, parking, rating</td></tr>
+      <tr><td><code>V4</code></td><td>Seed 7 prayer spots + 9 halal spots</td></tr>
+      <tr><td><code>V5</code></td><td><code>rating</code> <code>NUMERIC(3,1)</code> → <code>DOUBLE PRECISION</code> to satisfy <code>ddl-auto: validate</code></td></tr>
+      <tr><td><code>V6</code></td><td>Add summer/winter Juma, language, Maps URL, <code>verified</code>; <strong>drop <code>NOT NULL</code> from <code>submitted_by</code></strong></td></tr>
+      <tr><td><code>V7</code></td><td>Re-import 76 prayer spots from the community spreadsheet with real per-address coordinates</td></tr>
+      <tr><td><code>V8</code></td><td>Create <code>events</code></td></tr>
+      <tr><td><code>V9</code></td><td>Seed 8 community events</td></tr>
+      <tr><td><code>V10</code></td><td>Create <code>admin_users</code> — seeds no rows; that is <code>AdminInitializer</code>'s job</td></tr>
+      <tr><td><code>V11</code></td><td>Create <code>prayer_times</code></td></tr>
+      <tr><td><code>V12</code></td><td>Seed all 365 days of 2026 with IZW Vienna times</td></tr>
+      <tr><td><code>V13</code></td><td>Halal directory import — 411 rows via CTE + <code>unnest</code> cuisine fan-out</td></tr>
+      <tr><td><code>V14</code></td><td>v4 re-import replacing V13 — 412 rows, mostly copy edits</td></tr>
+      <tr><td><code>V15</code></td><td><strong>Lock down the public schema</strong> — RLS on all 7 tables, revoke <code>anon</code>/<code>authenticated</code> grants and default privileges</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="callout">
+    <h4>Operational notes</h4>
+    <p>
+      <strong>There are no down-migrations and no manual gate.</strong> V13 is fully superseded by
+      V14 but remains in the path, so a fresh database inserts 411 halal spots and their cuisine rows,
+      then deletes and re-inserts 412. A bad data migration is a restore-from-backup situation.
+    </p>
+    <p>
+      <code>ddl-auto: validate</code> makes any schema drift a <em>boot failure</em>, not a runtime
+      warning. Combined with the health check, hand-editing the Supabase schema means the next deploy
+      simply never goes live.
+    </p>
+    <p>
+      <strong>Do not undo V15 by disabling RLS.</strong> To read a table through PostgREST, add an
+      explicit <code>CREATE POLICY … FOR SELECT TO anon USING (…)</code>. Disabling RLS would
+      re-expose the <code>admin_users</code> hashes.
+    </p>
+  </div>
+</section>
+
+<!-- ============ 7 DEAD CODE ============ -->
+<section id="deadcode">
+  <h2 class="sec">7 · Dead code &amp; stale docs</h2>
+  <p class="sec-note">Notable because none of it carries a TODO, FIXME, or deprecation marker.</p>
+
+  <h3>Stale documentation</h3>
+  <p>
+    <code>backend/Suhba/CLAUDE.md</code> lists <strong>Spring Security, prayer times, and events as
+    "out of scope"</strong> — all three are fully implemented, with 22 <code>@PreAuthorize</code>-gated
+    endpoints, a 171-line <code>SecurityConfig</code>, and five migrations between them. Its package
+    layout and data model omit three entities. Its claim that <code>findNearby</code> sorts by
+    distance is false for events. Its blueprint specifies Java 21; the build is Java 17.
+  </p>
+  <p>
+    <code>frontend/PRD.md</code> and <code>frontend/CLAUDE.md</code> described a
+    <strong>Supabase-direct client architecture that was never built</strong>, referencing a
+    <code>supabaseClient.ts</code> and tables (<code>halal_businesses</code>,
+    <code>spot_reviews</code>) that do not exist. That plan is very likely why the project sits on
+    Supabase at all. The <code>CLAUDE.md</code> section has been corrected to describe the real
+    Spring Boot setup; <code>PRD.md</code> has not.
+  </p>
+
+  <h3>Dead code inventory</h3>
+  <div class="grid2">
+    <div class="callout">
+      <h4>Front end</h4>
+      <ul style="margin-bottom:0">
+        <li><code>src/api/index.ts</code> — 128 lines, 16 unused methods</li>
+        <li><code>adhan</code> + 4 × <code>@fortawesome/*</code></li>
+        <li><code>PrayerTimesPage</code>, <code>ShoroukRow</code>, <code>DailyTipCard</code>, <code>HijriDateBadge</code> — and therefore <code>hijriCalendar.ts</code></li>
+        <li><code>src/data/izw_prayer_times_2026.json</code> — 27 KB, imported nowhere</li>
+        <li><code>src/App.css</code> — 0 bytes; <code>vercel.json</code>; scaffold <code>README.md</code></li>
+        <li><code>@pages</code> and <code>@store</code> path aliases point at directories that don't exist</li>
+        <li>The <code>api.masjidiapp.com</code> service-worker cache rule</li>
+        <li><code>eventService.submitEvent</code>, three <code>adminService.pending*</code> functions</li>
+      </ul>
+    </div>
+    <div class="callout">
+      <h4>Back end</h4>
+      <ul style="margin-bottom:0">
+        <li><code>org.example.Main</code> — IntelliJ scaffold in a second root package, shipped in the jar</li>
+        <li><code>DALException</code> — never thrown; its handler branch is unreachable</li>
+        <li><code>WebMvcConfiguration</code> — empty, kept for a comment</li>
+        <li><code>PrayerTimeMapper.entityListToDtoList</code> — no caller</li>
+        <li>The three <code>/api/v1</code> admin endpoints (unreachable, see §4)</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Duplication census, abridged</h3>
+  <div class="scroller">
+  <table>
+    <thead><tr><th>Artefact</th><th>Copies</th></tr></thead>
+    <tbody>
+      <tr><td>Vienna coordinates <code>48.2082, 16.3738</code></td><td class="num">8</td></tr>
+      <tr><td><code>API_BASE</code> definition (2 different shapes)</td><td class="num">7</td></tr>
+      <tr><td>28×40 teardrop map-pin SVG path</td><td class="num">4</td></tr>
+      <tr><td><code>INPUT_CLASS</code> / <code>SELECT_CLASS</code></td><td class="num">4</td></tr>
+      <tr><td><code>haversine()</code> + <code>boundingBox()</code> (backend)</td><td class="num">3</td></tr>
+      <tr><td>Pill class constants; Reset/Apply block; geo banner; sort toggle</td><td class="num">3 each</td></tr>
+      <tr><td>SPA fallback config (<code>_redirects</code>, <code>vercel.json</code>, <code>nginx.conf</code>)</td><td class="num">3</td></tr>
+      <tr><td><code>geocodeAddress</code> (verbatim); <code>createPinIcon</code>; Vienna date-key routine</td><td class="num">2 each</td></tr>
+      <tr><td><code>InfoRow</code> — two incompatible APIs</td><td class="num">2</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<!-- ============ 8 GOTCHAS ============ -->
+<section id="gotchas">
+  <h2 class="sec">8 · Operational gotchas</h2>
+  <p class="sec-note">Things that will cost an afternoon if you meet them cold.</p>
+
+  <div class="finding high">
+    <div class="finding-head">
+      <h3>Docker Compose cannot boot the backend</h3>
+      <span class="chip high">Blocks local dev</span>
+    </div>
+    <p>
+      The root compose file defaults <code>SPRING_PROFILES_ACTIVE</code> to <code>prod</code> but
+      never supplies <code>ADMIN_ALLOWED_ORIGIN</code>, which <code>application-prod.yml:16</code>
+      requires with no default. The result is
+      <code>IllegalArgumentException: Could not resolve placeholder</code> and the container dies at
+      startup. <code>SecurityConfig</code>'s in-code default cannot rescue it, because defaults apply
+      when a property is <em>absent</em>, not when its placeholder fails to resolve.
+    </p>
+    <p>
+      Switching to the <code>local</code> profile breaks differently — it hardcodes
+      <code>localhost:5432</code>, which inside the container means the container itself, not the
+      <code>db</code> service. <strong>The only working path is the documented one:</strong>
+      <code>docker compose up -d db</code> plus a host-side
+      <code>SPRING_PROFILES_ACTIVE=local mvn spring-boot:run</code>.
+    </p>
+  </div>
+
+  <div class="finding med">
+    <div class="finding-head">
+      <h3>The Dockerized front end talks to production</h3>
+      <span class="chip med">Data risk</span>
+    </div>
+    <p>
+      There is <strong>no <code>.dockerignore</code> anywhere in the repo</strong>, so
+      <code>COPY . .</code> pulls in the tracked <code>.env.production</code>. Vite builds in
+      production mode, bakes in <code>VITE_API_BASE_URL=https://suhba-backend.onrender.com</code>,
+      and the nginx <code>/api/</code> proxy becomes dead code for public calls. Anyone running the
+      Compose "full stack" is <strong>silently testing against live production data</strong>.
+    </p>
+    <p>
+      The same missing <code>.dockerignore</code> also lets <code>COPY . .</code> overwrite the
+      freshly installed <code>node_modules</code> with the host's — defeating the
+      <code>npm ci</code> layer cache and risking darwin/arm64 binaries inside an alpine image.
+    </p>
+  </div>
+
+  <div class="scroller">
+  <table>
+    <thead><tr><th>Gotcha</th><th>Consequence</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>Render free tier spins down</strong> after ~15 min idle</td>
+        <td>A wake-up is a full container start — JVM boot, Spring context, Flyway check, Hibernate validate, all against a remote DB. The first visitor sees timeouts on every call, and the front end has no retry or backoff.</td>
+      </tr>
+      <tr>
+        <td>Cold start compounds through the proxy</td>
+        <td>Cloudflare Workers cap subrequest duration, so a slow cold start can surface as an opaque 5xx from the Pages Function rather than a clean timeout.</td>
+      </tr>
+      <tr>
+        <td>512 MB RAM, untuned JVM</td>
+        <td>No <code>-XX:MaxRAMPercentage</code>, so the heap defaults to roughly a quarter of the cgroup limit.</td>
+      </tr>
+      <tr>
+        <td>No CI anywhere</td>
+        <td>Nothing runs tests before production. The backend image explicitly builds with <code>-DskipTests</code>. A broken build reaches Render and is caught only by the health check.</td>
+      </tr>
+      <tr>
+        <td>Sessions and rate limits are in-memory</td>
+        <td>Every cold start logs all admins out and resets the login lockout — which, on the free tier, happens constantly.</td>
+      </tr>
+      <tr>
+        <td>Two abandoned host configs remain</td>
+        <td><code>vercel.json</code> (inert on Pages) and a Railway URL suggested in <code>.env.example</code>.</td>
+      </tr>
+      <tr>
+        <td>App data only exists for calendar year 2026</td>
+        <td><code>prayer_times</code> is seeded with exactly 365 rows. A request for any 2027 date yields <code>BLException</code> → HTTP 400.</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>If you change one thing first</h3>
+  <p>
+    Add <code>@Mapping(target = "id", ignore = true)</code> to all three inbound mappers. It is a
+    three-line change that closes an unauthenticated path to overwriting the entire community
+    directory — the single highest-value edit available in this codebase.
+  </p>
+</section>
+
+</main>
+
+<footer>
+  <p>
+    Compiled from a source audit of <code>~/Desktop/suhba</code> at commit <code>8633c32</code>.
+    Every claim was traced to a file and line; where this document disagrees with
+    <code>CLAUDE.md</code> or <code>PRD.md</code>, the source won. Line numbers will drift as the
+    code changes — treat them as pointers, not addresses.
+  </p>
+</footer>
+
+</div>
