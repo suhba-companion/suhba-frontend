@@ -158,8 +158,7 @@
       "of": "von {{target}}",
       "progress": "{{current}} von {{target}}",
       "tapToCount": "Tippe zum Zählen",
-      "done": "Fertig · Alhamdulillah",
-      "mashallah": "ما شاء الله"
+      "done": "Fertig · Alhamdulillah"
     }
   },
   "submit": {

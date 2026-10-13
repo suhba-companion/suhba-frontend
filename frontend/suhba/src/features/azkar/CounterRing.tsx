@@ -44,20 +44,12 @@ export function CounterRing({ count, target, complete }: CounterRingProps): JSX.
       </svg>
 
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        {complete ? (
-          <p className="font-amiri text-[clamp(1.75rem,9vw,2.25rem)] text-cream-card m-0" lang="ar">
-            {t('azkar.counter.mashallah')}
-          </p>
-        ) : (
-          <>
-            <span className="text-[clamp(3rem,18vw,4.5rem)] font-bold text-cream-card tabular-nums leading-none">
-              {count}
-            </span>
-            <span className="text-cream-card/50 text-sm mt-1">
-              {t('azkar.counter.of', { target })}
-            </span>
-          </>
-        )}
+        <span className="text-[clamp(3rem,18vw,4.5rem)] font-bold text-cream-card tabular-nums leading-none">
+          {count}
+        </span>
+        <span className="text-cream-card/50 text-sm mt-1">
+          {t('azkar.counter.of', { target })}
+        </span>
       </div>
     </div>
   )
