@@ -51,7 +51,7 @@ describe('useAzkar', () => {
       expect(d.id).toBeTruthy()
       expect(d.ar).toBeTruthy()
       expect(d.latin).toBeTruthy()
-      expect(d.en).toBeTruthy()
+      expect(d.de).toBeTruthy()
       expect(d.count).toBeTruthy()
     }
   })
@@ -63,7 +63,7 @@ describe('useAzkar', () => {
       expect(d.title).toBeTruthy()
       expect(d.ar).toBeTruthy()
       expect(d.latin).toBeTruthy()
-      expect(d.en).toBeTruthy()
+      expect(d.de).toBeTruthy()
     }
   })
 
@@ -73,7 +73,7 @@ describe('useAzkar', () => {
       expect(d.id).toBeTruthy()
       expect(d.ar).toBeTruthy()
       expect(d.latin).toBeTruthy()
-      expect(d.en).toBeTruthy()
+      expect(d.de).toBeTruthy()
       expect(d.count).toBeTruthy()
     }
   })
@@ -84,7 +84,7 @@ describe('useAzkar', () => {
       expect(d.id).toBeTruthy()
       expect(d.ar).toBeTruthy()
       expect(d.latin).toBeTruthy()
-      expect(d.en).toBeTruthy()
+      expect(d.de).toBeTruthy()
       expect(d.count).toBeTruthy()
     }
   })

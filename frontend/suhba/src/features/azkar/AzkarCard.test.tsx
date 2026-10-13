@@ -6,7 +6,7 @@ const MOCK_DHIKR: Dhikr = {
   id: 'dhikr-1',
   ar: 'سُبْحَانَ اللّهِ',
   latin: 'Subḥānallāh',
-  en: 'Glory be to Allah',
+  de: 'Gepriesen sei Allah',
   count: '33×',
   hadithInfo: 'Some hadith info',
 }
@@ -24,7 +24,7 @@ describe('AzkarCard', () => {
 
   it('renders English meaning', () => {
     render(<ul><AzkarCard dhikr={MOCK_DHIKR} /></ul>)
-    expect(screen.getByText('Glory be to Allah')).toBeInTheDocument()
+    expect(screen.getByText('Gepriesen sei Allah')).toBeInTheDocument()
   })
 
   it('renders count badge', () => {

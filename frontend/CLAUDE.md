@@ -46,7 +46,7 @@ Bottom navigation (4 tabs — always visible):
 Purpose: Daily spiritual anchor + app entry point
 
 - US-1.1 As a daily user, I want to see a featured Dhikr on the home screen so I can start my day with remembrance of Allah.
-- US-1.2 As a user, I want to see the Arabic text, transliteration, and English meaning of each Dhikr so I can read and understand it.
+- US-1.2 As a user, I want to see the Arabic text, transliteration, and German meaning of each Dhikr so I can read and understand it.
 - US-1.3 As a user, I want to see how many times the Dhikr should be repeated so I know my target.
 - US-1.4 As a user, I want to expand an info panel to read the hadith source so I understand its significance.
 - US-1.5 As a user, I want to cycle through multiple Dhikr cards (dot indicators + next button) so I can choose what to focus on.
@@ -195,7 +195,7 @@ interface Dhikr {
   id: string;
   ar: string;
   latin: string;
-  en: string;
+  de: string;
   count: string;        // "100×"
   hadithInfo: string;
 }
@@ -205,7 +205,7 @@ interface Duaa {
   title: string;        // "Beim Aufwachen"
   ar: string;
   latin: string;
-  en: string;
+  de: string;
 }
 
 interface PrayerSpot {
@@ -320,7 +320,7 @@ VITE_API_BASE_URL=http://localhost:8080
 ## 11. Language
 - Primary: German (all UI labels)
 - Arabic: Dhikr, Duaa, app name — always Amiri font + `direction: rtl`
-- Secondary: English (meanings in Dhikr/Duaa cards)
+- Meanings in Dhikr/Duaa/Azkar cards are German — the `de` field on `Dhikr` and `Duaa`
 - All DE/EN strings via i18next — no hardcoded text in components
 - CSS logical properties from day one
 

@@ -148,7 +148,6 @@
     "afterPrayerLabel": "Nach dem Gebet",
     "repetitions": "{{count}} Wiederholungen",
     "counter": {
-      "cardHint": "Tippen zum Zählen →",
       "reset": "Zurücksetzen",
       "close": "Schließen",
       "of": "von {{target}}",

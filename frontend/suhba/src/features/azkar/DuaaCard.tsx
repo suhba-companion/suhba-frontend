@@ -25,7 +25,7 @@ export function DuaaCard({ duaa }: DuaaCardProps): JSX.Element {
         <p className="text-sm italic text-moss m-0" style={{ fontFamily: 'Georgia, serif' }}>
           {duaa.latin}
         </p>
-        <p className="text-[13px] text-text-muted m-0 leading-relaxed">{duaa.en}</p>
+        <p className="text-[13px] text-text-muted m-0 leading-relaxed">{duaa.de}</p>
       </div>
     </li>
   )

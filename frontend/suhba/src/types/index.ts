@@ -2,7 +2,7 @@ export interface Dhikr {
   id: string;
   ar: string;
   latin: string;
-  en: string;
+  de: string;
   count: string;
   hadithInfo: string;
 }
@@ -12,7 +12,7 @@ export interface Duaa {
   title: string;
   ar: string;
   latin: string;
-  en: string;
+  de: string;
 }
 
 export type SpotType = 'Moschee' | 'Gebetsort' | 'Sonstige';

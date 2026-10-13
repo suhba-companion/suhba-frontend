@@ -7,7 +7,7 @@ const MOCK_DUAA: Duaa = {
   title: 'Beim Aufwachen',
   ar: 'الْحَمْدُ لِلَّهِ',
   latin: 'Alḥamdu lillāh',
-  en: 'All praise is for Allah',
+  de: 'Alles Lob gebührt Allah',
 }
 
 describe('DuaaCard', () => {
@@ -28,7 +28,7 @@ describe('DuaaCard', () => {
 
   it('renders English meaning', () => {
     render(<ul><DuaaCard duaa={MOCK_DUAA} /></ul>)
-    expect(screen.getByText('All praise is for Allah')).toBeInTheDocument()
+    expect(screen.getByText('Alles Lob gebührt Allah')).toBeInTheDocument()
   })
 
   it('Arabic text has dir=rtl and lang=ar', () => {

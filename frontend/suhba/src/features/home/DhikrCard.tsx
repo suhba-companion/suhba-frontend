@@ -1,6 +1,7 @@
-import { useState, type KeyboardEvent, type MouseEvent } from 'react'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { ArrowRight, CircleNotch } from '@phosphor-icons/react'
+import { ArrowRight } from '@phosphor-icons/react'
+import { TasbihCounterIcon, Tooltip } from '@components'
 import { AzkarCounterModal } from '@features/azkar'
 import type { Dhikr } from '../../types'
 
@@ -16,31 +17,9 @@ export function DhikrCard({ current, total, index, onNext, onGoTo }: DhikrCardPr
   const { t } = useTranslation()
   const [counting, setCounting] = useState(false)
 
-  const openCounter = (): void => setCounting(true)
-
-  const onCardKeyDown = (e: KeyboardEvent<HTMLDivElement>): void => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault()
-      openCounter()
-    }
-  }
-
-  // Die Navigation sitzt in der Karte, darf aber nicht den Zähler öffnen.
-  const withoutOpeningCounter = (action: () => void) => (e: MouseEvent): void => {
-    e.stopPropagation()
-    action()
-  }
-
   return (
     <>
-      <div
-        role="button"
-        tabIndex={0}
-        onClick={openCounter}
-        onKeyDown={onCardKeyDown}
-        aria-label={t('dhikr.openCounter')}
-        className="relative rounded-card overflow-hidden bg-hero-gradient p-5 text-cream-card cursor-pointer active:scale-[0.99] transition-transform"
-      >
+      <div className="relative rounded-card overflow-hidden bg-hero-gradient p-5 text-cream-card">
         <svg
           className="absolute -top-10 -right-10 opacity-10 pointer-events-none"
           width="200"
@@ -67,7 +46,7 @@ export function DhikrCard({ current, total, index, onNext, onGoTo }: DhikrCardPr
           {current.ar}
         </p>
         <p className="text-sm italic text-cream-card/80 mb-1">{current.latin}</p>
-        <p className="text-sm text-cream-card/70 mb-4">{current.en}</p>
+        <p className="text-sm text-cream-card/70 mb-4">{current.de}</p>
 
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2" role="group" aria-label={t('dhikr.navGroup')}>
@@ -75,7 +54,7 @@ export function DhikrCard({ current, total, index, onNext, onGoTo }: DhikrCardPr
               <button
                 key={i}
                 type="button"
-                onClick={withoutOpeningCounter(() => onGoTo(i))}
+                onClick={() => onGoTo(i)}
                 aria-label={t('dhikr.navItem', { number: i + 1, total })}
                 aria-current={i === index ? true : undefined}
                 className={[
@@ -88,16 +67,19 @@ export function DhikrCard({ current, total, index, onNext, onGoTo }: DhikrCardPr
             ))}
           </div>
           <div className="flex items-center gap-3">
-            {/* Zeigt an, dass die Karte den Zähler öffnet; die Karte selbst ist der Button. */}
-            <CircleNotch
-              size={18}
-              weight="bold"
-              aria-hidden="true"
-              className="text-cream-card/70"
-            />
+            <Tooltip label={t('azkar.counter.tapToCount')}>
+              <button
+                type="button"
+                onClick={() => setCounting(true)}
+                aria-label={t('dhikr.openCounter')}
+                className="text-cream-card/80 hover:text-cream-card active:scale-95 transition"
+              >
+                <TasbihCounterIcon size={22} />
+              </button>
+            </Tooltip>
             <button
               type="button"
-              onClick={withoutOpeningCounter(onNext)}
+              onClick={onNext}
               className="text-xs font-medium text-cream-card/80 hover:text-cream-card transition-colors flex items-center gap-1"
             >
               {t('dhikr.next')}
