@@ -1,0 +1,88 @@
+﻿seq,name,issue,current_address,district,detail,suggested_action
+6,Döner Point Wien,address not geocodable,"U2 Museumsquartier, 1070 Wien",1010 Wien,"U2 Museumsquartier, 1070 Wien is a landmark, not a street address",replace with a street address
+36,Ugis Gemüsekebap,address not geocodable,"Karmelitermarkt 64, 1020 Wien",1020 Wien,"Karmelitermarkt 64, 1020 Wien is a landmark, not a street address",replace with a street address
+39,Zeytin (Frühstück),address not geocodable,"Karmelitermarkt 64, 1020 Wien",1020 Wien,"Karmelitermarkt 64, 1020 Wien is a landmark, not a street address",replace with a street address
+65,Nayeb Restaurant,address not geocodable,"Wiedner Hauptstraße area, 1040 Wien",1040 Wien,"Wiedner Hauptstraße area, 1040 Wien is a landmark, not a street address",replace with a street address
+111,Mangalet,address not geocodable,"U-Bahn Josefstädter Straße, 1080 Wien",1080 Wien,"U-Bahn Josefstädter Straße, 1080 Wien is a landmark, not a street address",replace with a street address
+136,City Chicken Wien,address not geocodable,"Favoritenstraße 130/1e, 1100 Wien",1100 Wien,"Favoritenstraße 130/1e, 1100 Wien is a landmark, not a street address",replace with a street address
+176,Ferhat Döner (12),address not geocodable,"Favoritenstraße 94 / Meidling, 1120 Wien",1120 Wien,"Favoritenstraße 94 / Meidling, 1120 Wien is a landmark, not a street address",replace with a street address
+256,Bosna Grill OG,address not geocodable,"Hannovermarkt 73-75, 1200 Wien",1200 Wien,"Hannovermarkt 73-75, 1200 Wien is a landmark, not a street address",replace with a street address
+272,Burgallio,address not geocodable,"Patriziagasse 14, 1210 Wien",1210 Wien,"Patriziagasse 14, 1210 Wien is a landmark, not a street address",replace with a street address
+290,Citygate Kebap,address not geocodable,"Donaustadt / Citygate, 1220 Wien",1220 Wien,"Donaustadt / Citygate, 1220 Wien is a landmark, not a street address",replace with a street address
+411,Zushi Market SCS Vösendorf – Buffet,address not geocodable,"Westfield Shopping City Süd, 2334 Vösendorf",2334 Vösendorf,"Westfield Shopping City Süd, 2334 Vösendorf is a landmark, not a street address",replace with a street address
+412,Zushi Market SCS Vösendorf – Kiosk,address not geocodable,"Westfield Shopping City Süd, 2334 Vösendorf",2334 Vösendorf,"Westfield Shopping City Süd, 2334 Vösendorf is a landmark, not a street address",replace with a street address
+6,Döner Point Wien,district conflict,"U2 Museumsquartier, 1070 Wien",1010 Wien,"address says 1070, district column says 1010",correct the district column
+181,Kurze Pause Imbiss,district conflict,"Friedrich-Engels-Platz, 1200 Wien",1120 Wien,"address says 1200, district column says 1120",correct the district column
+332,Café Tagsüber,geocode false positive,Wien Innenstadt,Wien,resolved to Zollstelle Wien Außenstelle Innsbruck - Punzierungskontrolle,address is too vague to geocode; needs a real street address
+322,Apapika,halal status doubtful,Wien,Wien,DOES NOT BELONG IN A HALAL DIRECTORY unless the community explicitly wants it. Apapika is a Hawaiian poke bowl,likely a mis-import; confirm or remove
+359,Kaisers,halal status doubtful,Wien,Wien,DOES NOT BELONG IN A HALAL DIRECTORY - almost certainly a mis-import. 'Kaiser's - Kaiser'schmarrn' is an Austr,likely a mis-import; confirm or remove
+383,Sajado,halal status doubtful,Wien,Wien,"PROBABLY DOES NOT BELONG IN A HALAL DIRECTORY. Sajado is an Austrian Asian-restaurant chain: sushi, maki, rame",likely a mis-import; confirm or remove
+61,Etap (Thomas-Klestil-Platz),large coordinate shift,"Thomas-Klestil-Platz 2, 1040 Wien",1040 Wien,3069 m from the old centroid,verify the address is correct
+146,Has Döner (10),large coordinate shift,"Steinbauergasse 18, 1100 Wien",1100 Wien,3514 m from the old centroid,verify the address is correct
+190,Dönermeister Auhof Center,large coordinate shift,"Albert-Schweitzer-Gasse 6, 1140 Wien",1140 Wien,4868 m from the old centroid,verify the address is correct
+197,Uludag Kebab,large coordinate shift,"Albert-Schweitzer-Gasse 6, 1140 Wien",1140 Wien,4868 m from the old centroid,verify the address is correct
+198,Zushi Market (Penzing),large coordinate shift,"Albert-Schweitzer-Gasse 6, 1140 Wien",1140 Wien,4868 m from the old centroid,verify the address is correct
+273,Dahab Döner (21),large coordinate shift,"Rußbergstraße 9, 1210 Wien",1210 Wien,4444 m from the old centroid,verify the address is correct
+276,Eylül Bakery & Restaurant,large coordinate shift,"Frauenstiftgasse 7, 1210 Wien",1210 Wien,3062 m from the old centroid,verify the address is correct
+279,Kanyon Restaurant,large coordinate shift,"Brünner Str. 138, 1210 Wien",1210 Wien,3223 m from the old centroid,verify the address is correct
+283,Nefis Kebab Großfeldsiedlung,large coordinate shift,"Kürschnergasse 9, 1210 Wien",1210 Wien,4223 m from the old centroid,verify the address is correct
+292,Dönerista,large coordinate shift,"Simone-de-Beauvoir-Platz 5, 1220 Wien",1220 Wien,3119 m from the old centroid,verify the address is correct
+301,Yusis Kebabhaus,large coordinate shift,"Eßlinger Hauptstraße 106, 1220 Wien",1220 Wien,4983 m from the old centroid,verify the address is correct
+302,7 Hirten Kebap und Pizza Haus,large coordinate shift,"Basler Gasse 68/84, 1230 Wien",1230 Wien,3009 m from the old centroid,verify the address is correct
+407,Zushi Market DC Tower (Donau City),large coordinate shift,"Donau-City-Straße 13D, 1220 Wien",1220 Wien,4118 m from the old centroid,verify the address is correct
+409,Zushi Market Auhof Center,large coordinate shift,"Albert-Schweitzer-Gasse 6, 1140 Wien",1140 Wien,4868 m from the old centroid,verify the address is correct
+353,Gusto Lab,low-confidence address,Wien,Wien,"Modecenterstrasse 20/1/Shop 3, 1030 Wien (source: evi.gv.at Firmenbuch (evi.gv.at/f/642188w))",verify before publishing
+385,Schnitzel by Fan,low-confidence address,Wien,Wien,"Reumannplatz 11, 1100 Wien (source: wanderlog.com (Google Maps derived, 'Schnitzel Fan'))",verify before publishing
+390,Street Dogs,low-confidence address,Wien,Wien,"Platz der Kulturen, 1100 Wien (source: OpenStreetMap (node 808734696, fast_food 'Street Dogs'))",verify before publishing
+322,Apapika,multiple branches,Wien,Wien,7 branches,"split into one row per branch, or pick the flagship"
+336,Chitir Chicken,multiple branches,Wien,Wien,2 branches,"split into one row per branch, or pick the flagship"
+336,Chitir Chicken,multiple branches,Wien,Wien,no flagship identified,"split into one row per branch, or pick the flagship"
+337,Chutney Indian Food,multiple branches,Wien,Wien,2 branches,"split into one row per branch, or pick the flagship"
+340,Diwan (TikTok),multiple branches,Wien,Wien,2 branches,"split into one row per branch, or pick the flagship"
+356,Hotspot,multiple branches,Wien,Wien,2 branches,"split into one row per branch, or pick the flagship"
+356,Hotspot,multiple branches,Wien,Wien,no flagship identified,"split into one row per branch, or pick the flagship"
+359,Kaisers,multiple branches,Wien,Wien,6 branches,"split into one row per branch, or pick the flagship"
+383,Sajado,multiple branches,Wien,Wien,6 branches,"split into one row per branch, or pick the flagship"
+329,BBQ King,no address found,Wien,Wien,"NO halal food business by this name found in Vienna. Searched extended web, Lieferando.at, Wolt Vienna, foodor","ask the community, or remove the row"
+336,Chitir Chicken,no address found,Wien,Wien,Both candidate addresses verified via two separate Falter listings. No source indicates which is the flagship:,"ask the community, or remove the row"
+345,Dürüm (TikTok),no address found,Wien,Wien,"OpenStreetMap has THREE separate fast-food outlets literally named 'Dürüm' in Vienna, and none of them carries","ask the community, or remove the row"
+356,Hotspot,no address found,Wien,Wien,"Two branches confirmed, but NEITHER has a published house number: the delivery platforms and the operator itse","ask the community, or remove the row"
+391,Su! Streetfood,no address found,Wien,Wien,NOT IN VIENNA. The business is real and open but sits outside the city limits in Lower Austria: SCS Multiplex ,"ask the community, or remove the row"
+396,Wiener Öfendöner,no address found,Wien,Wien,"NOTHING FOUND. Exact-phrase searches for 'Wiener Öfendöner', 'Wiener Ofendöner' and 'Wiener Oefendoener' retur","ask the community, or remove the row"
+399,Zafer Döner,no address found,Wien,Wien,"NOT IN VIENNA. The only real 'Zafer Döner' is ZAFER - Döner & Pizza, Massener Hellweg 23, 59427 Unna, GERMANY ","ask the community, or remove the row"
+400,الشيف ابو غازي (Chef Abu Ghazi),no address found,Wien,Wien,NOTHING FOUND IN VIENNA. Searched the Arabic string 'الشيف ابو غازي' directly plus transliterations 'Abu Ghazi,"ask the community, or remove the row"
+391,Su! Streetfood,not in Vienna,Wien,Wien,NOT IN VIENNA. The business is real and open but sits outside the city limits in Lower Austria: SCS Multiplex ,remove from a Vienna directory
+399,Zafer Döner,not in Vienna,Wien,Wien,"NOT IN VIENNA. The only real 'Zafer Döner' is ZAFER - Döner & Pizza, Massener Hellweg 23, 59427 Unna, GERMANY ",remove from a Vienna directory
+311,3h's,reported closed,Wien,Wien,Vienna branch of the German halal burger chain 3h's Burger & Chicken. Address confirmed by Tripadvisor and a r,consider removing
+31,Lavanta Pizza-Kebap (02),street-level coordinates only,"Engerthstraße 237/14, 1020 Wien",1020 Wien,"no house number matched for Engerthstraße 237/14, 1020 Wien","pin lands on the street, not the door"
+37,Vamos Kebap Pizza,street-level coordinates only,"Sebastian-Kneipp-Gasse 1/3, 1020 Wien",1020 Wien,"no house number matched for Sebastian-Kneipp-Gasse 1/3, 1020 Wien","pin lands on the street, not the door"
+38,Xalos Kebab,street-level coordinates only,"Radingerstraße 17, 1020 Wien",1020 Wien,"no house number matched for Radingerstraße 17, 1020 Wien","pin lands on the street, not the door"
+45,Fasan Pizza & Kebab,street-level coordinates only,"Fasanplatz 2, 1030 Wien",1030 Wien,"no house number matched for Fasanplatz 2, 1030 Wien","pin lands on the street, not the door"
+54,Seoulmate – Korean Bistro,street-level coordinates only,"Rüdengasse 16/4, 1030 Wien",1030 Wien,"no house number matched for Rüdengasse 16/4, 1030 Wien","pin lands on the street, not the door"
+58,Wiener Gemüse Kebap Mustafa Usta,street-level coordinates only,"Radetzkyplatz, 1030 Wien",1030 Wien,"no house number matched for Radetzkyplatz, 1030 Wien","pin lands on the street, not the door"
+73,Dahab Döner (05),street-level coordinates only,"Schönbrunner Straße 149/3-4, 1050 Wien",1050 Wien,"no house number matched for Schönbrunner Straße 149/3-4, 1050 Wien","pin lands on the street, not the door"
+98,Kebap Master,street-level coordinates only,"Urban-Loritz-Platz, 1070 Wien",1070 Wien,"no house number matched for Urban-Loritz-Platz, 1070 Wien","pin lands on the street, not the door"
+107,Café-Restaurant Shiraz,street-level coordinates only,"Blindengasse 16/1, 1080 Wien",1080 Wien,"no house number matched for Blindengasse 16/1, 1080 Wien","pin lands on the street, not the door"
+112,Nour Kebap Falafel Pizza,street-level coordinates only,"U-Bahn Bogen 19, 1080 Wien",1080 Wien,"no house number matched for U-Bahn Bogen 19, 1080 Wien","pin lands on the street, not the door"
+147,Indien Village,street-level coordinates only,"Favoritenstraße 168, 1100 Wien",1100 Wien,"no house number matched for Favoritenstraße 168, 1100 Wien","pin lands on the street, not the door"
+161,Cardano Kebapizza,street-level coordinates only,"Etrichstraße 40/10A, 1110 Wien",1110 Wien,"no house number matched for Etrichstraße 40/10A, 1110 Wien","pin lands on the street, not the door"
+166,Lamm Döner Kebap & Pizza (11),street-level coordinates only,"Gottschalkgasse 17/19, 1110 Wien",1110 Wien,"no house number matched for Gottschalkgasse 17/19, 1110 Wien","pin lands on the street, not the door"
+170,Viyana Lezzeti,street-level coordinates only,"Etrichstraße, 1110 Wien",1110 Wien,"no house number matched for Etrichstraße, 1110 Wien","pin lands on the street, not the door"
+181,Kurze Pause Imbiss,street-level coordinates only,"Friedrich-Engels-Platz, 1200 Wien",1120 Wien,"no house number matched for Friedrich-Engels-Platz, 1200 Wien","pin lands on the street, not the door"
+189,Yıldız Villa,street-level coordinates only,"Auhofstraße 80/1/1, 1130 Wien",1130 Wien,"no house number matched for Auhofstraße 80/1/1, 1130 Wien","pin lands on the street, not the door"
+206,Kebap Strike,street-level coordinates only,"Hütteldorfer Straße 72/2, 1150 Wien",1150 Wien,"no house number matched for Hütteldorfer Straße 72/2, 1150 Wien","pin lands on the street, not the door"
+210,Lokanta Oase Restaurant,street-level coordinates only,"Friedmanngasse 14, 1150 Wien",1150 Wien,"no house number matched for Friedmanngasse 14, 1150 Wien","pin lands on the street, not the door"
+215,Yedigün Döner,street-level coordinates only,"Sechshauser Straße 41/23a, 1150 Wien",1150 Wien,"no house number matched for Sechshauser Straße 41/23a, 1150 Wien","pin lands on the street, not the door"
+220,Duru Kebap StreetGourmet,street-level coordinates only,"Feßtgasse 1, 1160 Wien",1160 Wien,"no house number matched for Feßtgasse 1, 1160 Wien","pin lands on the street, not the door"
+247,Bärliner Döner,street-level coordinates only,"Heiligenstädter Straße 27/31, 1190 Wien",1190 Wien,"no house number matched for Heiligenstädter Straße 27/31, 1190 Wien","pin lands on the street, not the door"
+250,NOSHdorfer Schnitzel & More,street-level coordinates only,"Heiligenstädter Straße, 1190 Wien",1190 Wien,"no house number matched for Heiligenstädter Straße, 1190 Wien","pin lands on the street, not the door"
+254,The Mekan Spittelau,street-level coordinates only,"Heiligenstädter Straße 20, 1190 Wien",1190 Wien,"no house number matched for Heiligenstädter Straße 20, 1190 Wien","pin lands on the street, not the door"
+263,NaturDöner,street-level coordinates only,"Donaueschingenstraße 26/7, 1200 Wien",1200 Wien,"no house number matched for Donaueschingenstraße 26/7, 1200 Wien","pin lands on the street, not the door"
+269,Warung Salam Wien,street-level coordinates only,"Jägerstraße 26/4, 1200 Wien",1200 Wien,"no house number matched for Jägerstraße 26/4, 1200 Wien","pin lands on the street, not the door"
+271,Bowl Kebap Floridsdorf,street-level coordinates only,"Pius-Parsch-Platz 5/1C, 1210 Wien",1210 Wien,"no house number matched for Pius-Parsch-Platz 5/1C, 1210 Wien","pin lands on the street, not the door"
+278,Hünkar Restaurant,street-level coordinates only,"Jedleseer Str. 40, 1210 Wien",1210 Wien,"no house number matched for Jedleseer Str. 40, 1210 Wien","pin lands on the street, not the door"
+280,Kebab Land (21),street-level coordinates only,"Prager Straße 119, 1210 Wien",1210 Wien,"no house number matched for Prager Straße 119, 1210 Wien","pin lands on the street, not the door"
+299,Türkis Restaurant Donau Zentrum,street-level coordinates only,"Wagramer Str. 81-83, 1220 Wien",1220 Wien,"no house number matched for Wagramer Str. 81-83, 1220 Wien","pin lands on the street, not the door"
+310,Venus Kebap,street-level coordinates only,"Perfektastraße 67, 1230 Wien",1230 Wien,"no house number matched for Perfektastraße 67, 1230 Wien","pin lands on the street, not the door"
+406,Zushi Market Donauzentrum – Buffet,street-level coordinates only,"Wagramer Straße 83-85, 1220 Wien",1220 Wien,"no house number matched for Wagramer Straße 83-85, 1220 Wien","pin lands on the street, not the door"
+408,Zushi Market Favoriten – Kiosk,street-level coordinates only,"Favoritenstraße, 1100 Wien",1100 Wien,"no house number matched for Favoritenstraße, 1100 Wien","pin lands on the street, not the door"
