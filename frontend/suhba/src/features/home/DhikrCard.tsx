@@ -1,6 +1,6 @@
 import { useState, type KeyboardEvent, type MouseEvent } from 'react'
 import { useTranslation } from 'react-i18next'
-import { ArrowRight } from '@phosphor-icons/react'
+import { ArrowRight, CircleNotch } from '@phosphor-icons/react'
 import { AzkarCounterModal } from '@features/azkar'
 import type { Dhikr } from '../../types'
 
@@ -87,14 +87,23 @@ export function DhikrCard({ current, total, index, onNext, onGoTo }: DhikrCardPr
               />
             ))}
           </div>
-          <button
-            type="button"
-            onClick={withoutOpeningCounter(onNext)}
-            className="text-xs font-medium text-cream-card/80 hover:text-cream-card transition-colors flex items-center gap-1"
-          >
-            {t('dhikr.next')}
-            <ArrowRight size={13} weight="bold" aria-hidden="true" />
-          </button>
+          <div className="flex items-center gap-3">
+            {/* Zeigt an, dass die Karte den Zähler öffnet; die Karte selbst ist der Button. */}
+            <CircleNotch
+              size={18}
+              weight="bold"
+              aria-hidden="true"
+              className="text-cream-card/70"
+            />
+            <button
+              type="button"
+              onClick={withoutOpeningCounter(onNext)}
+              className="text-xs font-medium text-cream-card/80 hover:text-cream-card transition-colors flex items-center gap-1"
+            >
+              {t('dhikr.next')}
+              <ArrowRight size={13} weight="bold" aria-hidden="true" />
+            </button>
+          </div>
         </div>
       </div>
 
