@@ -13,14 +13,18 @@ public class PrayerSpotDto {
     private Long id;
 
     @NotBlank
+    @Size(max = 200)
     private String name;
 
+    @Size(max = 1000)
     private String description;
 
     @NotBlank
+    @Size(max = 300)
     private String address;
 
     @NotBlank
+    @Size(max = 50)
     private String district;
 
     @NotNull
@@ -37,13 +41,28 @@ public class PrayerSpotDto {
     private Boolean wuduAvailable;
     private Boolean sistanAvailable;
     private Boolean fridayPrayer;
+
+    @Size(max = 200)
     private String jumaTime;
+
+    @Size(max = 200)
     private String jumaTimeSummer;
+
+    @Size(max = 200)
     private String jumaTimeWinter;
+
+    @Size(max = 255)
     private String openingHours;
+
     private Boolean parking;
+
+    @Size(max = 200)
     private String language;
+
+    @Size(max = 500)
+    @Pattern(regexp = "^(https?://.*)?$", message = "googleMapsUrl must start with http:// or https://")
     private String googleMapsUrl;
+
     private Boolean verified;
 
     private PrayerSpotEntity.ApprovalStatus status;

@@ -1,5 +1,6 @@
 package com.suhba.controller.rest;
 
+import com.suhba.configuration.ClientIpFilter;
 import com.suhba.configuration.LoginRateLimitService;
 import com.suhba.services.EventService;
 import com.suhba.services.HalalSpotService;
@@ -54,7 +55,7 @@ public class AdminController {
             HttpServletRequest httpReq,
             HttpServletResponse httpRes) {
 
-        String ip = clientIp(httpReq);
+        String ip = ClientIpFilter.resolve(httpReq);
 
         if (rateLimitService.isBlocked(ip)) {
             return ResponseEntity.status(429)
@@ -210,14 +211,6 @@ public class AdminController {
     }
 
     // ── Helpers ──────────────────────────────────────────────────────────────
-
-    private static String clientIp(HttpServletRequest request) {
-        String forwarded = request.getHeader("X-Forwarded-For");
-        if (forwarded != null && !forwarded.isBlank()) {
-            return forwarded.split(",")[0].trim();
-        }
-        return request.getRemoteAddr();
-    }
 
     public record LoginRequest(
         @NotBlank @Size(max = 50) String username,

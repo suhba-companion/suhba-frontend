@@ -16,14 +16,18 @@ public class EventDto {
     private Long id;
 
     @NotBlank
+    @Size(max = 200)
     private String title;
 
+    @Size(max = 5000)
     private String description;
 
     @NotBlank
+    @Size(max = 300)
     private String address;
 
     @NotBlank
+    @Size(max = 50)
     private String district;
 
     @NotNull
@@ -42,9 +46,16 @@ public class EventDto {
     @NotEmpty
     private Set<EventEntity.EventCategory> categories;
 
+    @Size(max = 200)
     private String organizer;
+
+    @Size(max = 200)
     private String contactInfo;
+
     private Boolean isFree;
+
+    @Size(max = 500)
+    @Pattern(regexp = "^(https?://.*)?$", message = "googleMapsUrl must start with http:// or https://")
     private String googleMapsUrl;
 
     @Size(max = 500)

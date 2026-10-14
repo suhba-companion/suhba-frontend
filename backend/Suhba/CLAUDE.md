@@ -41,8 +41,10 @@ com.suhba/
 3. `distanceKm` is computed in service (haversine), never stored in DB
 4. New spots always start `PENDING`; service sets `status`, `upvotes`, `featured` — never the caller
 5. Flyway manages schema — never use `ddl-auto: create/update`
-6. `/approve` and `/reject` endpoints are unprotected — TODO add `@PreAuthorize("hasRole('ADMIN')")` when Spring Security is added
-7. `haversine()` and `boundingBox()` are private methods in each ServiceImpl — no shared util class
+6. Every admin route carries `@PreAuthorize("hasRole('ADMIN')")` (session auth, CSRF on `/api/admin/**`). Keep it that way when adding endpoints
+7. Never read the client IP from the request directly. Use `ClientIpFilter.resolve()`, which takes the rightmost `X-Forwarded-For` hop; the leftmost is caller-supplied and spoofable
+8. Every public-facing text field needs a `@Size` cap, and every field rendered as a link needs the `^(https?://.*)?$` pattern
+9. `haversine()` and `boundingBox()` are private methods in each ServiceImpl — no shared util class
 
 ---
 
@@ -93,7 +95,6 @@ Credentials: `suhba / suhba`, DB `suhba` on port 5432.
 
 ## Out of scope (not yet implemented)
 
-- Spring Security / auth
-- Prayer times feature
-- Events / activities
-- Rate limiting on upvote
+- Public user accounts (only admins authenticate)
+- Durable upvote dedupe: it is in-memory per instance, so it resets on deploy and does not
+  survive scaling to more than one container. Same for the login lockout.

@@ -5,6 +5,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -52,6 +54,16 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(12);
+    }
+
+    @Bean
+    public FilterRegistrationBean<PublicWriteGuardFilter> publicWriteGuardFilter(
+            PublicWriteRateLimitService rateLimiter) {
+        FilterRegistrationBean<PublicWriteGuardFilter> registration =
+            new FilterRegistrationBean<>(new PublicWriteGuardFilter(rateLimiter));
+        registration.addUrlPatterns("/api/v1/*");
+        registration.setOrder(SecurityProperties.DEFAULT_FILTER_ORDER + 10);
+        return registration;
     }
 
     @Bean

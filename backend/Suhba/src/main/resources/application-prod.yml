@@ -12,6 +12,14 @@ server:
         same-site: none
         secure: true
 
+# Swagger publishes a complete map of the admin endpoints, including the login route.
+# Keep it available in local dev only.
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false
+
 admin:
   allowed-origin: ${ADMIN_ALLOWED_ORIGIN}
   cookie:
