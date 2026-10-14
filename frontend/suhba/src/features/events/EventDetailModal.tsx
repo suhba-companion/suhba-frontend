@@ -68,10 +68,7 @@ export function EventDetailModal({ event }: EventDetailModalProps): JSX.Element 
             </span>
           )}
         </div>
-        <h3 className="text-xl font-semibold text-text-dark leading-snug mb-2">{event.title}</h3>
-        {event.distanceKm !== undefined && (
-          <p className="text-text-muted text-sm">{event.distanceKm} km</p>
-        )}
+        <h3 className="text-xl font-semibold text-text-dark leading-snug">{event.title}</h3>
       </div>
 
       <div className="p-5 space-y-4">

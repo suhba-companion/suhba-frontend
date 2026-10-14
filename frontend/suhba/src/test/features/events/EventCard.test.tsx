@@ -14,7 +14,6 @@ const EVENT: Event = {
   endTime: '2026-06-05T13:00:00Z',
   isFree: true,
   organizer: 'IZW',
-  distanceKm: 2.5,
 }
 
 describe('EventCard', () => {
@@ -38,11 +37,6 @@ describe('EventCard', () => {
     expect(screen.getByText('Gebet')).toBeInTheDocument()
   })
 
-  it('renders distance when provided', () => {
-    render(<ul><EventCard event={EVENT} /></ul>)
-    expect(screen.getByText('2.5 km')).toBeInTheDocument()
-  })
-
   it('shows "Kostenlos" when isFree is true', () => {
     render(<ul><EventCard event={EVENT} /></ul>)
     expect(screen.getByText('Kostenlos')).toBeInTheDocument()
@@ -51,11 +45,6 @@ describe('EventCard', () => {
   it('does not show "Kostenlos" when isFree is false', () => {
     render(<ul><EventCard event={{ ...EVENT, isFree: false }} /></ul>)
     expect(screen.queryByText('Kostenlos')).not.toBeInTheDocument()
-  })
-
-  it('does not show distance when distanceKm is undefined', () => {
-    const { container } = render(<ul><EventCard event={{ ...EVENT, distanceKm: undefined }} /></ul>)
-    expect(container.textContent).not.toContain('km')
   })
 
   it('calls onSelect with event id when clicked', () => {

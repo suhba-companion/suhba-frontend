@@ -2,8 +2,7 @@ import { useState, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useVirtualizer } from '@tanstack/react-virtual'
 import { Modal, LoadingState } from '@components'
-import { useEvents, type EventSort } from './useEvents'
-import { useGeolocationState } from '../../hooks/useGeolocation'
+import { useEvents } from './useEvents'
 import { EventCard } from './EventCard'
 import { EventDetailModal } from './EventDetailModal'
 import { EventsFilter } from './EventsFilter'
@@ -15,8 +14,7 @@ interface EventsPageProps {
 
 export function EventsPage({ onAddEvent }: EventsPageProps): JSX.Element {
   const { t } = useTranslation()
-  const { filteredEvents, activeFilter, setFilter, query, setQuery, sort, setSort, loading } = useEvents()
-  const { status: geoStatus } = useGeolocationState()
+  const { filteredEvents, activeFilter, setFilter, query, setQuery, loading } = useEvents()
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null)
   const [isFilterOpen, setIsFilterOpen] = useState(false)
   const parentRef = useRef<HTMLDivElement>(null)
@@ -36,11 +34,6 @@ export function EventsPage({ onAddEvent }: EventsPageProps): JSX.Element {
   return (
     <>
       <div className="flex flex-col h-full">
-        {(geoStatus === 'denied' || geoStatus === 'unavailable') && (
-          <div className="bg-sand/20 border-b border-sand/40 px-4 py-2 text-xs text-text-muted text-center">
-            Standort nicht verfügbar — Abstände ab Wien-Mitte
-          </div>
-        )}
         {/* Fixed header: search + filter toggle + count */}
         <div className="p-4 space-y-3 shrink-0">
           <input
@@ -66,27 +59,6 @@ export function EventsPage({ onAddEvent }: EventsPageProps): JSX.Element {
                   </span>
                 )}
               </button>
-
-              <div
-                className="shrink-0 flex bg-cream-card border border-divider rounded-pill overflow-hidden"
-                role="group"
-                aria-label="Sortierung"
-              >
-                {(['Datum', 'Distanz'] as EventSort[]).map((s) => (
-                  <button
-                    key={s}
-                    type="button"
-                    onClick={() => setSort(s)}
-                    aria-pressed={sort === s}
-                    className={[
-                      'px-3 py-1.5 text-xs font-medium transition-colors',
-                      sort === s ? 'bg-moss text-cream-card' : 'text-text-muted',
-                    ].join(' ')}
-                  >
-                    {s === 'Datum' ? t('sort.datum') : t('sort.distanz')}
-                  </button>
-                ))}
-              </div>
             </div>
 
             <div className="flex items-center justify-between gap-2">

@@ -80,9 +80,6 @@ export function EventCard({ event, onSelect }: EventCardProps): JSX.Element {
 
       <div className="flex items-center justify-between gap-2 pt-0.5">
         <div className="flex items-center gap-2 min-w-0">
-          {event.distanceKm !== undefined && (
-            <span className="text-text-muted text-xs">{`${event.distanceKm} km`}</span>
-          )}
           {event.isFree && (
             <span className="text-[11px] font-medium text-moss bg-sage-tint px-2 py-0.5 rounded-pill">
               {t('events.free')}

@@ -4,7 +4,6 @@ import { getUpcomingEvents } from '@services/eventService'
 import { useGeolocation } from '../../hooks/useGeolocation'
 
 export type EventFilter = 'Alle' | 'Heute' | 'Diese Woche' | EventCategory
-export type EventSort = 'Datum' | 'Distanz'
 
 interface UseEventsReturn {
   events: readonly Event[]
@@ -13,8 +12,6 @@ interface UseEventsReturn {
   setFilter: (f: EventFilter) => void
   query: string
   setQuery: (q: string) => void
-  sort: EventSort
-  setSort: (s: EventSort) => void
   loading: boolean
   error: Error | null
 }
@@ -40,7 +37,6 @@ export function useEvents(): UseEventsReturn {
   const [events, setEvents] = useState<readonly Event[]>([])
   const [activeFilter, setActiveFilter] = useState<EventFilter>('Alle')
   const [query, setQuery] = useState('')
-  const [sort, setSort] = useState<EventSort>('Datum')
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<Error | null>(null)
 
@@ -69,15 +65,13 @@ export function useEvents(): UseEventsReturn {
           e.category.toLowerCase().includes(q),
       )
     }
-    return [...result].sort((a, b) => {
-      if (sort === 'Distanz') return (a.distanceKm ?? Infinity) - (b.distanceKm ?? Infinity)
-      return new Date(a.startTime).getTime() - new Date(b.startTime).getTime()
-    })
-  }, [events, activeFilter, query, sort])
+    return [...result].sort(
+      (a, b) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime(),
+    )
+  }, [events, activeFilter, query])
 
   const setFilter = useCallback((f: EventFilter) => setActiveFilter(f), [])
   const handleSetQuery = useCallback((q: string) => setQuery(q), [])
-  const handleSetSort = useCallback((s: EventSort) => setSort(s), [])
 
-  return { events, filteredEvents, activeFilter, setFilter, query, setQuery: handleSetQuery, sort, setSort: handleSetSort, loading, error }
+  return { events, filteredEvents, activeFilter, setFilter, query, setQuery: handleSetQuery, loading, error }
 }
