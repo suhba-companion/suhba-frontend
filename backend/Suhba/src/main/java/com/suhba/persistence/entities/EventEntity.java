@@ -97,7 +97,7 @@ public class EventEntity {
     }
 
     public enum EventCategory {
-        PRAYER, LECTURE, CLASS, COMMUNITY, YOUTH, SPORT, FUNDRAISER, OTHER
+        PRAYER, LECTURE, CLASS, COMMUNITY, YOUTH, SPORT, FUNDRAISER, NEW_MUSLIMS, OTHER
     }
 
     public enum ApprovalStatus {

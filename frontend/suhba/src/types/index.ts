@@ -92,6 +92,7 @@ export type EventCategory =
   | 'Jugend'
   | 'Sport'
   | 'Spende'
+  | 'Neue Muslime'
   | 'Sonstige';
 
 export interface Event {

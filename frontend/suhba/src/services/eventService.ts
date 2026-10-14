@@ -8,7 +8,8 @@ const VIENNA_CENTER: GeoPosition = { lat: 48.2082, lng: 16.3738 }
 const NEARBY_RADIUS_KM = 15
 
 type BackendCategory =
-  | 'PRAYER' | 'LECTURE' | 'CLASS' | 'COMMUNITY' | 'YOUTH' | 'SPORT' | 'FUNDRAISER' | 'OTHER'
+  | 'PRAYER' | 'LECTURE' | 'CLASS' | 'COMMUNITY' | 'YOUTH' | 'SPORT' | 'FUNDRAISER'
+  | 'NEW_MUSLIMS' | 'OTHER'
 
 type BackendEvent = {
   id: number
@@ -38,6 +39,7 @@ const CATEGORY_MAP: Record<BackendCategory, EventCategory> = {
   YOUTH: 'Jugend',
   SPORT: 'Sport',
   FUNDRAISER: 'Spende',
+  NEW_MUSLIMS: 'Neue Muslime',
   OTHER: 'Sonstige',
 }
 

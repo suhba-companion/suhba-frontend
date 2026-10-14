@@ -17,6 +17,7 @@ const CATEGORY_TO_ENUM: Record<EventCategory, string> = {
   Jugend:    'YOUTH',
   Sport:     'SPORT',
   Spende:    'FUNDRAISER',
+  'Neue Muslime': 'NEW_MUSLIMS',
   Sonstige:  'OTHER',
 }
 

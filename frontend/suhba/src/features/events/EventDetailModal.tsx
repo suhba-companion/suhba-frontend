@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next'
 import {
   HandsPraying, Microphone, BookOpen, Users, Person, SoccerBall,
   HandHeart, Question, MapPin, Clock, Phone, ArrowSquareOut, LinkSimple,
+  UserPlus,
 } from '@phosphor-icons/react'
 import type { Icon } from '@phosphor-icons/react'
 import type { Event, EventCategory } from '../../types'
@@ -15,6 +16,7 @@ const CATEGORY_ICONS: Record<EventCategory, Icon> = {
   Jugend: Person,
   Sport: SoccerBall,
   Spende: HandHeart,
+  'Neue Muslime': UserPlus,
   Sonstige: Question,
 }
 
@@ -26,6 +28,7 @@ const CATEGORY_COLORS: Record<EventCategory, string> = {
   Jugend: 'bg-yellow-100 text-yellow-800',
   Sport: 'bg-red-100 text-red-800',
   Spende: 'bg-pink-100 text-pink-800',
+  'Neue Muslime': 'bg-teal-100 text-teal-800',
   Sonstige: 'bg-gray-100 text-gray-800',
 }
 

@@ -9,7 +9,7 @@ const TIME_OPTIONS: { value: EventFilter; labelKey: string }[] = [
 ]
 
 const CATEGORY_OPTIONS: EventCategory[] = [
-  'Gebet', 'Vortrag', 'Kurs', 'Community', 'Jugend', 'Sport', 'Spende',
+  'Gebet', 'Vortrag', 'Kurs', 'Community', 'Jugend', 'Sport', 'Spende', 'Neue Muslime',
 ]
 
 interface EventsFilterProps {

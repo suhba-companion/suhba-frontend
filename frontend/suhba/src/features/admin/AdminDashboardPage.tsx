@@ -619,6 +619,7 @@ const EVENT_CATEGORY_OPTIONS: { value: string; label: string }[] = [
   { value: 'YOUTH', label: 'Youth' },
   { value: 'SPORT', label: 'Sport' },
   { value: 'FUNDRAISER', label: 'Fundraiser' },
+  { value: 'NEW_MUSLIMS', label: 'New Muslims' },
   { value: 'OTHER', label: 'Other' },
 ]
 

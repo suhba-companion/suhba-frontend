@@ -47,6 +47,12 @@ describe('EventCard', () => {
     expect(screen.queryByText('Kostenlos')).not.toBeInTheDocument()
   })
 
+  it('renders the new Muslims category chip', () => {
+    render(<ul><EventCard event={{ ...EVENT, categories: ['Kurs', 'Neue Muslime'] }} /></ul>)
+    expect(screen.getByText('Neue Muslime')).toBeInTheDocument()
+    expect(screen.getByText('Kurs')).toBeInTheDocument()
+  })
+
   it('calls onSelect with event id when clicked', () => {
     const onSelect = vi.fn()
     render(<ul><EventCard event={EVENT} onSelect={onSelect} /></ul>)
