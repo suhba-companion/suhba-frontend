@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 import java.time.Instant;
+import java.util.Set;
 
 @Entity
 @Table(name = "events")
@@ -44,9 +45,15 @@ public class EventEntity {
     @Column(name = "end_time")
     private Instant endTime;
 
+    // EAGER required — LAZY causes LazyInitializationException when mapping outside transaction
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(
+        name = "event_categories",
+        joinColumns = @JoinColumn(name = "event_id")
+    )
+    @Column(name = "category")
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private EventCategory category;
+    private Set<EventCategory> categories;
 
     private String organizer;
 

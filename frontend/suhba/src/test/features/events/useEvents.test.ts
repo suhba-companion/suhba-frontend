@@ -8,9 +8,9 @@ vi.mock('@services/eventService', () => {
   const today    = new Date(Date.now() + 60 * 1000).toISOString() // 1 min ahead = same day
   return {
     getUpcomingEvents: vi.fn().mockResolvedValue([
-      { id: '1', title: 'Freitagsgebet', category: 'Gebet',   address: 'Moschee',          district: '1010 Wien', lat: 48.2,  lng: 16.37, startTime: today,    isFree: true  },
-      { id: '2', title: 'Islamvortrag',  category: 'Vortrag', address: 'Islamzentrum',      district: '1210 Wien', lat: 48.26, lng: 16.39, startTime: future,   isFree: false },
-      { id: '3', title: 'Jugendtreff',   category: 'Jugend',  address: 'Gemeindezentrum',   district: '1100 Wien', lat: 48.18, lng: 16.37, startTime: nextWeek, isFree: true  },
+      { id: '1', title: 'Freitagsgebet', categories: ['Gebet'],              address: 'Moschee',        district: '1010 Wien', lat: 48.2,  lng: 16.37, startTime: today,    isFree: true  },
+      { id: '2', title: 'Islamvortrag',  categories: ['Vortrag', 'Spende'],   address: 'Islamzentrum',   district: '1210 Wien', lat: 48.26, lng: 16.39, startTime: future,   isFree: false },
+      { id: '3', title: 'Jugendtreff',   categories: ['Jugend', 'Spende'],   address: 'Gemeindezentrum', district: '1100 Wien', lat: 48.18, lng: 16.37, startTime: nextWeek, isFree: true  },
     ] as Event[]),
   }
 })
@@ -25,6 +25,13 @@ describe('useEvents', () => {
     const { result } = renderHook(() => useEvents())
     await waitFor(() => expect(result.current.loading).toBe(false))
     expect(result.current.events).toHaveLength(3)
+  })
+
+  it('category filter keeps every event carrying that category', async () => {
+    const { result } = renderHook(() => useEvents())
+    await waitFor(() => expect(result.current.loading).toBe(false))
+    act(() => result.current.setFilter('Spende'))
+    expect(result.current.filteredEvents.map((e) => e.title)).toEqual(['Islamvortrag', 'Jugendtreff'])
   })
 
   it('default activeFilter is Alle', async () => {
@@ -44,14 +51,14 @@ describe('useEvents', () => {
     await waitFor(() => expect(result.current.loading).toBe(false))
     act(() => result.current.setFilter('Vortrag'))
     expect(result.current.filteredEvents).toHaveLength(1)
-    expect(result.current.filteredEvents[0].category).toBe('Vortrag')
+    expect(result.current.filteredEvents[0].categories).toContain('Vortrag')
   })
 
   it('Jugend filter returns only Jugend events', async () => {
     const { result } = renderHook(() => useEvents())
     await waitFor(() => expect(result.current.loading).toBe(false))
     act(() => result.current.setFilter('Jugend'))
-    expect(result.current.filteredEvents.every((e) => e.category === 'Jugend')).toBe(true)
+    expect(result.current.filteredEvents.every((e) => e.categories.includes('Jugend'))).toBe(true)
   })
 
   it('switching back to Alle shows all events again', async () => {
@@ -103,7 +110,7 @@ describe('useEvents', () => {
     await waitFor(() => expect(result.current.loading).toBe(false))
     act(() => result.current.setQuery('jugend'))
     expect(result.current.filteredEvents).toHaveLength(1)
-    expect(result.current.filteredEvents[0].category).toBe('Jugend')
+    expect(result.current.filteredEvents[0].categories).toContain('Jugend')
   })
 
   it('empty query shows all events', async () => {

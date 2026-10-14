@@ -84,7 +84,7 @@ export interface PendingEvent {
   district: string
   startTime: string
   endTime: string | null
-  category: string
+  categories: string[]
   organizer: string | null
   contactInfo: string | null
   isFree: boolean | null

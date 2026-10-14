@@ -21,8 +21,8 @@ vi.mock('@services/eventService', () => {
   const later = new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString()
   return {
     getUpcomingEvents: vi.fn().mockResolvedValue([
-      { id: '2', title: 'Islamvortrag',  category: 'Vortrag', address: 'Islamzentrum', district: '1210 Wien', lat: 48.26, lng: 16.39, startTime: later, isFree: false, distanceKm: 3.2 },
-      { id: '1', title: 'Freitagsgebet', category: 'Gebet',   address: 'Moschee',      district: '1010 Wien', lat: 48.2,  lng: 16.37, startTime: soon,  isFree: true,  distanceKm: 1.1 },
+      { id: '2', title: 'Islamvortrag',  categories: ['Vortrag'], address: 'Islamzentrum', district: '1210 Wien', lat: 48.26, lng: 16.39, startTime: later, isFree: false, distanceKm: 3.2 },
+      { id: '1', title: 'Freitagsgebet', categories: ['Gebet'],   address: 'Moschee',      district: '1010 Wien', lat: 48.2,  lng: 16.37, startTime: soon,  isFree: true,  distanceKm: 1.1 },
     ] as Event[]),
   }
 })

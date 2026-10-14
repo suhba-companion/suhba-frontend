@@ -19,8 +19,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.Instant;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -86,6 +90,32 @@ class EventControllerTest {
     }
 
     @Test
+    void getById_serialisesCategoriesAsArrayOfEnumNames() throws Exception {
+        EventDto dto = buildDto();
+        dto.setCategories(new LinkedHashSet<>(List.of(
+            EventEntity.EventCategory.PRAYER, EventEntity.EventCategory.LECTURE)));
+        when(service.getById(1L)).thenReturn(dto);
+
+        mockMvc.perform(get("/api/v1/events/1"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.categories").isArray())
+            .andExpect(jsonPath("$.categories", hasSize(2)))
+            .andExpect(jsonPath("$.categories", containsInAnyOrder("PRAYER", "LECTURE")))
+            .andExpect(jsonPath("$.audience").doesNotExist());
+    }
+
+    @Test
+    void submit_emptyCategories_returns400() throws Exception {
+        EventDto dto = buildDto();
+        dto.setCategories(Set.of());
+
+        mockMvc.perform(post("/api/v1/events")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(dto)))
+            .andExpect(status().isBadRequest());
+    }
+
+    @Test
     void getById_notFound_returns400WithError() throws Exception {
         when(service.getById(999L)).thenThrow(new BLException("Event not found: 999"));
 
@@ -130,7 +160,7 @@ class EventControllerTest {
             .latitude(48.26)
             .longitude(16.39)
             .startTime(Instant.parse("2026-06-05T12:00:00Z"))
-            .category(EventEntity.EventCategory.PRAYER)
+            .categories(Set.of(EventEntity.EventCategory.PRAYER))
             .isFree(true)
             .upvotes(0)
             .status(EventEntity.ApprovalStatus.APPROVED)

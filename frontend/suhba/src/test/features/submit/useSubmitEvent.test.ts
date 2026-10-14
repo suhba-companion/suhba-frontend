@@ -14,7 +14,7 @@ describe('useSubmitEvent', () => {
   it('starts with empty form data', () => {
     const { result } = renderHook(() => useSubmitEvent())
     expect(result.current.data.title).toBe('')
-    expect(result.current.data.category).toBe('')
+    expect(result.current.data.categories).toEqual([])
     expect(result.current.data.address).toBe('')
     expect(result.current.data.district).toBe('')
     expect(result.current.data.startTime).toBe('')
@@ -49,7 +49,7 @@ describe('useSubmitEvent', () => {
     const { result } = renderHook(() => useSubmitEvent())
     await act(async () => { await result.current.submit() })
     expect(result.current.errors.title).toBeDefined()
-    expect(result.current.errors.category).toBeDefined()
+    expect(result.current.errors.categories).toBeDefined()
     expect(result.current.errors.address).toBeDefined()
     expect(result.current.errors.district).toBeDefined()
     expect(result.current.errors.startTime).toBeDefined()
@@ -69,7 +69,7 @@ describe('useSubmitEvent', () => {
     const { result } = renderHook(() => useSubmitEvent())
     act(() => {
       result.current.update('title', 'Test Event')
-      result.current.update('category', 'Gebet')
+      result.current.update('categories', ['Gebet'])
       result.current.update('address', 'Teststraße 1')
       result.current.update('district', '1010 Wien')
       result.current.update('startTime', '2026-06-01T12:00')
@@ -87,7 +87,7 @@ describe('useSubmitEvent', () => {
     const { result } = renderHook(() => useSubmitEvent())
     act(() => {
       result.current.update('title', 'Test Event')
-      result.current.update('category', 'Gebet')
+      result.current.update('categories', ['Gebet'])
       result.current.update('address', 'Teststraße 1')
       result.current.update('district', '1010 Wien')
       result.current.update('startTime', '2026-06-01T12:00')
@@ -108,7 +108,7 @@ describe('useSubmitEvent', () => {
     const { result } = renderHook(() => useSubmitEvent())
     act(() => {
       result.current.update('title', 'Test Event')
-      result.current.update('category', 'Gebet')
+      result.current.update('categories', ['Gebet'])
       result.current.update('address', 'Teststraße 1')
       result.current.update('district', '1010 Wien')
       result.current.update('startTime', '2026-06-01T12:00')
@@ -125,7 +125,7 @@ describe('useSubmitEvent', () => {
     const { result } = renderHook(() => useSubmitEvent())
     act(() => {
       result.current.update('title', 'Test Event')
-      result.current.update('category', 'Gebet')
+      result.current.update('categories', ['Gebet'])
       result.current.update('address', 'Teststraße 1')
       result.current.update('district', '1010 Wien')
       result.current.update('startTime', '2026-06-01T12:00')
@@ -146,7 +146,7 @@ describe('useSubmitEvent', () => {
     const { result } = renderHook(() => useSubmitEvent())
     act(() => {
       result.current.update('title', 'Test Event')
-      result.current.update('category', 'Vortrag')
+      result.current.update('categories', ['Vortrag'])
       result.current.update('address', 'Teststraße 1')
       result.current.update('district', '1010 Wien')
       result.current.update('startTime', '2026-06-01T12:00')
@@ -155,7 +155,7 @@ describe('useSubmitEvent', () => {
     await act(async () => { await result.current.submit() })
     const body = JSON.parse(mockFetch.mock.calls[0][1].body)
     expect(body.registrationUrl).toBe('https://eventbrite.com/e/123')
-    expect(body.category).toBe('LECTURE')
+    expect(body.categories).toEqual(['LECTURE'])
   })
 
   it('rejects a registration link that is not an http(s) url', async () => {
@@ -164,7 +164,7 @@ describe('useSubmitEvent', () => {
     const { result } = renderHook(() => useSubmitEvent())
     act(() => {
       result.current.update('title', 'Test Event')
-      result.current.update('category', 'Kurs')
+      result.current.update('categories', ['Kurs'])
       result.current.update('address', 'Teststraße 1')
       result.current.update('district', '1010 Wien')
       result.current.update('startTime', '2026-06-01T12:00')
@@ -181,13 +181,28 @@ describe('useSubmitEvent', () => {
     const { result } = renderHook(() => useSubmitEvent())
     act(() => {
       result.current.update('title', 'Test Event')
-      result.current.update('category', 'Gebet')
+      result.current.update('categories', ['Gebet'])
       result.current.update('address', 'Teststraße 1')
       result.current.update('district', '1010 Wien')
       result.current.update('startTime', '2026-06-01T12:00')
     })
     await act(async () => { await result.current.submit() })
     expect(JSON.parse(mockFetch.mock.calls[0][1].body).registrationUrl).toBeNull()
+  })
+
+  it('sends every picked category', async () => {
+    const mockFetch = vi.fn().mockResolvedValue({ ok: true, json: () => Promise.resolve({}) })
+    global.fetch = mockFetch
+    const { result } = renderHook(() => useSubmitEvent())
+    act(() => {
+      result.current.update('title', 'Test Event')
+      result.current.update('categories', ['Gebet', 'Jugend'])
+      result.current.update('address', 'Teststraße 1')
+      result.current.update('district', '1010 Wien')
+      result.current.update('startTime', '2026-06-01T12:00')
+    })
+    await act(async () => { await result.current.submit() })
+    expect(JSON.parse(mockFetch.mock.calls[0][1].body).categories).toEqual(['PRAYER', 'YOUTH'])
   })
 
   it('errors starts as empty object', () => {

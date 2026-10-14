@@ -44,8 +44,6 @@ function openRoute(e: React.MouseEvent, event: Event): void {
 
 export function EventCard({ event, onSelect }: EventCardProps): JSX.Element {
   const { t } = useTranslation()
-  const CategoryIcon = CATEGORY_ICONS[event.category]
-
   return (
     <li
       className={[
@@ -61,11 +59,24 @@ export function EventCard({ event, onSelect }: EventCardProps): JSX.Element {
             <p className="text-text-muted text-xs mt-0.5 m-0 truncate">{event.organizer}</p>
           )}
         </div>
-        <span className="inline-flex items-center gap-1 text-text-muted text-[11px] font-semibold shrink-0 bg-sage-tint px-2 py-0.5 rounded-pill">
-          <CategoryIcon size={10} weight="bold" aria-hidden="true" />
-          {event.category}
-        </span>
       </div>
+
+      {event.categories.length > 0 && (
+        <ul className="flex flex-wrap gap-1.5 list-none m-0 p-0">
+          {event.categories.map((category) => {
+            const CategoryIcon = CATEGORY_ICONS[category]
+            return (
+              <li
+                key={category}
+                className="inline-flex items-center gap-1 text-text-muted text-[11px] font-semibold bg-sage-tint px-2 py-0.5 rounded-pill"
+              >
+                <CategoryIcon size={10} weight="bold" aria-hidden="true" />
+                {category}
+              </li>
+            )
+          })}
+        </ul>
+      )}
 
       <div className="space-y-1">
         <div className="flex items-center gap-1.5 text-xs text-text-muted">

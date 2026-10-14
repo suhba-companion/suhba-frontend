@@ -47,9 +47,6 @@ interface EventDetailModalProps {
 
 export function EventDetailModal({ event }: EventDetailModalProps): JSX.Element {
   const { t } = useTranslation()
-  const CategoryIcon = CATEGORY_ICONS[event.category]
-  const colorClass = CATEGORY_COLORS[event.category]
-
   function handleRoute(): void {
     window.open(buildDirectionsUrl(event), '_blank', 'noopener,noreferrer')
   }
@@ -58,10 +55,18 @@ export function EventDetailModal({ event }: EventDetailModalProps): JSX.Element 
     <div>
       <div className="bg-cream-card px-5 pt-5 pb-4 border-b border-divider">
         <div className="flex items-center gap-2 mb-3 flex-wrap">
-          <span className={`inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-pill ${colorClass}`}>
-            <CategoryIcon size={11} weight="bold" aria-hidden="true" />
-            {event.category}
-          </span>
+          {event.categories.map((category) => {
+            const CategoryIcon = CATEGORY_ICONS[category]
+            return (
+              <span
+                key={category}
+                className={`inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-pill ${CATEGORY_COLORS[category]}`}
+              >
+                <CategoryIcon size={11} weight="bold" aria-hidden="true" />
+                {category}
+              </span>
+            )
+          })}
           {event.isFree && (
             <span className="text-xs font-medium text-primary bg-sage-tint px-2.5 py-1 rounded-pill">
               {t('events.free')}

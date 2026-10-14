@@ -1,4 +1,4 @@
-import type { Event } from '../types'
+import type { Event, EventCategory } from '../types'
 import type { GeoPosition } from '../hooks/useGeolocation'
 import { roundKm } from '../utils/geo'
 import { toSafeHttpUrl } from '../utils/url'
@@ -6,6 +6,9 @@ import { toSafeHttpUrl } from '../utils/url'
 const API_BASE = `${import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8080'}/api/v1`
 const VIENNA_CENTER: GeoPosition = { lat: 48.2082, lng: 16.3738 }
 const NEARBY_RADIUS_KM = 15
+
+type BackendCategory =
+  | 'PRAYER' | 'LECTURE' | 'CLASS' | 'COMMUNITY' | 'YOUTH' | 'SPORT' | 'FUNDRAISER' | 'OTHER'
 
 type BackendEvent = {
   id: number
@@ -17,7 +20,7 @@ type BackendEvent = {
   longitude: number
   startTime: string
   endTime: string | null
-  category: 'PRAYER' | 'LECTURE' | 'CLASS' | 'COMMUNITY' | 'YOUTH' | 'SPORT' | 'FUNDRAISER' | 'OTHER'
+  categories: BackendCategory[]
   organizer: string | null
   contactInfo: string | null
   isFree: boolean
@@ -27,7 +30,7 @@ type BackendEvent = {
   distanceKm: number | null
 }
 
-const CATEGORY_MAP: Record<BackendEvent['category'], Event['category']> = {
+const CATEGORY_MAP: Record<BackendCategory, EventCategory> = {
   PRAYER: 'Gebet',
   LECTURE: 'Vortrag',
   CLASS: 'Kurs',
@@ -49,7 +52,7 @@ function toFrontendEvent(dto: BackendEvent): Event {
     lng: dto.longitude,
     startTime: dto.startTime,
     endTime: dto.endTime ?? undefined,
-    category: CATEGORY_MAP[dto.category],
+    categories: dto.categories.map((c) => CATEGORY_MAP[c]),
     organizer: dto.organizer ?? undefined,
     contactInfo: dto.contactInfo ?? undefined,
     isFree: dto.isFree,

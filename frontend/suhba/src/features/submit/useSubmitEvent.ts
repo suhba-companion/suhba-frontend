@@ -29,7 +29,7 @@ function toInstant(datetimeLocal: string): string {
 
 interface EventFormData {
   title: string
-  category: EventCategory | ''
+  categories: EventCategory[]
   address: string
   district: string
   startTime: string
@@ -53,7 +53,7 @@ interface UseSubmitEventReturn {
 
 const INITIAL_DATA: EventFormData = {
   title: '',
-  category: '',
+  categories: [],
   address: '',
   district: '',
   startTime: '',
@@ -67,7 +67,7 @@ const INITIAL_DATA: EventFormData = {
 function validate(data: EventFormData): EventFormErrors {
   const errors: EventFormErrors = {}
   if (!data.title.trim()) errors.title = i18next.t('submit.event.titleRequired')
-  if (!data.category) errors.category = i18next.t('submit.event.categoryRequired')
+  if (data.categories.length === 0) errors.categories = i18next.t('submit.event.categoryRequired')
   if (!data.address.trim()) errors.address = i18next.t('submit.event.addressRequired')
   if (!data.district.trim()) errors.district = i18next.t('submit.event.districtRequired')
   if (!data.startTime) errors.startTime = i18next.t('submit.event.startTimeRequired')
@@ -100,7 +100,7 @@ export function useSubmitEvent(): UseSubmitEventReturn {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           title: data.title.trim(),
-          category: CATEGORY_TO_ENUM[data.category as EventCategory],
+          categories: data.categories.map((c) => CATEGORY_TO_ENUM[c]),
           address: data.address.trim(),
           district: data.district.trim(),
           startTime: toInstant(data.startTime),

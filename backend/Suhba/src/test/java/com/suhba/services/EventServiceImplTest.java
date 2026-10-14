@@ -16,6 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
@@ -189,6 +190,25 @@ class EventServiceImplTest {
         verify(repository).findAllByStatus(EventEntity.ApprovalStatus.PENDING);
     }
 
+    @Test
+    void update_replacesCategoriesWithTheWholeSetFromTheDto() {
+        EventEntity entity = buildEntity(48.2, 16.37);
+        entity.setId(1L);
+
+        EventDto dto = buildDto(48.2, 16.37);
+        dto.setCategories(Set.of(
+            EventEntity.EventCategory.LECTURE, EventEntity.EventCategory.YOUTH));
+
+        when(repository.findById(1L)).thenReturn(Optional.of(entity));
+        when(repository.save(any())).thenReturn(entity);
+        when(mapper.entityToDto(any())).thenReturn(dto);
+
+        service.update(1L, dto);
+
+        verify(repository).save(argThat(e -> e.getCategories().equals(Set.of(
+            EventEntity.EventCategory.LECTURE, EventEntity.EventCategory.YOUTH))));
+    }
+
     private EventEntity buildEntity(double lat, double lng) {
         return EventEntity.builder()
             .title("Freitagsgebet")
@@ -197,7 +217,7 @@ class EventServiceImplTest {
             .latitude(lat)
             .longitude(lng)
             .startTime(Instant.parse("2026-06-05T12:00:00Z"))
-            .category(EventEntity.EventCategory.PRAYER)
+            .categories(Set.of(EventEntity.EventCategory.PRAYER))
             .isFree(true)
             .status(EventEntity.ApprovalStatus.APPROVED)
             .submittedBy("tester")
@@ -213,7 +233,7 @@ class EventServiceImplTest {
             .latitude(lat)
             .longitude(lng)
             .startTime(Instant.parse("2026-06-05T12:00:00Z"))
-            .category(EventEntity.EventCategory.PRAYER)
+            .categories(Set.of(EventEntity.EventCategory.PRAYER))
             .isFree(true)
             .build();
     }

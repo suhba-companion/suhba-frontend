@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { CheckCircle } from '@phosphor-icons/react'
+import { CheckCircle, X } from '@phosphor-icons/react'
 import { useSubmitEvent } from './useSubmitEvent'
 import { FormField } from './FormField'
 import type { EventCategory } from '../../types'
@@ -56,17 +56,39 @@ export function SubmitEventPage({ onBack }: SubmitEventPageProps): JSX.Element {
           />
         </FormField>
 
-        <FormField label={t('submit.event.categoryLabel')} error={errors.category}>
-          <select
-            value={data.category}
-            onChange={(e) => update('category', e.target.value as EventCategory | '')}
-            className={SELECT_CLASS}
-          >
-            <option value="">{t('submit.event.categoryPlaceholder')}</option>
-            {CATEGORIES.map((c) => (
-              <option key={c} value={c}>{c}</option>
-            ))}
-          </select>
+        <FormField label={t('submit.event.categoryLabel')} error={errors.categories}>
+          <div className="space-y-2">
+            {data.categories.length > 0 && (
+              <ul className="flex flex-wrap gap-2 list-none m-0 p-0">
+                {data.categories.map((category) => (
+                  <li
+                    key={category}
+                    className="inline-flex items-center gap-1 bg-primary text-cream-card rounded-pill pl-3 pr-1.5 py-1 text-xs font-medium"
+                  >
+                    {category}
+                    <button
+                      type="button"
+                      onClick={() => update('categories', data.categories.filter((c) => c !== category))}
+                      aria-label={t('submit.event.categoryRemove', { category })}
+                      className="p-0.5 rounded-full hover:bg-white/20 active:bg-white/20 transition-colors"
+                    >
+                      <X size={11} weight="bold" aria-hidden="true" />
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+            <select
+              value=""
+              onChange={(e) => update('categories', [...data.categories, e.target.value as EventCategory])}
+              className={SELECT_CLASS}
+            >
+              <option value="">{t('submit.event.categoryPlaceholder')}</option>
+              {CATEGORIES.filter((c) => !data.categories.includes(c)).map((c) => (
+                <option key={c} value={c}>{c}</option>
+              ))}
+            </select>
+          </div>
         </FormField>
 
         <FormField label={t('submit.event.addressLabel')} error={errors.address}>

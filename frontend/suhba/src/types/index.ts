@@ -104,7 +104,7 @@ export interface Event {
   lng: number;
   startTime: string;
   endTime?: string;
-  category: EventCategory;
+  categories: EventCategory[];
   organizer?: string;
   contactInfo?: string;
   isFree: boolean;

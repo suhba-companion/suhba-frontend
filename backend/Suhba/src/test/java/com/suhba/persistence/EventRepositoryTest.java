@@ -9,6 +9,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -122,6 +123,27 @@ class EventRepositoryTest {
         assertThat(result.get(0).getStartTime()).isBefore(result.get(1).getStartTime());
     }
 
+    @Test
+    void save_persistsMultipleCategories() {
+        Instant future = Instant.now().plusSeconds(3600);
+        EventEntity event = buildEvent(48.2, 16.37, future, EventEntity.ApprovalStatus.APPROVED);
+        event.setCategories(Set.of(
+            EventEntity.EventCategory.PRAYER,
+            EventEntity.EventCategory.LECTURE,
+            EventEntity.EventCategory.YOUTH
+        ));
+
+        Long id = repository.saveAndFlush(event).getId();
+
+        assertThat(repository.findById(id)).get()
+            .extracting(EventEntity::getCategories)
+            .isEqualTo(Set.of(
+                EventEntity.EventCategory.PRAYER,
+                EventEntity.EventCategory.LECTURE,
+                EventEntity.EventCategory.YOUTH
+            ));
+    }
+
     private EventEntity buildEvent(double lat, double lng, Instant startTime, EventEntity.ApprovalStatus status) {
         return EventEntity.builder()
             .title("Freitagsgebet")
@@ -130,7 +152,7 @@ class EventRepositoryTest {
             .latitude(lat)
             .longitude(lng)
             .startTime(startTime)
-            .category(EventEntity.EventCategory.PRAYER)
+            .categories(Set.of(EventEntity.EventCategory.PRAYER))
             .isFree(true)
             .status(status)
             .submittedBy("tester")

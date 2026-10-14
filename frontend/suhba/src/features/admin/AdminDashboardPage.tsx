@@ -348,7 +348,7 @@ export function AdminDashboardPage({ username, onLogout }: AdminDashboardPagePro
               <ItemRow
                 key={e.id}
                 title={e.title}
-                badge={e.category}
+                badge={e.categories.join(', ')}
                 sub={`${formatAddress(e.address, e.district)} · ${new Date(e.startTime).toLocaleDateString('de-AT', { day: '2-digit', month: '2-digit', year: 'numeric' })}`}
                 status={e.status}
                 isPast={new Date(e.startTime) < new Date()}
@@ -594,7 +594,7 @@ function EventDetail({ data }: { data: PendingEvent }): JSX.Element {
     <>
       <Row label="Status"      value={STATUS_LABEL[data.status]} />
       <Row label="Address"     value={formatAddress(data.address, data.district)} />
-      <Row label="Category"    value={data.category} />
+      <Row label="Categories"  value={data.categories.join(', ')} />
       <Row label="Start"       value={fmt(data.startTime)} />
       <Row label="End"         value={data.endTime !== null && data.endTime !== undefined ? fmt(data.endTime) : undefined} />
       <Row label="Organizer"   value={data.organizer} />
@@ -611,6 +611,17 @@ const INPUT = 'w-full bg-cream-bg border border-divider rounded-lg px-3 py-2 tex
 const SELECT = 'w-full bg-cream-bg border border-divider rounded-lg px-3 py-2 text-sm text-text-dark outline-none focus:border-sage-light'
 const LABEL = 'block text-[10px] font-semibold text-text-muted uppercase tracking-widest mb-1'
 
+const EVENT_CATEGORY_OPTIONS: { value: string; label: string }[] = [
+  { value: 'PRAYER', label: 'Prayer' },
+  { value: 'LECTURE', label: 'Lecture' },
+  { value: 'CLASS', label: 'Class' },
+  { value: 'COMMUNITY', label: 'Community' },
+  { value: 'YOUTH', label: 'Youth' },
+  { value: 'SPORT', label: 'Sport' },
+  { value: 'FUNDRAISER', label: 'Fundraiser' },
+  { value: 'OTHER', label: 'Other' },
+]
+
 interface EditFormProps {
   kind: 'spot' | 'halal' | 'event'
   data: Record<string, unknown>
@@ -621,6 +632,7 @@ function EditForm({ kind, data, onChange }: EditFormProps): JSX.Element {
   const set = (key: string, value: unknown): void => onChange({ ...data, [key]: value || null })
   const str = (key: string): string => (data[key] as string | null | undefined) ?? ''
   const bool = (key: string): boolean => !!(data[key] as boolean | null | undefined)
+  const list = (key: string): string[] => (data[key] as string[] | null | undefined) ?? []
 
   if (kind === 'spot') {
     return (
@@ -725,17 +737,31 @@ function EditForm({ kind, data, onChange }: EditFormProps): JSX.Element {
         <Field label="Address"><input className={INPUT} value={str('address')} onChange={e => set('address', e.target.value)} /></Field>
         <Field label="District"><input className={INPUT} value={str('district')} onChange={e => set('district', e.target.value)} /></Field>
       </div>
-      <Field label="Category">
-        <select className={SELECT} value={str('category')} onChange={e => set('category', e.target.value)}>
-          <option value="PRAYER">Prayer</option>
-          <option value="LECTURE">Lecture</option>
-          <option value="CLASS">Class</option>
-          <option value="COMMUNITY">Community</option>
-          <option value="YOUTH">Youth</option>
-          <option value="SPORT">Sport</option>
-          <option value="FUNDRAISER">Fundraiser</option>
-          <option value="OTHER">Other</option>
-        </select>
+      <Field label="Categories">
+        <div className="flex flex-wrap gap-2">
+          {EVENT_CATEGORY_OPTIONS.map(({ value, label }) => {
+            const selected = list('categories').includes(value)
+            return (
+              <button
+                key={value}
+                type="button"
+                aria-pressed={selected}
+                onClick={() => set(
+                  'categories',
+                  selected
+                    ? list('categories').filter(c => c !== value)
+                    : [...list('categories'), value],
+                )}
+                className={[
+                  'px-3 py-1 rounded-full text-xs font-medium transition-colors',
+                  selected ? 'bg-moss text-cream-card' : 'bg-cream-bg border border-divider text-text-muted',
+                ].join(' ')}
+              >
+                {label}
+              </button>
+            )
+          })}
+        </div>
       </Field>
       <div className="grid grid-cols-2 gap-3">
         <Field label="Start time"><input type="datetime-local" className={INPUT} value={instantToDatetimeLocal(str('startTime'))} onChange={e => set('startTime', datetimeLocalToInstant(e.target.value))} /></Field>

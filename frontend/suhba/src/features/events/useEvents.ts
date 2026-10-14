@@ -52,7 +52,7 @@ export function useEvents(): UseEventsReturn {
     let result = events
     if (activeFilter === 'Heute') result = result.filter((e) => isToday(e.startTime))
     else if (activeFilter === 'Diese Woche') result = result.filter((e) => isThisWeek(e.startTime))
-    else if (activeFilter !== 'Alle') result = result.filter((e) => e.category === activeFilter)
+    else if (activeFilter !== 'Alle') result = result.filter((e) => e.categories.includes(activeFilter))
     if (query.trim() !== '') {
       const q = query.toLowerCase()
       result = result.filter(
@@ -62,7 +62,7 @@ export function useEvents(): UseEventsReturn {
           e.address.toLowerCase().includes(q) ||
           e.district.toLowerCase().includes(q) ||
           e.description?.toLowerCase().includes(q) ||
-          e.category.toLowerCase().includes(q),
+          e.categories.some((c) => c.toLowerCase().includes(q)),
       )
     }
     return [...result].sort(

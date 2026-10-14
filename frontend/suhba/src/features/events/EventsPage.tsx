@@ -15,6 +15,7 @@ interface EventsPageProps {
 export function EventsPage({ onAddEvent }: EventsPageProps): JSX.Element {
   const { t } = useTranslation()
   const { filteredEvents, activeFilter, setFilter, query, setQuery, loading } = useEvents()
+  const activeFilterCount = activeFilter === 'Alle' ? 0 : 1
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null)
   const [isFilterOpen, setIsFilterOpen] = useState(false)
   const parentRef = useRef<HTMLDivElement>(null)
@@ -53,9 +54,9 @@ export function EventsPage({ onAddEvent }: EventsPageProps): JSX.Element {
                 className="shrink-0 flex items-center gap-1.5 bg-moss text-cream-card rounded-full px-3 py-1.5 text-xs font-medium hover:opacity-90 active:opacity-90 transition-colors"
               >
                 {t('events.filter')}
-                {activeFilter !== 'Alle' && (
+                {activeFilterCount > 0 && (
                   <span className="bg-white/30 text-cream-card rounded-full w-4 h-4 text-[10px] flex items-center justify-center leading-none">
-                    1
+                    {activeFilterCount}
                   </span>
                 )}
               </button>

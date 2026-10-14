@@ -10,7 +10,7 @@ const MOCK_EVENT: Event = {
   lat: 48.2482,
   lng: 16.4,
   startTime: '2026-10-20T18:00:00Z',
-  category: 'Vortrag',
+  categories: ['Vortrag'],
   isFree: true,
   distanceKm: 2.4,
 }

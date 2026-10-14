@@ -5,7 +5,7 @@ import type { Event } from '../../../types'
 const EVENT: Event = {
   id: '1',
   title: 'Freitagsgebet',
-  category: 'Gebet',
+  categories: ['Gebet'],
   address: 'Am Bruckhaufen 4',
   district: '1210 Wien',
   lat: 48.26,

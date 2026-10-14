@@ -5,6 +5,7 @@ import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.time.Instant;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -38,8 +39,8 @@ public class EventDto {
 
     private Instant endTime;
 
-    @NotNull
-    private EventEntity.EventCategory category;
+    @NotEmpty
+    private Set<EventEntity.EventCategory> categories;
 
     private String organizer;
     private String contactInfo;

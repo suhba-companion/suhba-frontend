@@ -78,7 +78,7 @@ function eventToFeedEvent(event: Event): FeedEvent {
     address: event.address,
     district: event.district,
     distanceKm: event.distanceKm,
-    tag: event.category,
+    tag: event.categories[0] ?? 'Sonstige',
     time: formatFeedTime(event.startTime),
     kind: 'event',
     lat: event.lat,
