@@ -46,6 +46,10 @@ public class EventDto {
     private Boolean isFree;
     private String googleMapsUrl;
 
+    @Size(max = 500)
+    @Pattern(regexp = "^https?://.*", message = "registrationUrl must start with http:// or https://")
+    private String registrationUrl;
+
     private EventEntity.ApprovalStatus status;
     private Integer upvotes;
     private Double distanceKm;

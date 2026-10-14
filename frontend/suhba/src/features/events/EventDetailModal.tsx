@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import {
   HandsPraying, Microphone, BookOpen, Users, Person, SoccerBall,
-  HandHeart, Question, MapPin, Clock, Phone, ArrowSquareOut,
+  HandHeart, Question, MapPin, Clock, Phone, ArrowSquareOut, LinkSimple,
 } from '@phosphor-icons/react'
 import type { Icon } from '@phosphor-icons/react'
 import type { Event, EventCategory } from '../../types'
@@ -110,6 +110,18 @@ export function EventDetailModal({ event }: EventDetailModalProps): JSX.Element 
 
         {event.description !== undefined && (
           <p className="text-sm text-text-muted leading-relaxed">{event.description}</p>
+        )}
+
+        {event.registrationUrl !== undefined && (
+          <a
+            href={event.registrationUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full py-3 text-sm font-medium text-primary bg-sage-tint rounded-card hover:bg-sage-light transition-colors flex items-center justify-center gap-2"
+          >
+            <LinkSimple size={16} aria-hidden="true" />
+            {t('events.register')}
+          </a>
         )}
 
         <button

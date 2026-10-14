@@ -108,5 +108,6 @@ export interface Event {
   organizer?: string;
   contactInfo?: string;
   isFree: boolean;
+  registrationUrl?: string;
   distanceKm?: number;
 }

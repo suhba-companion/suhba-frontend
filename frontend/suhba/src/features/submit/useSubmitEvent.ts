@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import i18next from 'i18next'
 import type { EventCategory } from '../../types'
+import { toSafeHttpUrl } from '@utils/url'
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8080'
 
@@ -35,6 +36,7 @@ interface EventFormData {
   endTime: string
   description: string
   organizer: string
+  registrationUrl: string
   isFree: boolean
 }
 
@@ -58,6 +60,7 @@ const INITIAL_DATA: EventFormData = {
   endTime: '',
   description: '',
   organizer: '',
+  registrationUrl: '',
   isFree: false,
 }
 
@@ -68,6 +71,9 @@ function validate(data: EventFormData): EventFormErrors {
   if (!data.address.trim()) errors.address = i18next.t('submit.event.addressRequired')
   if (!data.district.trim()) errors.district = i18next.t('submit.event.districtRequired')
   if (!data.startTime) errors.startTime = i18next.t('submit.event.startTimeRequired')
+  if (data.registrationUrl.trim() && toSafeHttpUrl(data.registrationUrl) === undefined) {
+    errors.registrationUrl = i18next.t('submit.event.registrationUrlInvalid')
+  }
   return errors
 }
 
@@ -102,6 +108,7 @@ export function useSubmitEvent(): UseSubmitEventReturn {
           description: data.description.trim() || null,
           organizer: data.organizer.trim() || null,
           isFree: data.isFree,
+          registrationUrl: toSafeHttpUrl(data.registrationUrl) ?? null,
           latitude: VIENNA_LAT,
           longitude: VIENNA_LNG,
         }),

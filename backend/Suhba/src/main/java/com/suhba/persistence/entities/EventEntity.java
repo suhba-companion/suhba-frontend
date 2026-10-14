@@ -59,6 +59,9 @@ public class EventEntity {
     @Column(name = "google_maps_url", length = 500)
     private String googleMapsUrl;
 
+    @Column(name = "registration_url", length = 500)
+    private String registrationUrl;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private ApprovalStatus status;

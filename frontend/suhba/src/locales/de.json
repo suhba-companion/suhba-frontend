@@ -246,6 +246,7 @@
       "startTimeLabel": "Beginn",
       "endTimeLabel": "Ende (optional)",
       "organizerLabel": "Veranstalter (optional)",
+      "registrationUrlLabel": "Anmeldelink (optional)",
       "descriptionLabel": "Beschreibung (optional)",
       "isFreeLabel": "Kostenlose Veranstaltung",
       "titlePlaceholder": "Name des Events",
@@ -253,6 +254,7 @@
       "addressPlaceholder": "Straße und Hausnummer",
       "districtPlaceholder": "z. B. 1100 Wien",
       "organizerPlaceholder": "Name des Veranstalters",
+      "registrationUrlPlaceholder": "https://…",
       "descriptionPlaceholder": "Kurze Beschreibung…",
       "submitButton": "Einreichen",
       "submitting": "Wird gesendet…",
@@ -264,7 +266,8 @@
       "categoryRequired": "Kategorie ist erforderlich",
       "addressRequired": "Adresse ist erforderlich",
       "districtRequired": "Bezirk ist erforderlich",
-      "startTimeRequired": "Startzeit ist erforderlich"
+      "startTimeRequired": "Startzeit ist erforderlich",
+      "registrationUrlInvalid": "Bitte einen gültigen Link eingeben (https://…)"
     }
   },
   "prayers": {
@@ -296,6 +299,7 @@
     "empty": "Keine Events gefunden.",
     "notFound": "Event nicht gefunden.",
     "free": "Kostenlos",
+    "register": "Zur Anmeldung",
     "filter": "Filter",
     "filter_": {
       "time": "Zeitraum",

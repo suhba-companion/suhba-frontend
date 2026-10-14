@@ -117,6 +117,17 @@ export function SubmitEventPage({ onBack }: SubmitEventPageProps): JSX.Element {
           />
         </FormField>
 
+        <FormField label={t('submit.event.registrationUrlLabel')} error={errors.registrationUrl}>
+          <input
+            type="url"
+            inputMode="url"
+            value={data.registrationUrl}
+            onChange={(e) => update('registrationUrl', e.target.value)}
+            placeholder={t('submit.event.registrationUrlPlaceholder')}
+            className={INPUT_CLASS}
+          />
+        </FormField>
+
         <FormField label={t('submit.event.descriptionLabel')}>
           <textarea
             value={data.description}

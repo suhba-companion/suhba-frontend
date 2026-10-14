@@ -1,6 +1,7 @@
 import type { Event } from '../types'
 import type { GeoPosition } from '../hooks/useGeolocation'
 import { roundKm } from '../utils/geo'
+import { toSafeHttpUrl } from '../utils/url'
 
 const API_BASE = `${import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8080'}/api/v1`
 const VIENNA_CENTER: GeoPosition = { lat: 48.2082, lng: 16.3738 }
@@ -20,6 +21,7 @@ type BackendEvent = {
   organizer: string | null
   contactInfo: string | null
   isFree: boolean
+  registrationUrl: string | null
   status: string
   upvotes: number
   distanceKm: number | null
@@ -51,6 +53,7 @@ function toFrontendEvent(dto: BackendEvent): Event {
     organizer: dto.organizer ?? undefined,
     contactInfo: dto.contactInfo ?? undefined,
     isFree: dto.isFree,
+    registrationUrl: toSafeHttpUrl(dto.registrationUrl ?? undefined),
     distanceKm: dto.distanceKm != null ? roundKm(dto.distanceKm) : undefined,
   }
 }

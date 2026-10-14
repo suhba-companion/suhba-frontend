@@ -745,6 +745,7 @@ function EditForm({ kind, data, onChange }: EditFormProps): JSX.Element {
         <Field label="Organizer"><input className={INPUT} value={str('organizer')} onChange={e => set('organizer', e.target.value)} /></Field>
         <Field label="Contact"><input className={INPUT} value={str('contactInfo')} onChange={e => set('contactInfo', e.target.value)} /></Field>
       </div>
+      <Field label="Registration link"><input type="url" className={INPUT} value={str('registrationUrl')} onChange={e => set('registrationUrl', e.target.value)} /></Field>
       <Field label="Description"><input className={INPUT} value={str('description')} onChange={e => set('description', e.target.value)} /></Field>
       <CheckField label="Free entry" value={bool('isFree')} onChange={v => set('isFree', v)} />
     </div>
