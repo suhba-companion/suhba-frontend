@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import i18next from 'i18next'
-import type { EventCategory } from '../../types'
+import type { EventCategory, PrayerName } from '../../types'
 import { toSafeHttpUrl } from '@utils/url'
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8080'
@@ -8,6 +8,14 @@ const API_BASE = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8080'
 // Vienna centre — used when the user doesn't pick a precise location
 const VIENNA_LAT = 48.2082
 const VIENNA_LNG = 16.3738
+
+const PRAYER_TO_ENUM: Record<PrayerName, string> = {
+  Fajr:    'FAJR',
+  Dhuhr:   'DHUHR',
+  Asr:     'ASR',
+  Maghrib: 'MAGHRIB',
+  Isha:    'ISHA',
+}
 
 const CATEGORY_TO_ENUM: Record<EventCategory, string> = {
   Gebet:     'PRAYER',
@@ -35,6 +43,9 @@ interface EventFormData {
   district: string
   startTime: string
   endTime: string
+  // Empty when the event starts at a clock time; a prayer when the announcement only
+  // says "nach dem Maghrib-Gebet". The backend then derives startTime's time of day.
+  startPrayer: PrayerName | ''
   description: string
   organizer: string
   registrationUrl: string
@@ -49,6 +60,7 @@ interface UseSubmitEventReturn {
   errors: EventFormErrors
   status: SubmitStatus
   update: <K extends keyof EventFormData>(field: K, value: EventFormData[K]) => void
+  selectStartPrayer: (prayer: PrayerName | '') => void
   submit: () => Promise<void>
 }
 
@@ -59,6 +71,7 @@ const INITIAL_DATA: EventFormData = {
   district: '',
   startTime: '',
   endTime: '',
+  startPrayer: '',
   description: '',
   organizer: '',
   registrationUrl: '',
@@ -71,7 +84,11 @@ function validate(data: EventFormData): EventFormErrors {
   if (data.categories.length === 0) errors.categories = i18next.t('submit.event.categoryRequired')
   if (!data.address.trim()) errors.address = i18next.t('submit.event.addressRequired')
   if (!data.district.trim()) errors.district = i18next.t('submit.event.districtRequired')
-  if (!data.startTime) errors.startTime = i18next.t('submit.event.startTimeRequired')
+  if (!data.startTime) {
+    errors.startTime = data.startPrayer
+      ? i18next.t('submit.event.startDateRequired')
+      : i18next.t('submit.event.startTimeRequired')
+  }
   if (data.registrationUrl.trim() && toSafeHttpUrl(data.registrationUrl) === undefined) {
     errors.registrationUrl = i18next.t('submit.event.registrationUrlInvalid')
   }
@@ -86,6 +103,11 @@ export function useSubmitEvent(): UseSubmitEventReturn {
   const update = <K extends keyof EventFormData>(field: K, value: EventFormData[K]): void => {
     setData((prev) => ({ ...prev, [field]: value }))
     if (errors[field]) setErrors((prev) => ({ ...prev, [field]: undefined }))
+  }
+
+  // A prayer start carries no announced end time, so switching to it clears the end.
+  const selectStartPrayer = (prayer: PrayerName | ''): void => {
+    setData((prev) => ({ ...prev, startPrayer: prayer, endTime: prayer ? '' : prev.endTime }))
   }
 
   const submit = async (): Promise<void> => {
@@ -106,6 +128,7 @@ export function useSubmitEvent(): UseSubmitEventReturn {
           district: data.district.trim(),
           startTime: toInstant(data.startTime),
           endTime: data.endTime ? toInstant(data.endTime) : null,
+          startPrayer: data.startPrayer ? PRAYER_TO_ENUM[data.startPrayer] : null,
           description: data.description.trim() || null,
           organizer: data.organizer.trim() || null,
           isFree: data.isFree,
@@ -121,5 +144,5 @@ export function useSubmitEvent(): UseSubmitEventReturn {
     }
   }
 
-  return { data, errors, status, update, submit }
+  return { data, errors, status, update, selectStartPrayer, submit }
 }

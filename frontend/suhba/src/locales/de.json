@@ -244,6 +244,9 @@
       "addressLabel": "Adresse",
       "districtLabel": "Bezirk",
       "startTimeLabel": "Beginn",
+      "startKindLabel": "Art der Zeitangabe",
+      "startKindTime": "Uhrzeit angeben",
+      "startDateLabel": "Datum",
       "endTimeLabel": "Ende (optional)",
       "organizerLabel": "Veranstalter (optional)",
       "registrationUrlLabel": "Anmeldelink (optional)",
@@ -268,6 +271,7 @@
       "addressRequired": "Adresse ist erforderlich",
       "districtRequired": "Bezirk ist erforderlich",
       "startTimeRequired": "Startzeit ist erforderlich",
+      "startDateRequired": "Datum ist erforderlich",
       "registrationUrlInvalid": "Bitte einen gültigen Link eingeben (https://…)"
     }
   },
@@ -300,6 +304,7 @@
     "empty": "Keine Events gefunden.",
     "notFound": "Event nicht gefunden.",
     "free": "Kostenlos",
+    "afterPrayer": "nach dem {{prayer}}-Gebet",
     "register": "Zur Anmeldung",
     "filter": "Filter",
     "filter_": {

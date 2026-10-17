@@ -584,6 +584,8 @@ function HalalDetail({ data }: { data: PendingHalal }): JSX.Element {
   )
 }
 
+const EVENT_PRAYER_OPTIONS = ['FAJR', 'DHUHR', 'ASR', 'MAGHRIB', 'ISHA'] as const
+
 function EventDetail({ data }: { data: PendingEvent }): JSX.Element {
   const fmt = (iso: string): string =>
     new Date(iso).toLocaleString('de-AT', {
@@ -595,7 +597,9 @@ function EventDetail({ data }: { data: PendingEvent }): JSX.Element {
       <Row label="Status"      value={STATUS_LABEL[data.status]} />
       <Row label="Address"     value={formatAddress(data.address, data.district)} />
       <Row label="Categories"  value={data.categories.join(', ')} />
-      <Row label="Start"       value={fmt(data.startTime)} />
+      <Row label="Start"       value={data.startPrayer !== null && data.startPrayer !== undefined
+        ? `${fmt(data.startTime).slice(0, 10)} · after ${data.startPrayer}`
+        : fmt(data.startTime)} />
       <Row label="End"         value={data.endTime !== null && data.endTime !== undefined ? fmt(data.endTime) : undefined} />
       <Row label="Organizer"   value={data.organizer} />
       <Row label="Contact"     value={data.contactInfo} />
@@ -768,6 +772,20 @@ function EditForm({ kind, data, onChange }: EditFormProps): JSX.Element {
         <Field label="Start time"><input type="datetime-local" className={INPUT} value={instantToDatetimeLocal(str('startTime'))} onChange={e => set('startTime', datetimeLocalToInstant(e.target.value))} /></Field>
         <Field label="End time"><input type="datetime-local" className={INPUT} value={instantToDatetimeLocal(str('endTime'))} onChange={e => set('endTime', datetimeLocalToInstant(e.target.value))} /></Field>
       </div>
+      {/* Set for events announced as "after the Maghrib prayer": the backend then derives
+          the start time of day from the prayer calendar and the app hides the clock time. */}
+      <Field label="Starts after prayer">
+        <select
+          className={INPUT}
+          value={str('startPrayer')}
+          onChange={e => set('startPrayer', e.target.value === '' ? null : e.target.value)}
+        >
+          <option value="">No, exact time above</option>
+          {EVENT_PRAYER_OPTIONS.map(prayer => (
+            <option key={prayer} value={prayer}>{prayer}</option>
+          ))}
+        </select>
+      </Field>
       <div className="grid grid-cols-2 gap-3">
         <Field label="Organizer"><input className={INPUT} value={str('organizer')} onChange={e => set('organizer', e.target.value)} /></Field>
         <Field label="Contact"><input className={INPUT} value={str('contactInfo')} onChange={e => set('contactInfo', e.target.value)} /></Field>

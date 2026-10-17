@@ -1,4 +1,4 @@
-import type { Event, EventCategory } from '../types'
+import type { Event, EventCategory, PrayerName } from '../types'
 import type { GeoPosition } from '../hooks/useGeolocation'
 import { roundKm } from '../utils/geo'
 import { toSafeHttpUrl } from '../utils/url'
@@ -6,6 +6,8 @@ import { toSafeHttpUrl } from '../utils/url'
 const API_BASE = `${import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8080'}/api/v1`
 const VIENNA_CENTER: GeoPosition = { lat: 48.2082, lng: 16.3738 }
 const NEARBY_RADIUS_KM = 15
+
+type BackendPrayer = 'FAJR' | 'DHUHR' | 'ASR' | 'MAGHRIB' | 'ISHA'
 
 type BackendCategory =
   | 'PRAYER' | 'LECTURE' | 'CLASS' | 'COMMUNITY' | 'YOUTH' | 'SPORT' | 'FUNDRAISER'
@@ -21,6 +23,7 @@ type BackendEvent = {
   longitude: number
   startTime: string
   endTime: string | null
+  startPrayer: BackendPrayer | null
   categories: BackendCategory[]
   organizer: string | null
   contactInfo: string | null
@@ -43,6 +46,14 @@ const CATEGORY_MAP: Record<BackendCategory, EventCategory> = {
   OTHER: 'Sonstige',
 }
 
+const PRAYER_MAP: Record<BackendPrayer, PrayerName> = {
+  FAJR: 'Fajr',
+  DHUHR: 'Dhuhr',
+  ASR: 'Asr',
+  MAGHRIB: 'Maghrib',
+  ISHA: 'Isha',
+}
+
 function toFrontendEvent(dto: BackendEvent): Event {
   return {
     id: String(dto.id),
@@ -54,6 +65,7 @@ function toFrontendEvent(dto: BackendEvent): Event {
     lng: dto.longitude,
     startTime: dto.startTime,
     endTime: dto.endTime ?? undefined,
+    startPrayer: dto.startPrayer != null ? PRAYER_MAP[dto.startPrayer] : undefined,
     categories: dto.categories.map((c) => CATEGORY_MAP[c]),
     organizer: dto.organizer ?? undefined,
     contactInfo: dto.contactInfo ?? undefined,

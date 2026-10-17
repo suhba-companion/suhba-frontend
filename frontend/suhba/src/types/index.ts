@@ -95,6 +95,10 @@ export type EventCategory =
   | 'Neue Muslime'
   | 'Sonstige';
 
+// A flyer often announces a start as a prayer ("nach dem Maghrib-Gebet") rather than
+// a clock time. `startTime` then still holds the resolved instant, but the UI shows this.
+export type PrayerName = 'Fajr' | 'Dhuhr' | 'Asr' | 'Maghrib' | 'Isha';
+
 export interface Event {
   id: string;
   title: string;
@@ -105,6 +109,7 @@ export interface Event {
   lng: number;
   startTime: string;
   endTime?: string;
+  startPrayer?: PrayerName;
   categories: EventCategory[];
   organizer?: string;
   contactInfo?: string;

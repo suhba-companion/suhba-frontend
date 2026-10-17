@@ -5,6 +5,7 @@ import {
 } from '@phosphor-icons/react'
 import type { Icon } from '@phosphor-icons/react'
 import { buildDirectionsUrl } from '@utils/maps'
+import { formatEventTime } from '@utils/eventTime'
 import type { Event, EventCategory } from '../../types'
 
 const CATEGORY_ICONS: Record<EventCategory, Icon> = {
@@ -24,12 +25,6 @@ function formatDate(isoStr: string): string {
   const d = new Date(isoStr)
   return d.toLocaleDateString('de-AT', {
     weekday: 'short', day: 'numeric', month: 'short', timeZone: 'Europe/Vienna',
-  })
-}
-
-function formatTime(isoStr: string): string {
-  return new Date(isoStr).toLocaleTimeString('de-AT', {
-    hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Vienna',
   })
 }
 
@@ -82,7 +77,7 @@ export function EventCard({ event, onSelect }: EventCardProps): JSX.Element {
       <div className="space-y-1">
         <div className="flex items-center gap-1.5 text-xs text-text-muted">
           <Clock size={12} aria-hidden="true" className="shrink-0" />
-          <span className="truncate">{formatDate(event.startTime)}, {formatTime(event.startTime)}{event.endTime ? ` – ${formatTime(event.endTime)}` : ''}</span>
+          <span className="truncate">{formatDate(event.startTime)}, {formatEventTime(event, t)}</span>
         </div>
         <div className="flex items-center gap-1.5 text-xs text-text-muted">
           <MapPin size={12} aria-hidden="true" className="shrink-0" />

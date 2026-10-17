@@ -7,6 +7,7 @@ import {
 import type { Icon } from '@phosphor-icons/react'
 import type { Event, EventCategory } from '../../types'
 import { buildDirectionsUrl } from '@utils/maps'
+import { formatEventTime } from '@utils/eventTime'
 
 const CATEGORY_ICONS: Record<EventCategory, Icon> = {
   Gebet: HandsPraying,
@@ -35,12 +36,6 @@ const CATEGORY_COLORS: Record<EventCategory, string> = {
 function formatDate(isoStr: string): string {
   return new Date(isoStr).toLocaleDateString('de-AT', {
     weekday: 'long', day: 'numeric', month: 'long', timeZone: 'Europe/Vienna',
-  })
-}
-
-function formatTime(isoStr: string): string {
-  return new Date(isoStr).toLocaleTimeString('de-AT', {
-    hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Vienna',
   })
 }
 
@@ -84,10 +79,7 @@ export function EventDetailModal({ event }: EventDetailModalProps): JSX.Element 
           <Clock size={18} className="text-primary mt-0.5 shrink-0" aria-hidden="true" />
           <div>
             <p className="text-sm font-medium text-text-dark">{formatDate(event.startTime)}</p>
-            <p className="text-sm text-text-muted">
-              {formatTime(event.startTime)}
-              {event.endTime !== undefined && ` – ${formatTime(event.endTime)}`}
-            </p>
+            <p className="text-sm text-text-muted">{formatEventTime(event, t)}</p>
           </div>
         </div>
 

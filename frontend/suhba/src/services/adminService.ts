@@ -84,6 +84,7 @@ export interface PendingEvent {
   district: string
   startTime: string
   endTime: string | null
+  startPrayer: string | null
   categories: string[]
   organizer: string | null
   contactInfo: string | null

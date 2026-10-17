@@ -2,7 +2,9 @@ package com.suhba.services.impl;
 
 import com.suhba.exception.BLException;
 import com.suhba.persistence.entities.EventEntity;
+import com.suhba.persistence.entities.PrayerTimeEntity;
 import com.suhba.persistence.repositories.EventRepository;
+import com.suhba.persistence.repositories.PrayerTimeRepository;
 import com.suhba.services.EventService;
 import com.suhba.services.dto.EventDto;
 import com.suhba.services.dto.NearbyQueryDto;
@@ -13,6 +15,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Sort;
 
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,7 +26,10 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class EventServiceImpl implements EventService {
 
+    private static final ZoneId VIENNA = ZoneId.of("Europe/Vienna");
+
     private final EventRepository repository;
+    private final PrayerTimeRepository prayerTimes;
     private final EventMapper mapper;
 
     @Override
@@ -69,6 +77,7 @@ public class EventServiceImpl implements EventService {
     @Override
     public EventDto submit(EventDto dto, String submittedBy) {
         EventEntity entity = mapper.dtoToEntity(dto);
+        entity.setStartTime(resolveStartTime(dto));
         entity.setStatus(EventEntity.ApprovalStatus.PENDING);
         entity.setSubmittedBy(submittedBy);
         entity.setUpvotes(0);
@@ -119,7 +128,8 @@ public class EventServiceImpl implements EventService {
         entity.setDistrict(dto.getDistrict());
         entity.setLatitude(dto.getLatitude());
         entity.setLongitude(dto.getLongitude());
-        entity.setStartTime(dto.getStartTime());
+        entity.setStartPrayer(dto.getStartPrayer());
+        entity.setStartTime(resolveStartTime(dto));
         entity.setEndTime(dto.getEndTime());
         entity.setCategories(dto.getCategories());
         entity.setRegistrationUrl(dto.getRegistrationUrl());
@@ -134,6 +144,28 @@ public class EventServiceImpl implements EventService {
     public void delete(Long id) {
         findOrThrow(id);
         repository.deleteById(id);
+    }
+
+    /**
+     * An event announced as "after the Maghrib prayer" carries no clock time of its own.
+     * The caller still sends a startTime, but only its date matters: the time of day comes
+     * from the prayer calendar, so the stored instant stays correct for sorting and
+     * /upcoming while clients render the prayer name instead of the time.
+     */
+    private Instant resolveStartTime(EventDto dto) {
+        if (dto.getStartPrayer() == null) return dto.getStartTime();
+        LocalDate date = dto.getStartTime().atZone(VIENNA).toLocalDate();
+        PrayerTimeEntity times = prayerTimes.findByDate(date)
+            .orElseThrow(() -> new BLException(
+                "No prayer times for " + date + ", cannot resolve " + dto.getStartPrayer()));
+        LocalTime time = switch (dto.getStartPrayer()) {
+            case FAJR    -> times.getFajr();
+            case DHUHR   -> times.getDhuhr();
+            case ASR     -> times.getAsr();
+            case MAGHRIB -> times.getMaghrib();
+            case ISHA    -> times.getIsha();
+        };
+        return date.atTime(time).atZone(VIENNA).toInstant();
     }
 
     private EventEntity findOrThrow(Long id) {

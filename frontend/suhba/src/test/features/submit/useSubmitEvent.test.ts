@@ -120,6 +120,55 @@ describe('useSubmitEvent', () => {
     expect(new Date(body.endTime).getTime()).toBe(new Date('2026-06-01T14:00').getTime())
   })
 
+  it('sends no start prayer by default', async () => {
+    const mockFetch = vi.fn().mockResolvedValue({ ok: true, json: () => Promise.resolve({}) })
+    global.fetch = mockFetch
+    const { result } = renderHook(() => useSubmitEvent())
+    act(() => {
+      result.current.update('title', 'Test Event')
+      result.current.update('categories', ['Gebet'])
+      result.current.update('address', 'Teststraße 1')
+      result.current.update('district', '1010 Wien')
+      result.current.update('startTime', '2026-06-01T12:00')
+    })
+    await act(async () => { await result.current.submit() })
+    expect(JSON.parse(mockFetch.mock.calls[0][1].body).startPrayer).toBeNull()
+  })
+
+  it('sends the chosen prayer as its backend enum', async () => {
+    const mockFetch = vi.fn().mockResolvedValue({ ok: true, json: () => Promise.resolve({}) })
+    global.fetch = mockFetch
+    const { result } = renderHook(() => useSubmitEvent())
+    act(() => {
+      result.current.update('title', 'Vortrag')
+      result.current.update('categories', ['Vortrag'])
+      result.current.update('address', 'Stöbergasse 5')
+      result.current.update('district', '1050 Wien')
+      result.current.update('startTime', '2026-10-16T12:00')
+      result.current.selectStartPrayer('Maghrib')
+    })
+    await act(async () => { await result.current.submit() })
+    expect(JSON.parse(mockFetch.mock.calls[0][1].body).startPrayer).toBe('MAGHRIB')
+  })
+
+  it('clears an entered end time when a start prayer is chosen', () => {
+    const { result } = renderHook(() => useSubmitEvent())
+    act(() => result.current.update('endTime', '2026-10-16T20:00'))
+    act(() => result.current.selectStartPrayer('Maghrib'))
+    expect(result.current.data.endTime).toBe('')
+  })
+
+  it('keeps the date when switching back to an exact time', () => {
+    const { result } = renderHook(() => useSubmitEvent())
+    act(() => {
+      result.current.selectStartPrayer('Isha')
+      result.current.update('startTime', '2026-10-16T12:00')
+    })
+    act(() => result.current.selectStartPrayer(''))
+    expect(result.current.data.startPrayer).toBe('')
+    expect(result.current.data.startTime).toBe('2026-10-16T12:00')
+  })
+
   it('submit with server error sets status to error', async () => {
     global.fetch = vi.fn().mockResolvedValue({ ok: false, status: 500 })
     const { result } = renderHook(() => useSubmitEvent())

@@ -43,6 +43,10 @@ public class EventDto {
 
     private Instant endTime;
 
+    // When set, startTime's time-of-day is overwritten with that prayer's time
+    // from the prayer_times calendar, and clients show the prayer, not a clock time.
+    private EventEntity.StartPrayer startPrayer;
+
     @NotEmpty
     private Set<EventEntity.EventCategory> categories;
 

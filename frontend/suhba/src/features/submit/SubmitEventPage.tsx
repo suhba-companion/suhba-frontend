@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next'
 import { CheckCircle, X } from '@phosphor-icons/react'
 import { useSubmitEvent } from './useSubmitEvent'
 import { FormField } from './FormField'
-import type { EventCategory } from '../../types'
+import type { EventCategory, PrayerName } from '../../types'
 
 const INPUT_CLASS =
   'w-full bg-cream-card border border-divider rounded-card px-3 py-2.5 text-sm text-text-dark placeholder:text-text-muted outline-none focus:border-sage-light'
@@ -14,13 +14,19 @@ const CATEGORIES: EventCategory[] = [
   'Sonstige',
 ]
 
+const PRAYERS: PrayerName[] = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha']
+
+// A date-only pick is stored at local noon so the day survives any timezone shift.
+const NOON = 'T12:00'
+
 interface SubmitEventPageProps {
   onBack: () => void
 }
 
 export function SubmitEventPage({ onBack }: SubmitEventPageProps): JSX.Element {
   const { t } = useTranslation()
-  const { data, errors, status, update, submit } = useSubmitEvent()
+  const { data, errors, status, update, selectStartPrayer, submit } = useSubmitEvent()
+  const startsAfterPrayer = data.startPrayer !== ''
 
   if (status === 'success') {
     return (
@@ -113,22 +119,48 @@ export function SubmitEventPage({ onBack }: SubmitEventPageProps): JSX.Element {
         </FormField>
 
         <FormField label={t('submit.event.startTimeLabel')} error={errors.startTime}>
-          <input
-            type="datetime-local"
-            value={data.startTime}
-            onChange={(e) => update('startTime', e.target.value)}
-            className={INPUT_CLASS}
-          />
+          <div className="space-y-2">
+            <select
+              value={data.startPrayer}
+              onChange={(e) => selectStartPrayer(e.target.value as PrayerName | '')}
+              aria-label={t('submit.event.startKindLabel')}
+              className={SELECT_CLASS}
+            >
+              <option value="">{t('submit.event.startKindTime')}</option>
+              {PRAYERS.map((prayer) => (
+                <option key={prayer} value={prayer}>{t('events.afterPrayer', { prayer })}</option>
+              ))}
+            </select>
+            {startsAfterPrayer ? (
+              <input
+                type="date"
+                value={data.startTime.slice(0, 10)}
+                onChange={(e) => update('startTime', e.target.value ? `${e.target.value}${NOON}` : '')}
+                aria-label={t('submit.event.startDateLabel')}
+                className={INPUT_CLASS}
+              />
+            ) : (
+              <input
+                type="datetime-local"
+                value={data.startTime}
+                onChange={(e) => update('startTime', e.target.value)}
+                aria-label={t('submit.event.startTimeLabel')}
+                className={INPUT_CLASS}
+              />
+            )}
+          </div>
         </FormField>
 
-        <FormField label={t('submit.event.endTimeLabel')}>
-          <input
-            type="datetime-local"
-            value={data.endTime}
-            onChange={(e) => update('endTime', e.target.value)}
-            className={INPUT_CLASS}
-          />
-        </FormField>
+        {!startsAfterPrayer && (
+          <FormField label={t('submit.event.endTimeLabel')}>
+            <input
+              type="datetime-local"
+              value={data.endTime}
+              onChange={(e) => update('endTime', e.target.value)}
+              className={INPUT_CLASS}
+            />
+          </FormField>
+        )}
 
         <FormField label={t('submit.event.organizerLabel')}>
           <input

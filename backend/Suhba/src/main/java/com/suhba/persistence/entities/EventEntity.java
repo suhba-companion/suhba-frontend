@@ -45,6 +45,12 @@ public class EventEntity {
     @Column(name = "end_time")
     private Instant endTime;
 
+    // Set when the flyer announces a prayer instead of a clock time ("nach dem
+    // Maghrib-Gebet"). startTime still holds the resolved instant for sorting.
+    @Enumerated(EnumType.STRING)
+    @Column(name = "start_prayer", length = 20)
+    private StartPrayer startPrayer;
+
     // EAGER required — LAZY causes LazyInitializationException when mapping outside transaction
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(
@@ -98,6 +104,10 @@ public class EventEntity {
 
     public enum EventCategory {
         PRAYER, LECTURE, CLASS, COMMUNITY, YOUTH, SPORT, FUNDRAISER, NEW_MUSLIMS, OTHER
+    }
+
+    public enum StartPrayer {
+        FAJR, DHUHR, ASR, MAGHRIB, ISHA
     }
 
     public enum ApprovalStatus {

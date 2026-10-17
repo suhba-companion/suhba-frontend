@@ -47,6 +47,17 @@ describe('EventCard', () => {
     expect(screen.queryByText('Kostenlos')).not.toBeInTheDocument()
   })
 
+  it('shows the clock time when no start prayer is set', () => {
+    render(<ul><EventCard event={EVENT} /></ul>)
+    expect(screen.getByText(/14:00 – 15:00/)).toBeInTheDocument()
+  })
+
+  it('names the prayer instead of a time when the event starts after one', () => {
+    render(<ul><EventCard event={{ ...EVENT, startPrayer: 'Maghrib' }} /></ul>)
+    expect(screen.getByText(/nach dem Maghrib-Gebet/)).toBeInTheDocument()
+    expect(screen.queryByText(/14:00/)).not.toBeInTheDocument()
+  })
+
   it('renders the new Muslims category chip', () => {
     render(<ul><EventCard event={{ ...EVENT, categories: ['Kurs', 'Neue Muslime'] }} /></ul>)
     expect(screen.getByText('Neue Muslime')).toBeInTheDocument()

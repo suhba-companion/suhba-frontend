@@ -2,7 +2,9 @@ package com.suhba.services;
 
 import com.suhba.exception.BLException;
 import com.suhba.persistence.entities.EventEntity;
+import com.suhba.persistence.entities.PrayerTimeEntity;
 import com.suhba.persistence.repositories.EventRepository;
+import com.suhba.persistence.repositories.PrayerTimeRepository;
 import com.suhba.services.dto.EventDto;
 import com.suhba.services.dto.NearbyQueryDto;
 import com.suhba.services.impl.EventServiceImpl;
@@ -14,6 +16,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -26,6 +30,7 @@ import static org.mockito.Mockito.*;
 class EventServiceImplTest {
 
     @Mock private EventRepository repository;
+    @Mock private PrayerTimeRepository prayerTimes;
     @Mock private EventMapper mapper;
     @InjectMocks private EventServiceImpl service;
 
@@ -74,6 +79,59 @@ class EventServiceImplTest {
             e.getUpvotes() == 0 &&
             "user1".equals(e.getSubmittedBy())
         ));
+    }
+
+    @Test
+    void submit_withStartPrayer_takesTheTimeOfDayFromThePrayerCalendar() {
+        EventDto input = buildDto(48.2, 16.37);
+        // Only the date of startTime matters once a prayer is given; 00:00 stands for
+        // "16 October", the way the submit form sends a date-only pick.
+        input.setStartTime(Instant.parse("2026-10-16T00:00:00Z"));
+        input.setStartPrayer(EventEntity.StartPrayer.MAGHRIB);
+        EventEntity entity = buildEntity(48.2, 16.37);
+
+        when(prayerTimes.findByDate(LocalDate.of(2026, 10, 16)))
+            .thenReturn(Optional.of(buildPrayerTimes(LocalTime.of(18, 7))));
+        when(mapper.dtoToEntity(input)).thenReturn(entity);
+        when(repository.save(any())).thenReturn(entity);
+        when(mapper.entityToDto(entity)).thenReturn(input);
+
+        service.submit(input, "user1");
+
+        // 18:07 Vienna in October is 16:07 UTC.
+        verify(repository).save(argThat(e ->
+            e.getStartTime().equals(Instant.parse("2026-10-16T16:07:00Z"))
+        ));
+    }
+
+    @Test
+    void submit_withoutStartPrayer_keepsTheSubmittedStartTime() {
+        EventDto input = buildDto(48.2, 16.37);
+        EventEntity entity = buildEntity(48.2, 16.37);
+
+        when(mapper.dtoToEntity(input)).thenReturn(entity);
+        when(repository.save(any())).thenReturn(entity);
+        when(mapper.entityToDto(entity)).thenReturn(input);
+
+        service.submit(input, "user1");
+
+        verify(prayerTimes, never()).findByDate(any());
+        verify(repository).save(argThat(e ->
+            e.getStartTime().equals(Instant.parse("2026-06-05T12:00:00Z"))
+        ));
+    }
+
+    @Test
+    void submit_withStartPrayer_throwsWhenTheCalendarHasNoSuchDay() {
+        EventDto input = buildDto(48.2, 16.37);
+        input.setStartTime(Instant.parse("2030-10-16T00:00:00Z"));
+        input.setStartPrayer(EventEntity.StartPrayer.MAGHRIB);
+
+        when(prayerTimes.findByDate(LocalDate.of(2030, 10, 16))).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> service.submit(input, "user1"))
+            .isInstanceOf(BLException.class)
+            .hasMessageContaining("No prayer times");
     }
 
     @Test
@@ -222,6 +280,18 @@ class EventServiceImplTest {
             .status(EventEntity.ApprovalStatus.APPROVED)
             .submittedBy("tester")
             .upvotes(0)
+            .build();
+    }
+
+    private PrayerTimeEntity buildPrayerTimes(LocalTime maghrib) {
+        return PrayerTimeEntity.builder()
+            .date(LocalDate.of(2026, 10, 16))
+            .fajr(LocalTime.of(5, 50))
+            .shuruq(LocalTime.of(7, 15))
+            .dhuhr(LocalTime.of(12, 45))
+            .asr(LocalTime.of(15, 37))
+            .maghrib(maghrib)
+            .isha(LocalTime.of(19, 37))
             .build();
     }
 
