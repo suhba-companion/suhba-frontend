@@ -12,6 +12,7 @@ const MOCK_EVENT: Event = {
   startTime: '2026-10-20T18:00:00Z',
   categories: ['Vortrag'],
   isFree: true,
+  requiresRegistration: false,
   distanceKm: 2.4,
 }
 

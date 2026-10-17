@@ -75,6 +75,9 @@ public class EventEntity {
     @Column(name = "registration_url", length = 500)
     private String registrationUrl;
 
+    @Column(name = "requires_registration", nullable = false)
+    private Boolean requiresRegistration;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private ApprovalStatus status;

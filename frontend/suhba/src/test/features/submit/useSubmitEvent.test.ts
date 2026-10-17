@@ -239,6 +239,24 @@ describe('useSubmitEvent', () => {
     expect(JSON.parse(mockFetch.mock.calls[0][1].body).registrationUrl).toBeNull()
   })
 
+  it('sends requiresRegistration when the checkbox is ticked', async () => {
+    const mockFetch = vi.fn().mockResolvedValue({ ok: true, json: () => Promise.resolve({}) })
+    global.fetch = mockFetch
+    const { result } = renderHook(() => useSubmitEvent())
+    act(() => {
+      result.current.update('title', 'Test Event')
+      result.current.update('categories', ['Kurs'])
+      result.current.update('address', 'Teststraße 1')
+      result.current.update('district', '1010 Wien')
+      result.current.update('startTime', '2026-06-01T12:00')
+      result.current.update('requiresRegistration', true)
+    })
+    await act(async () => { await result.current.submit() })
+    const body = JSON.parse(mockFetch.mock.calls[0][1].body)
+    expect(body.requiresRegistration).toBe(true)
+    expect(body.registrationUrl).toBeNull()
+  })
+
   it('sends every picked category', async () => {
     const mockFetch = vi.fn().mockResolvedValue({ ok: true, json: () => Promise.resolve({}) })
     global.fetch = mockFetch

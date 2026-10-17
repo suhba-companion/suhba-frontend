@@ -249,6 +249,7 @@
       "startDateLabel": "Datum",
       "endTimeLabel": "Ende (optional)",
       "organizerLabel": "Veranstalter (optional)",
+      "requiresRegistrationLabel": "Anmeldung erforderlich",
       "registrationUrlLabel": "Anmeldelink (optional)",
       "descriptionLabel": "Beschreibung (optional)",
       "isFreeLabel": "Kostenlose Veranstaltung",
@@ -306,6 +307,7 @@
     "free": "Kostenlos",
     "afterPrayer": "nach dem {{prayer}}-Gebet",
     "register": "Zur Anmeldung",
+    "registrationRequired": "Anmeldung erforderlich",
     "filter": "Filter",
     "filter_": {
       "time": "Zeitraum",

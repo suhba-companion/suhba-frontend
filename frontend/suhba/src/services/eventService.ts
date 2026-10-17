@@ -29,6 +29,7 @@ type BackendEvent = {
   contactInfo: string | null
   isFree: boolean
   registrationUrl: string | null
+  requiresRegistration: boolean
   status: string
   upvotes: number
   distanceKm: number | null
@@ -71,6 +72,7 @@ function toFrontendEvent(dto: BackendEvent): Event {
     contactInfo: dto.contactInfo ?? undefined,
     isFree: dto.isFree,
     registrationUrl: toSafeHttpUrl(dto.registrationUrl ?? undefined),
+    requiresRegistration: dto.requiresRegistration,
     distanceKm: dto.distanceKm != null ? roundKm(dto.distanceKm) : undefined,
   }
 }

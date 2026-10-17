@@ -604,6 +604,7 @@ function EventDetail({ data }: { data: PendingEvent }): JSX.Element {
       <Row label="Organizer"   value={data.organizer} />
       <Row label="Contact"     value={data.contactInfo} />
       <Row label="Entry"       value={data.isFree === true ? 'Free' : data.isFree === false ? 'Paid' : undefined} />
+      <Row label="Registration" value={data.requiresRegistration === true ? 'Required' : undefined} />
       <Row label="Description" value={data.description} />
     </>
   )
@@ -792,6 +793,7 @@ function EditForm({ kind, data, onChange }: EditFormProps): JSX.Element {
       </div>
       <Field label="Registration link"><input type="url" className={INPUT} value={str('registrationUrl')} onChange={e => set('registrationUrl', e.target.value)} /></Field>
       <Field label="Description"><input className={INPUT} value={str('description')} onChange={e => set('description', e.target.value)} /></Field>
+      <CheckField label="Registration required" value={bool('requiresRegistration')} onChange={v => set('requiresRegistration', v)} />
       <CheckField label="Free entry" value={bool('isFree')} onChange={v => set('isFree', v)} />
     </div>
   )

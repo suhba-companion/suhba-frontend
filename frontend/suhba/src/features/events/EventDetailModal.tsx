@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import {
   HandsPraying, Microphone, BookOpen, Users, Person, SoccerBall,
-  HandHeart, Question, MapPin, Clock, Phone, ArrowSquareOut, LinkSimple,
+  HandHeart, Question, MapPin, Clock, Phone, ArrowSquareOut, LinkSimple, NotePencil,
   UserPlus,
 } from '@phosphor-icons/react'
 import type { Icon } from '@phosphor-icons/react'
@@ -68,6 +68,12 @@ export function EventDetailModal({ event }: EventDetailModalProps): JSX.Element 
           {event.isFree && (
             <span className="text-xs font-medium text-primary bg-sage-tint px-2.5 py-1 rounded-pill">
               {t('events.free')}
+            </span>
+          )}
+          {event.requiresRegistration && (
+            <span className="inline-flex items-center gap-1 text-xs font-medium text-moss bg-cream-card border border-sage-light px-2.5 py-1 rounded-pill">
+              <NotePencil size={11} weight="bold" aria-hidden="true" />
+              {t('events.registrationRequired')}
             </span>
           )}
         </div>

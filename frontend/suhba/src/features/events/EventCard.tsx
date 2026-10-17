@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import {
   HandsPraying, Microphone, BookOpen, Users, Person, SoccerBall,
-  HandHeart, Question, MapPin, Clock, UserPlus
+  HandHeart, Question, MapPin, Clock, UserPlus, NotePencil
 } from '@phosphor-icons/react'
 import type { Icon } from '@phosphor-icons/react'
 import { buildDirectionsUrl } from '@utils/maps'
@@ -90,6 +90,12 @@ export function EventCard({ event, onSelect }: EventCardProps): JSX.Element {
           {event.isFree && (
             <span className="text-[11px] font-medium text-moss bg-sage-tint px-2 py-0.5 rounded-pill">
               {t('events.free')}
+            </span>
+          )}
+          {event.requiresRegistration && (
+            <span className="inline-flex items-center gap-1 text-[11px] font-medium text-moss bg-cream-card border border-sage-light px-2 py-0.5 rounded-pill truncate">
+              <NotePencil size={11} weight="bold" aria-hidden="true" className="shrink-0" />
+              {t('events.registrationRequired')}
             </span>
           )}
         </div>

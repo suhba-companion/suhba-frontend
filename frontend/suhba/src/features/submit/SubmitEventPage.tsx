@@ -172,6 +172,16 @@ export function SubmitEventPage({ onBack }: SubmitEventPageProps): JSX.Element {
           />
         </FormField>
 
+        <label className="flex items-center gap-3 cursor-pointer">
+          <input
+            type="checkbox"
+            checked={data.requiresRegistration}
+            onChange={(e) => update('requiresRegistration', e.target.checked)}
+            className="w-4 h-4 accent-primary"
+          />
+          <span className="text-sm text-text-dark">{t('submit.event.requiresRegistrationLabel')}</span>
+        </label>
+
         <FormField label={t('submit.event.registrationUrlLabel')} error={errors.registrationUrl}>
           <input
             type="url"

@@ -82,6 +82,36 @@ class EventServiceImplTest {
     }
 
     @Test
+    void submit_defaultsRequiresRegistrationToFalseWhenTheClientOmitsIt() {
+        EventDto input = buildDto(48.2, 16.37);
+        input.setRequiresRegistration(null);
+        EventEntity entity = buildEntity(48.2, 16.37);
+
+        when(mapper.dtoToEntity(input)).thenReturn(entity);
+        when(repository.save(any())).thenReturn(entity);
+        when(mapper.entityToDto(entity)).thenReturn(input);
+
+        service.submit(input, "user1");
+
+        verify(repository).save(argThat(e -> Boolean.FALSE.equals(e.getRequiresRegistration())));
+    }
+
+    @Test
+    void submit_keepsRequiresRegistrationWhenSet() {
+        EventDto input = buildDto(48.2, 16.37);
+        input.setRequiresRegistration(true);
+        EventEntity entity = buildEntity(48.2, 16.37);
+
+        when(mapper.dtoToEntity(input)).thenReturn(entity);
+        when(repository.save(any())).thenReturn(entity);
+        when(mapper.entityToDto(entity)).thenReturn(input);
+
+        service.submit(input, "user1");
+
+        verify(repository).save(argThat(e -> Boolean.TRUE.equals(e.getRequiresRegistration())));
+    }
+
+    @Test
     void submit_withStartPrayer_takesTheTimeOfDayFromThePrayerCalendar() {
         EventDto input = buildDto(48.2, 16.37);
         // Only the date of startTime matters once a prayer is given; 00:00 stands for

@@ -49,6 +49,7 @@ interface EventFormData {
   description: string
   organizer: string
   registrationUrl: string
+  requiresRegistration: boolean
   isFree: boolean
 }
 
@@ -75,6 +76,7 @@ const INITIAL_DATA: EventFormData = {
   description: '',
   organizer: '',
   registrationUrl: '',
+  requiresRegistration: false,
   isFree: false,
 }
 
@@ -133,6 +135,7 @@ export function useSubmitEvent(): UseSubmitEventReturn {
           organizer: data.organizer.trim() || null,
           isFree: data.isFree,
           registrationUrl: toSafeHttpUrl(data.registrationUrl) ?? null,
+          requiresRegistration: data.requiresRegistration,
           latitude: VIENNA_LAT,
           longitude: VIENNA_LNG,
         }),

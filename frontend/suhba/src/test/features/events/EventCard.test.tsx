@@ -13,6 +13,7 @@ const EVENT: Event = {
   startTime: '2026-06-05T12:00:00Z',
   endTime: '2026-06-05T13:00:00Z',
   isFree: true,
+  requiresRegistration: false,
   organizer: 'IZW',
 }
 
@@ -45,6 +46,21 @@ describe('EventCard', () => {
   it('does not show "Kostenlos" when isFree is false', () => {
     render(<ul><EventCard event={{ ...EVENT, isFree: false }} /></ul>)
     expect(screen.queryByText('Kostenlos')).not.toBeInTheDocument()
+  })
+
+  it('shows "Anmeldung erforderlich" when the event requires registration', () => {
+    render(<ul><EventCard event={{ ...EVENT, requiresRegistration: true }} /></ul>)
+    expect(screen.getByText('Anmeldung erforderlich')).toBeInTheDocument()
+  })
+
+  it('shows "Anmeldung erforderlich" without a link when registration is required', () => {
+    render(<ul><EventCard event={{ ...EVENT, requiresRegistration: true, registrationUrl: undefined }} /></ul>)
+    expect(screen.getByText('Anmeldung erforderlich')).toBeInTheDocument()
+  })
+
+  it('does not show "Anmeldung erforderlich" when registration is not required', () => {
+    render(<ul><EventCard event={{ ...EVENT, registrationUrl: 'https://example.com/anmeldung' }} /></ul>)
+    expect(screen.queryByText('Anmeldung erforderlich')).not.toBeInTheDocument()
   })
 
   it('shows the clock time when no start prayer is set', () => {

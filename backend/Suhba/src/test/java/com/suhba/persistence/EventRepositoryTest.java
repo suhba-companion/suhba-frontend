@@ -154,6 +154,7 @@ class EventRepositoryTest {
             .startTime(startTime)
             .categories(Set.of(EventEntity.EventCategory.PRAYER))
             .isFree(true)
+            .requiresRegistration(false)
             .status(status)
             .submittedBy("tester")
             .upvotes(0)

@@ -78,6 +78,7 @@ public class EventServiceImpl implements EventService {
     public EventDto submit(EventDto dto, String submittedBy) {
         EventEntity entity = mapper.dtoToEntity(dto);
         entity.setStartTime(resolveStartTime(dto));
+        entity.setRequiresRegistration(Boolean.TRUE.equals(dto.getRequiresRegistration()));
         entity.setStatus(EventEntity.ApprovalStatus.PENDING);
         entity.setSubmittedBy(submittedBy);
         entity.setUpvotes(0);
@@ -133,6 +134,7 @@ public class EventServiceImpl implements EventService {
         entity.setEndTime(dto.getEndTime());
         entity.setCategories(dto.getCategories());
         entity.setRegistrationUrl(dto.getRegistrationUrl());
+        entity.setRequiresRegistration(Boolean.TRUE.equals(dto.getRequiresRegistration()));
         entity.setOrganizer(dto.getOrganizer());
         entity.setContactInfo(dto.getContactInfo());
         entity.setIsFree(dto.getIsFree());

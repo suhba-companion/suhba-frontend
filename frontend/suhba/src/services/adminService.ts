@@ -89,6 +89,7 @@ export interface PendingEvent {
   organizer: string | null
   contactInfo: string | null
   isFree: boolean | null
+  requiresRegistration: boolean | null
   status: ApprovalStatus
 }
 

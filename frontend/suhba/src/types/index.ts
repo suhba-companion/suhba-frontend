@@ -115,5 +115,6 @@ export interface Event {
   contactInfo?: string;
   isFree: boolean;
   registrationUrl?: string;
+  requiresRegistration: boolean;
   distanceKm?: number;
 }
