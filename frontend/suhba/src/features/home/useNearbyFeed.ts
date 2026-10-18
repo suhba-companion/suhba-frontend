@@ -1,8 +1,7 @@
 import { useState, useEffect, useMemo } from 'react'
-import type { Event, FeedEvent, PrayerSpot, HalalBusiness } from '../../types'
+import type { Event, FeedEvent, PrayerSpot } from '../../types'
 import { getUpcomingEvents } from '@services/eventService'
 import { getSpots } from '@services/masjidiService'
-import { getHalalBusinesses } from '@services/halalService'
 import { useGeolocation } from '../../hooks/useGeolocation'
 
 interface UseNearbyFeedReturn {
@@ -13,7 +12,6 @@ interface UseNearbyFeedReturn {
 
 interface NearbyData {
   spots: readonly PrayerSpot[]
-  businesses: readonly HalalBusiness[]
   events: readonly Event[]
 }
 
@@ -54,22 +52,6 @@ function spotToFeedEvent(spot: PrayerSpot): FeedEvent {
   }
 }
 
-function businessToFeedEvent(business: HalalBusiness): FeedEvent {
-  return {
-    id: `halal-${business.id}`,
-    title: business.name,
-    location: business.district || business.address,
-    address: business.address,
-    district: business.district,
-    distanceKm: business.distanceKm,
-    tag: business.type,
-    time: business.rating !== undefined ? `★ ${business.rating.toFixed(1)}` : 'Halal',
-    kind: 'halal',
-    lat: business.lat,
-    lng: business.lng,
-  }
-}
-
 function eventToFeedEvent(event: Event): FeedEvent {
   return {
     id: `event-${event.id}`,
@@ -88,31 +70,22 @@ function eventToFeedEvent(event: Event): FeedEvent {
 
 export function useNearbyFeed(): UseNearbyFeedReturn {
   const userPos = useGeolocation()
-  const [data, setData] = useState<NearbyData>({ spots: [], businesses: [], events: [] })
+  const [data, setData] = useState<NearbyData>({ spots: [], events: [] })
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<Error | null>(null)
 
   useEffect(() => {
     let cancelled = false
     setLoading(true)
-    Promise.allSettled([
-      getSpots(userPos),
-      getHalalBusinesses(userPos),
-      getUpcomingEvents(userPos),
-    ])
-      .then(([spotsRes, halalRes, eventsRes]) => {
+    Promise.allSettled([getSpots(userPos), getUpcomingEvents(userPos)])
+      .then(([spotsRes, eventsRes]) => {
         if (cancelled) return
-        if (
-          spotsRes.status === 'rejected' &&
-          halalRes.status === 'rejected' &&
-          eventsRes.status === 'rejected'
-        ) {
+        if (spotsRes.status === 'rejected' && eventsRes.status === 'rejected') {
           setError(spotsRes.reason instanceof Error ? spotsRes.reason : new Error('Feed failed'))
           return
         }
         setData({
           spots: spotsRes.status === 'fulfilled' ? spotsRes.value : [],
-          businesses: halalRes.status === 'fulfilled' ? halalRes.value : [],
           events: eventsRes.status === 'fulfilled' ? eventsRes.value : [],
         })
         setError(null)
@@ -130,9 +103,6 @@ export function useNearbyFeed(): UseNearbyFeedReturn {
 
     const nearestSpot = [...data.spots].sort(byDistance)[0]
     if (nearestSpot) result.push(spotToFeedEvent(nearestSpot))
-
-    const nearestBusiness = [...data.businesses].sort(byDistance)[0]
-    if (nearestBusiness) result.push(businessToFeedEvent(nearestBusiness))
 
     const nextEvent = [...data.events].sort(
       (a, b) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime(),

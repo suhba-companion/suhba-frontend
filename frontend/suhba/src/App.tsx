@@ -4,7 +4,7 @@ import { TopBar, NavBar, SideBar, ErrorBoundary, Modal, PrayerCountdown } from '
 import type { NavTab } from '@components'
 import { HomePage } from '@features/home'
 import { SpotsPage, SpotDetailPage } from '@features/spots'
-import { HalalPage, HalalBusinessDetailPage } from '@features/halal'
+import { HalalUnavailablePage } from '@features/halal'
 import { EventsPage, EventDetailPage } from '@features/events'
 import { AzkarPage } from '@features/azkar'
 import { SubmitSpotPage, SubmitBusinessPage, SubmitEventPage } from '@features/submit'
@@ -18,14 +18,12 @@ function App(): JSX.Element {
   const { t } = useTranslation()
   const [activeTab, setActiveTab] = useState<NavTab>('start')
   const [selectedSpot, setSelectedSpot] = useState<{ id: string; name: string } | null>(null)
-  const [selectedBusiness, setSelectedBusiness] = useState<string | null>(null)
   const [selectedEvent, setSelectedEvent] = useState<{ id: string; title: string } | null>(null)
   const [activeForm, setActiveForm] = useState<FormView>(null)
   const [legalDocument, setLegalDocument] = useState<LegalDocument | null>(null)
 
   const handleTabChange = (tab: NavTab): void => {
     setSelectedSpot(null)
-    setSelectedBusiness(null)
     setSelectedEvent(null)
     setActiveForm(null)
     setLegalDocument(null)
@@ -69,7 +67,6 @@ function App(): JSX.Element {
         <HomePage
           onNavigate={handleTabChange}
           onSpotSelect={(id, name) => setSelectedSpot({ id, name })}
-          onBusinessSelect={(id) => setSelectedBusiness(id)}
           onEventSelect={(id, title) => setSelectedEvent({ id, title })}
         />
       )
@@ -83,12 +80,7 @@ function App(): JSX.Element {
       )
     }
     if (activeTab === 'halal') {
-      return (
-        <HalalPage
-          onAddBusiness={() => setActiveForm('submit-business')}
-          onBusinessSelect={(id) => setSelectedBusiness(id)}
-        />
-      )
+      return <HalalUnavailablePage onAddBusiness={() => setActiveForm('submit-business')} />
     }
     if (activeTab === 'events') {
       return <EventsPage onAddEvent={() => setActiveForm('submit-event')} />
@@ -138,11 +130,6 @@ function App(): JSX.Element {
       {selectedSpot !== null && (
         <Modal title={selectedSpot.name} onClose={() => setSelectedSpot(null)}>
           <SpotDetailPage spotId={selectedSpot.id} />
-        </Modal>
-      )}
-      {selectedBusiness !== null && (
-        <Modal title={t('halal.detail.title')} onClose={() => setSelectedBusiness(null)}>
-          <HalalBusinessDetailPage businessId={selectedBusiness} />
         </Modal>
       )}
       {selectedEvent !== null && (

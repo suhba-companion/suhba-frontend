@@ -103,6 +103,11 @@
     "allBusinesses": "Alle Betriebe",
     "noResults": "Keine Betriebe gefunden. Passe deine Suche an.",
     "certHMA": "HMA",
+    "unavailable": {
+      "title": "Halal Spots sind zurzeit nicht verfügbar",
+      "body": "Wir arbeiten gerade an einer zuverlässigen Liste, die nur Betriebe anzeigt, die zu 100 % halal sind.",
+      "suggest": "+ Betrieb vorschlagen"
+    },
     "stars": "{{rating}} Sterne",
     "detail": {
       "title": "Betrieb",

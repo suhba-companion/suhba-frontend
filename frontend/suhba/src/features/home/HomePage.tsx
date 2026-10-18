@@ -12,11 +12,10 @@ import { PrayerTimesWidget } from './PrayerTimesWidget'
 interface HomePageProps {
   onNavigate: (tab: NavTab) => void
   onSpotSelect?: (id: string, name: string) => void
-  onBusinessSelect?: (id: string) => void
   onEventSelect?: (id: string, title: string) => void
 }
 
-export function HomePage({ onNavigate, onSpotSelect, onBusinessSelect, onEventSelect }: HomePageProps): JSX.Element {
+export function HomePage({ onNavigate, onSpotSelect, onEventSelect }: HomePageProps): JSX.Element {
   const { t } = useTranslation()
   const { dhikrList, current, index, goToNext, goTo } = useDhikr()
   const { items: nearbyItems, loading: nearbyLoading, error: nearbyError } = useNearbyFeed()
@@ -25,7 +24,6 @@ export function HomePage({ onNavigate, onSpotSelect, onBusinessSelect, onEventSe
     if (item.kind === undefined) return
     const rawId = item.id.slice(item.kind.length + 1)
     if (item.kind === 'spot') onSpotSelect?.(rawId, item.title)
-    else if (item.kind === 'halal') onBusinessSelect?.(rawId)
     else if (item.kind === 'event') onEventSelect?.(rawId, item.title)
   }
 
