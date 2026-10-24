@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import {
   HandsPraying, Microphone, BookOpen, Users, Person, SoccerBall,
-  HandHeart, Question, MapPin, Clock, Phone, ArrowSquareOut, LinkSimple, NotePencil,
+  HandHeart, Question, MapPin, Clock, Phone, ArrowSquareOut, NotePencil,
   UserPlus, Repeat, PencilRuler,
 } from '@phosphor-icons/react'
 import type { Icon } from '@phosphor-icons/react'
@@ -10,6 +10,7 @@ import { buildDirectionsUrl } from '@utils/maps'
 import { formatEventTime } from '@utils/eventTime'
 import { AUDIENCE_LABEL_KEYS } from './audience'
 import { formatRecurrence, formatRecurrenceEnd } from './recurrence'
+import { RegistrationLink } from './RegistrationLink'
 
 const CATEGORY_ICONS: Record<EventCategory, Icon> = {
   Gebet: HandsPraying,
@@ -133,15 +134,7 @@ export function EventDetailModal({ event }: EventDetailModalProps): JSX.Element 
         )}
 
         {event.registrationUrl !== undefined && (
-          <a
-            href={event.registrationUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-full py-3 text-sm font-medium text-primary bg-sage-tint rounded-card hover:bg-sage-light transition-colors flex items-center justify-center gap-2"
-          >
-            <LinkSimple size={16} aria-hidden="true" />
-            {t('events.register')}
-          </a>
+          <RegistrationLink url={event.registrationUrl} />
         )}
 
         <button

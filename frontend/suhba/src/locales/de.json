@@ -329,7 +329,8 @@
       "monthly": "Monatlich am {{day}}.",
       "until": "bis {{date}}"
     },
-    "register": "Zur Anmeldung",
+    "copyLink": "Link kopieren",
+    "linkCopied": "Link kopiert",
     "registrationRequired": "Anmeldung erforderlich",
     "sistersOnly": "Nur Schwestern",
     "brothersOnly": "Nur Brüder",
