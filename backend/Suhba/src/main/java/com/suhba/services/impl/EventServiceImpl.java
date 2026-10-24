@@ -14,12 +14,16 @@ import org.springframework.stereotype.Service;
 
 import org.springframework.data.domain.Sort;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,27 +38,29 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public List<EventDto> getAll() {
-        return mapper.entityListToDtoList(
-            repository.findAllByStatusOrderByStartTimeAsc(EventEntity.ApprovalStatus.APPROVED)
+        return project(
+            repository.findAllByStatusOrderByStartTimeAsc(EventEntity.ApprovalStatus.APPROVED),
+            Instant.now()
         );
     }
 
     @Override
     public List<EventDto> getUpcoming() {
-        return mapper.entityListToDtoList(
-            repository.findUpcoming(Instant.now())
-        );
+        Instant now = Instant.now();
+        return project(repository.findUpcoming(now, now.atZone(VIENNA).toLocalDate()), now);
     }
 
     @Override
     public List<EventDto> findNearby(NearbyQueryDto query) {
+        Instant now = Instant.now();
         double[] bbox = boundingBox(query.getLatitude(), query.getLongitude(), query.getRadiusKm());
         List<EventEntity> candidates = repository.findUpcomingInBoundingBox(
-            Instant.now(), bbox[0], bbox[1], bbox[2], bbox[3]
+            now, now.atZone(VIENNA).toLocalDate(), bbox[0], bbox[1], bbox[2], bbox[3]
         );
         return candidates.stream()
             .map(entity -> {
-                EventDto dto = mapper.entityToDto(entity);
+                EventDto dto = projectNextOccurrence(entity, now);
+                if (dto == null) return null;
                 double dist = haversine(
                     query.getLatitude(), query.getLongitude(),
                     entity.getLatitude(), entity.getLongitude()
@@ -62,6 +68,7 @@ public class EventServiceImpl implements EventService {
                 dto.setDistanceKm(Math.round(dist * 100.0) / 100.0);
                 return dto;
             })
+            .filter(Objects::nonNull)
             .filter(dto -> dto.getDistanceKm() <= query.getRadiusKm())
             .sorted(Comparator.comparing(EventDto::getStartTime))
             .collect(Collectors.toList());
@@ -69,15 +76,15 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public EventDto getById(Long id) {
-        return repository.findById(id)
-            .map(mapper::entityToDto)
-            .orElseThrow(() -> new BLException("Event not found: " + id));
+        return projectOrAnchor(findOrThrow(id));
     }
 
     @Override
     public EventDto submit(EventDto dto, String submittedBy) {
+        requireLiveSeries(dto);
         EventEntity entity = mapper.dtoToEntity(dto);
         entity.setStartTime(resolveStartTime(dto));
+        entity.setRecurrenceUntil(recurrenceUntilFor(dto));
         entity.setRequiresRegistration(Boolean.TRUE.equals(dto.getRequiresRegistration()));
         entity.setStatus(EventEntity.ApprovalStatus.PENDING);
         entity.setSubmittedBy(submittedBy);
@@ -103,7 +110,10 @@ public class EventServiceImpl implements EventService {
     public EventDto upvote(Long id) {
         EventEntity entity = findOrThrow(id);
         entity.setUpvotes(entity.getUpvotes() + 1);
-        return mapper.entityToDto(repository.save(entity));
+        // Public endpoint, so it answers with the same occurrence /upcoming and the detail
+        // page show. Returning the raw anchor would snap a series' date back to its first
+        // occurrence in whatever card the client re-renders from the response.
+        return projectOrAnchor(repository.save(entity));
     }
 
     @Override
@@ -122,6 +132,7 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public EventDto update(Long id, EventDto dto) {
+        requireLiveSeries(dto);
         EventEntity entity = findOrThrow(id);
         entity.setTitle(dto.getTitle());
         entity.setDescription(dto.getDescription());
@@ -132,6 +143,8 @@ public class EventServiceImpl implements EventService {
         entity.setStartPrayer(dto.getStartPrayer());
         entity.setStartTime(resolveStartTime(dto));
         entity.setEndTime(dto.getEndTime());
+        entity.setRecurrence(dto.getRecurrence());
+        entity.setRecurrenceUntil(recurrenceUntilFor(dto));
         entity.setCategories(dto.getCategories());
         entity.setRegistrationUrl(dto.getRegistrationUrl());
         entity.setRequiresRegistration(Boolean.TRUE.equals(dto.getRequiresRegistration()));
@@ -150,6 +163,104 @@ public class EventServiceImpl implements EventService {
     }
 
     /**
+     * Occurrences of a series are never stored, so the one a visitor should actually see
+     * is worked out here: the first occurrence that has not passed yet. A weekly circle
+     * therefore stays in /upcoming forever with next week's date, instead of ageing out
+     * the way a one-off does, and it keeps the single id its detail page and upvotes use.
+     */
+    private List<EventDto> project(List<EventEntity> entities, Instant now) {
+        return entities.stream()
+            .map(entity -> projectNextOccurrence(entity, now))
+            .filter(Objects::nonNull)
+            .sorted(Comparator.comparing(EventDto::getStartTime))
+            .collect(Collectors.toList());
+    }
+
+    /**
+     * A series whose last date has passed still has a detail page; it then shows the
+     * occurrence the organiser gave rather than one that will never happen again.
+     */
+    private EventDto projectOrAnchor(EventEntity entity) {
+        EventDto projected = projectNextOccurrence(entity, Instant.now());
+        return projected != null ? projected : mapper.entityToDto(entity);
+    }
+
+    /**
+     * An end date only means anything for a series. Storing one on a one-off leaves a row
+     * that reads as a series the moment someone sets `recurrence` again, with a long-stale
+     * date that quietly hides the event.
+     */
+    private LocalDate recurrenceUntilFor(EventDto dto) {
+        return dto.getRecurrence() == null ? null : dto.getRecurrenceUntil();
+    }
+
+    /** Null when the event is a series that has no occurrence left. */
+    private EventDto projectNextOccurrence(EventEntity entity, Instant now) {
+        EventDto dto = mapper.entityToDto(entity);
+        if (entity.getRecurrence() == null) return dto;
+
+        Instant next = nextOccurrence(entity, now);
+        if (next == null) return null;
+        if (entity.getEndTime() != null) {
+            dto.setEndTime(next.plus(Duration.between(entity.getStartTime(), entity.getEndTime())));
+        }
+        dto.setStartTime(next);
+        return dto;
+    }
+
+    /** Null when the series has run past its last date. */
+    private Instant nextOccurrence(EventEntity entity, Instant now) {
+        ZonedDateTime anchor = entity.getStartTime().atZone(VIENNA);
+        // Jump straight to roughly the right repeat instead of stepping through years of
+        // them, then walk the last step or two forward to land on the exact one.
+        long skipped = switch (entity.getRecurrence()) {
+            case WEEKLY   -> ChronoUnit.WEEKS.between(anchor, now.atZone(VIENNA));
+            case BIWEEKLY -> ChronoUnit.WEEKS.between(anchor, now.atZone(VIENNA)) / 2;
+            case MONTHLY  -> ChronoUnit.MONTHS.between(anchor, now.atZone(VIENNA));
+        };
+        long repeat = Math.max(0, skipped);
+        ZonedDateTime occurrence = occurrenceAt(entity, anchor, repeat);
+        while (occurrence.toInstant().isBefore(now)) {
+            occurrence = occurrenceAt(entity, anchor, ++repeat);
+        }
+        LocalDate until = entity.getRecurrenceUntil();
+        if (until != null && occurrence.toLocalDate().isAfter(until)) return null;
+        return occurrence.toInstant();
+    }
+
+    private ZonedDateTime occurrenceAt(EventEntity entity, ZonedDateTime anchor, long repeat) {
+        // Always counted from the anchor, never from the previous occurrence: stepping
+        // month by month would drift off a 31st once February has clamped it to the 28th.
+        ZonedDateTime occurrence = switch (entity.getRecurrence()) {
+            case WEEKLY   -> anchor.plusWeeks(repeat);
+            case BIWEEKLY -> anchor.plusWeeks(2 * repeat);
+            case MONTHLY  -> anchor.plusMonths(repeat);
+        };
+        if (entity.getStartPrayer() == null) return occurrence;
+        // A series tied to a prayer drifts with the calendar, so each occurrence takes its
+        // time of day from its own date. Past the end of the seeded calendar there is
+        // nothing to read, and the anchor's time of day keeps the sort order sane.
+        return prayerTimes.findByDate(occurrence.toLocalDate())
+            .map(times -> occurrence.toLocalDate()
+                .atTime(prayerTimeOf(times, entity.getStartPrayer()))
+                .atZone(VIENNA))
+            .orElse(occurrence);
+    }
+
+    /**
+     * A series that ends before it starts would silently never show up, so it is rejected
+     * at the edge rather than saved as a row nobody can explain later.
+     */
+    private void requireLiveSeries(EventDto dto) {
+        if (dto.getRecurrence() == null || dto.getRecurrenceUntil() == null) return;
+        LocalDate start = dto.getStartTime().atZone(VIENNA).toLocalDate();
+        if (dto.getRecurrenceUntil().isBefore(start)) {
+            throw new BLException(
+                "recurrenceUntil " + dto.getRecurrenceUntil() + " is before the first occurrence " + start);
+        }
+    }
+
+    /**
      * An event announced as "after the Maghrib prayer" carries no clock time of its own.
      * The caller still sends a startTime, but only its date matters: the time of day comes
      * from the prayer calendar, so the stored instant stays correct for sorting and
@@ -161,14 +272,17 @@ public class EventServiceImpl implements EventService {
         PrayerTimeEntity times = prayerTimes.findByDate(date)
             .orElseThrow(() -> new BLException(
                 "No prayer times for " + date + ", cannot resolve " + dto.getStartPrayer()));
-        LocalTime time = switch (dto.getStartPrayer()) {
+        return date.atTime(prayerTimeOf(times, dto.getStartPrayer())).atZone(VIENNA).toInstant();
+    }
+
+    private LocalTime prayerTimeOf(PrayerTimeEntity times, EventEntity.StartPrayer prayer) {
+        return switch (prayer) {
             case FAJR    -> times.getFajr();
             case DHUHR   -> times.getDhuhr();
             case ASR     -> times.getAsr();
             case MAGHRIB -> times.getMaghrib();
             case ISHA    -> times.getIsha();
         };
-        return date.atTime(time).atZone(VIENNA).toInstant();
     }
 
     private EventEntity findOrThrow(Long id) {

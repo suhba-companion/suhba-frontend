@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Set;
 
 @Entity
@@ -50,6 +51,19 @@ public class EventEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "start_prayer", length = 20)
     private StartPrayer startPrayer;
+
+    // Set when the event is a series ("jeden Samstag"). startTime then holds the first
+    // occurrence and anchors the series; the next occurrence is projected at read time
+    // and never stored, so the series keeps one id and never ages out of /upcoming.
+    // null means a one-off event.
+    @Enumerated(EnumType.STRING)
+    @Column(name = "recurrence", length = 20)
+    private Recurrence recurrence;
+
+    // Inclusive last date the series may still produce an occurrence on.
+    // null means it runs open-ended.
+    @Column(name = "recurrence_until")
+    private LocalDate recurrenceUntil;
 
     // Set when the announcement restricts the event to sisters or to brothers.
     // null means it is open to everyone, so no audience is shown.
@@ -113,6 +127,10 @@ public class EventEntity {
 
     public enum EventCategory {
         PRAYER, LECTURE, CLASS, COMMUNITY, YOUTH, SPORT, FUNDRAISER, NEW_MUSLIMS, OTHER
+    }
+
+    public enum Recurrence {
+        WEEKLY, BIWEEKLY, MONTHLY
     }
 
     public enum Audience {

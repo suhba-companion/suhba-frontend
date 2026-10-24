@@ -307,4 +307,106 @@ describe('useSubmitEvent', () => {
     const { result } = renderHook(() => useSubmitEvent())
     expect(Object.keys(result.current.errors)).toHaveLength(0)
   })
+  // ── Recurring series ────────────────────────────────────────────────────────
+
+  const fillValid = (result: { current: ReturnType<typeof useSubmitEvent> }): void => {
+    result.current.update('title', 'Quran-Kreis')
+    result.current.update('categories', ['Kurs'])
+    result.current.update('address', 'Teststraße 1')
+    result.current.update('district', '1010 Wien')
+    result.current.update('startTime', '2026-06-06T18:00')
+  }
+
+  it('sends no recurrence by default', async () => {
+    const mockFetch = vi.fn().mockResolvedValue({ ok: true, json: () => Promise.resolve({}) })
+    global.fetch = mockFetch
+    const { result } = renderHook(() => useSubmitEvent())
+    act(() => fillValid(result))
+    await act(async () => { await result.current.submit() })
+    const body = JSON.parse(mockFetch.mock.calls[0][1].body)
+    expect(body.recurrence).toBeNull()
+    expect(body.recurrenceUntil).toBeNull()
+  })
+
+  it('sends the picked pattern as the backend enum', async () => {
+    const mockFetch = vi.fn().mockResolvedValue({ ok: true, json: () => Promise.resolve({}) })
+    global.fetch = mockFetch
+    const { result } = renderHook(() => useSubmitEvent())
+    act(() => {
+      fillValid(result)
+      result.current.selectRecurrence('Zweiwöchentlich')
+    })
+    await act(async () => { await result.current.submit() })
+    expect(JSON.parse(mockFetch.mock.calls[0][1].body).recurrence).toBe('BIWEEKLY')
+  })
+
+  it('sends an open-ended series with no end date', async () => {
+    const mockFetch = vi.fn().mockResolvedValue({ ok: true, json: () => Promise.resolve({}) })
+    global.fetch = mockFetch
+    const { result } = renderHook(() => useSubmitEvent())
+    act(() => {
+      fillValid(result)
+      result.current.selectRecurrence('Wöchentlich')
+    })
+    await act(async () => { await result.current.submit() })
+    const body = JSON.parse(mockFetch.mock.calls[0][1].body)
+    expect(body.recurrence).toBe('WEEKLY')
+    expect(body.recurrenceUntil).toBeNull()
+  })
+
+  it('sends the end date of a series that stops', async () => {
+    const mockFetch = vi.fn().mockResolvedValue({ ok: true, json: () => Promise.resolve({}) })
+    global.fetch = mockFetch
+    const { result } = renderHook(() => useSubmitEvent())
+    act(() => {
+      fillValid(result)
+      result.current.selectRecurrence('Wöchentlich')
+    })
+    act(() => result.current.update('recurrenceUntil', '2026-12-31'))
+    await act(async () => { await result.current.submit() })
+    expect(JSON.parse(mockFetch.mock.calls[0][1].body).recurrenceUntil).toBe('2026-12-31')
+  })
+
+  it('drops an end date that was entered before falling back to a one-off', async () => {
+    const mockFetch = vi.fn().mockResolvedValue({ ok: true, json: () => Promise.resolve({}) })
+    global.fetch = mockFetch
+    const { result } = renderHook(() => useSubmitEvent())
+    act(() => {
+      fillValid(result)
+      result.current.selectRecurrence('Wöchentlich')
+    })
+    act(() => result.current.update('recurrenceUntil', '2026-12-31'))
+    act(() => result.current.selectRecurrence(''))
+    expect(result.current.data.recurrenceUntil).toBe('')
+    await act(async () => { await result.current.submit() })
+    expect(JSON.parse(mockFetch.mock.calls[0][1].body).recurrenceUntil).toBeNull()
+  })
+
+  it('rejects a series that ends before its first occurrence', async () => {
+    const mockFetch = vi.fn().mockResolvedValue({ ok: true, json: () => Promise.resolve({}) })
+    global.fetch = mockFetch
+    const { result } = renderHook(() => useSubmitEvent())
+    act(() => {
+      fillValid(result)
+      result.current.selectRecurrence('Wöchentlich')
+    })
+    act(() => result.current.update('recurrenceUntil', '2026-06-05'))
+    await act(async () => { await result.current.submit() })
+    expect(result.current.errors.recurrenceUntil).toBeDefined()
+    expect(mockFetch).not.toHaveBeenCalled()
+  })
+
+  it('accepts a series that ends on the day it starts', async () => {
+    const mockFetch = vi.fn().mockResolvedValue({ ok: true, json: () => Promise.resolve({}) })
+    global.fetch = mockFetch
+    const { result } = renderHook(() => useSubmitEvent())
+    act(() => {
+      fillValid(result)
+      result.current.selectRecurrence('Wöchentlich')
+    })
+    act(() => result.current.update('recurrenceUntil', '2026-06-06'))
+    await act(async () => { await result.current.submit() })
+    expect(result.current.errors.recurrenceUntil).toBeUndefined()
+    expect(result.current.status).toBe('success')
+  })
 })

@@ -5,6 +5,7 @@ import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Set;
 
 @Data
@@ -46,6 +47,13 @@ public class EventDto {
     // When set, startTime's time-of-day is overwritten with that prayer's time
     // from the prayer_times calendar, and clients show the prayer, not a clock time.
     private EventEntity.StartPrayer startPrayer;
+
+    // When set, the event is a series. On the public reads startTime/endTime carry the
+    // next occurrence that has not passed yet, not the first one the organiser gave.
+    private EventEntity.Recurrence recurrence;
+
+    // Inclusive last date the series still runs on. null means open-ended.
+    private LocalDate recurrenceUntil;
 
     @NotEmpty
     private Set<EventEntity.EventCategory> categories;

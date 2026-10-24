@@ -8,6 +8,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
@@ -25,7 +26,7 @@ class EventRepositoryTest {
         Instant future = Instant.now().plusSeconds(3600);
         repository.save(buildEvent(48.2, 16.37, future, EventEntity.ApprovalStatus.APPROVED));
 
-        List<EventEntity> result = repository.findUpcoming(Instant.now());
+        List<EventEntity> result = repository.findUpcoming(Instant.now(), LocalDate.now());
 
         assertThat(result).isNotEmpty();
     }
@@ -35,7 +36,7 @@ class EventRepositoryTest {
         Instant past = Instant.now().minusSeconds(3600);
         repository.save(buildEvent(48.2, 16.37, past, EventEntity.ApprovalStatus.APPROVED));
 
-        List<EventEntity> result = repository.findUpcoming(Instant.now());
+        List<EventEntity> result = repository.findUpcoming(Instant.now(), LocalDate.now());
 
         assertThat(result).isEmpty();
     }
@@ -45,7 +46,7 @@ class EventRepositoryTest {
         Instant future = Instant.now().plusSeconds(3600);
         repository.save(buildEvent(48.2, 16.37, future, EventEntity.ApprovalStatus.PENDING));
 
-        List<EventEntity> result = repository.findUpcoming(Instant.now());
+        List<EventEntity> result = repository.findUpcoming(Instant.now(), LocalDate.now());
 
         assertThat(result).isEmpty();
     }
@@ -57,7 +58,7 @@ class EventRepositoryTest {
         repository.save(buildEvent(48.2, 16.37, second, EventEntity.ApprovalStatus.APPROVED));
         repository.save(buildEvent(48.21, 16.38, first, EventEntity.ApprovalStatus.APPROVED));
 
-        List<EventEntity> result = repository.findUpcoming(Instant.now());
+        List<EventEntity> result = repository.findUpcoming(Instant.now(), LocalDate.now());
 
         assertThat(result).hasSize(2);
         assertThat(result.get(0).getStartTime()).isBefore(result.get(1).getStartTime());
@@ -69,7 +70,7 @@ class EventRepositoryTest {
         repository.save(buildEvent(48.2, 16.37, future, EventEntity.ApprovalStatus.APPROVED));
 
         List<EventEntity> result = repository.findUpcomingInBoundingBox(
-            Instant.now(), 48.1, 48.3, 16.3, 16.4
+            Instant.now(), LocalDate.now(), 48.1, 48.3, 16.3, 16.4
         );
 
         assertThat(result).isNotEmpty();
@@ -81,7 +82,7 @@ class EventRepositoryTest {
         repository.save(buildEvent(48.2, 16.37, future, EventEntity.ApprovalStatus.APPROVED));
 
         List<EventEntity> result = repository.findUpcomingInBoundingBox(
-            Instant.now(), 47.0, 47.5, 15.0, 15.5
+            Instant.now(), LocalDate.now(), 47.0, 47.5, 15.0, 15.5
         );
 
         assertThat(result).isEmpty();
@@ -93,7 +94,7 @@ class EventRepositoryTest {
         repository.save(buildEvent(48.2, 16.37, past, EventEntity.ApprovalStatus.APPROVED));
 
         List<EventEntity> result = repository.findUpcomingInBoundingBox(
-            Instant.now(), 48.1, 48.3, 16.3, 16.4
+            Instant.now(), LocalDate.now(), 48.1, 48.3, 16.3, 16.4
         );
 
         assertThat(result).isEmpty();
@@ -167,6 +168,44 @@ class EventRepositoryTest {
         assertThat(repository.findById(id)).get()
             .extracting(EventEntity::getAudience)
             .isNull();
+    }
+
+    @Test
+    void findUpcoming_keepsAnOpenEndedSeriesWhoseFirstOccurrenceIsLongPast() {
+        EventEntity series = buildEvent(
+            48.2, 16.37, Instant.now().minusSeconds(86400 * 90), EventEntity.ApprovalStatus.APPROVED);
+        series.setRecurrence(EventEntity.Recurrence.WEEKLY);
+        repository.save(series);
+
+        List<EventEntity> result = repository.findUpcoming(Instant.now(), LocalDate.now());
+
+        assertThat(result).hasSize(1);
+    }
+
+    @Test
+    void findUpcoming_keepsASeriesWhoseLastDateIsStillAhead() {
+        EventEntity series = buildEvent(
+            48.2, 16.37, Instant.now().minusSeconds(86400 * 30), EventEntity.ApprovalStatus.APPROVED);
+        series.setRecurrence(EventEntity.Recurrence.WEEKLY);
+        series.setRecurrenceUntil(LocalDate.now().plusMonths(1));
+        repository.save(series);
+
+        List<EventEntity> result = repository.findUpcoming(Instant.now(), LocalDate.now());
+
+        assertThat(result).hasSize(1);
+    }
+
+    @Test
+    void findUpcoming_excludesASeriesWhoseLastDateHasPassed() {
+        EventEntity series = buildEvent(
+            48.2, 16.37, Instant.now().minusSeconds(86400 * 90), EventEntity.ApprovalStatus.APPROVED);
+        series.setRecurrence(EventEntity.Recurrence.WEEKLY);
+        series.setRecurrenceUntil(LocalDate.now().minusDays(1));
+        repository.save(series);
+
+        List<EventEntity> result = repository.findUpcoming(Instant.now(), LocalDate.now());
+
+        assertThat(result).isEmpty();
     }
 
     private EventEntity buildEvent(double lat, double lng, Instant startTime, EventEntity.ApprovalStatus status) {

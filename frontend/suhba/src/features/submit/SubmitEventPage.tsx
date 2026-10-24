@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next'
 import { CheckCircle, X } from '@phosphor-icons/react'
 import { useSubmitEvent } from './useSubmitEvent'
 import { FormField } from './FormField'
-import type { EventAudience, EventCategory, PrayerName } from '../../types'
+import type { EventAudience, EventCategory, EventRecurrence, PrayerName } from '../../types'
 
 const INPUT_CLASS =
   'w-full bg-cream-card border border-divider rounded-card px-3 py-2.5 text-sm text-text-dark placeholder:text-text-muted outline-none focus:border-sage-light'
@@ -24,6 +24,14 @@ const AUDIENCES: { value: EventAudience | ''; labelKey: string }[] = [
   { value: 'Nur Brüder',     labelKey: 'submit.event.audienceBrothers' },
 ]
 
+// '' is a one-off event, which stays the default: most submissions are a single date.
+const RECURRENCES: { value: EventRecurrence | ''; labelKey: string }[] = [
+  { value: '',                labelKey: 'submit.event.recurrenceNone' },
+  { value: 'Wöchentlich',     labelKey: 'submit.event.recurrenceWeekly' },
+  { value: 'Zweiwöchentlich', labelKey: 'submit.event.recurrenceBiweekly' },
+  { value: 'Monatlich',       labelKey: 'submit.event.recurrenceMonthly' },
+]
+
 // A date-only pick is stored at local noon so the day survives any timezone shift.
 const NOON = 'T12:00'
 
@@ -33,8 +41,9 @@ interface SubmitEventPageProps {
 
 export function SubmitEventPage({ onBack }: SubmitEventPageProps): JSX.Element {
   const { t } = useTranslation()
-  const { data, errors, status, update, selectStartPrayer, submit } = useSubmitEvent()
+  const { data, errors, status, update, selectStartPrayer, selectRecurrence, submit } = useSubmitEvent()
   const startsAfterPrayer = data.startPrayer !== ''
+  const repeats = data.recurrence !== ''
 
   if (status === 'success') {
     return (
@@ -165,6 +174,34 @@ export function SubmitEventPage({ onBack }: SubmitEventPageProps): JSX.Element {
               type="datetime-local"
               value={data.endTime}
               onChange={(e) => update('endTime', e.target.value)}
+              className={INPUT_CLASS}
+            />
+          </FormField>
+        )}
+
+        <FormField label={t('submit.event.recurrenceLabel')}>
+          <div className="space-y-2">
+            <select
+              value={data.recurrence}
+              onChange={(e) => selectRecurrence(e.target.value as EventRecurrence | '')}
+              className={SELECT_CLASS}
+            >
+              {RECURRENCES.map(({ value, labelKey }) => (
+                <option key={value} value={value}>{t(labelKey)}</option>
+              ))}
+            </select>
+            {repeats && (
+              <p className="text-xs text-text-muted m-0">{t('submit.event.recurrenceHint')}</p>
+            )}
+          </div>
+        </FormField>
+
+        {repeats && (
+          <FormField label={t('submit.event.recurrenceUntilLabel')} error={errors.recurrenceUntil}>
+            <input
+              type="date"
+              value={data.recurrenceUntil}
+              onChange={(e) => update('recurrenceUntil', e.target.value)}
               className={INPUT_CLASS}
             />
           </FormField>

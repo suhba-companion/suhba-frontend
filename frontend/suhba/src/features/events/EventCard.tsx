@@ -1,13 +1,14 @@
 import { useTranslation } from 'react-i18next'
 import {
   HandsPraying, Microphone, BookOpen, Users, Person, SoccerBall,
-  HandHeart, Question, MapPin, Clock, UserPlus, NotePencil
+  HandHeart, Question, MapPin, Clock, UserPlus, NotePencil, Repeat
 } from '@phosphor-icons/react'
 import type { Icon } from '@phosphor-icons/react'
 import { buildDirectionsUrl } from '@utils/maps'
 import { formatEventTime } from '@utils/eventTime'
 import type { Event, EventCategory } from '../../types'
 import { AUDIENCE_LABEL_KEYS } from './audience'
+import { formatRecurrence } from './recurrence'
 
 const CATEGORY_ICONS: Record<EventCategory, Icon> = {
   Gebet: HandsPraying,
@@ -40,6 +41,7 @@ function openRoute(e: React.MouseEvent, event: Event): void {
 
 export function EventCard({ event, onSelect }: EventCardProps): JSX.Element {
   const { t } = useTranslation()
+  const repeat = formatRecurrence(event, t)
   return (
     <li
       className={[
@@ -57,7 +59,7 @@ export function EventCard({ event, onSelect }: EventCardProps): JSX.Element {
         </div>
       </div>
 
-      {event.categories.length > 0 && (
+      {(event.categories.length > 0 || repeat !== undefined) && (
         <ul className="flex flex-wrap gap-1.5 list-none m-0 p-0">
           {event.categories.map((category) => {
             const CategoryIcon = CATEGORY_ICONS[category]
@@ -71,6 +73,12 @@ export function EventCard({ event, onSelect }: EventCardProps): JSX.Element {
               </li>
             )
           })}
+          {repeat !== undefined && (
+            <li className="inline-flex items-center gap-1 text-moss text-[11px] font-semibold bg-cream-card border border-sage-light px-2 py-0.5 rounded-pill">
+              <Repeat size={10} weight="bold" aria-hidden="true" />
+              {repeat}
+            </li>
+          )}
         </ul>
       )}
 

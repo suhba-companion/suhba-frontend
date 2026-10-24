@@ -586,6 +586,16 @@ function HalalDetail({ data }: { data: PendingHalal }): JSX.Element {
 
 const EVENT_PRAYER_OPTIONS = ['FAJR', 'DHUHR', 'ASR', 'MAGHRIB', 'ISHA'] as const
 
+const EVENT_RECURRENCE_OPTIONS: { value: string; label: string }[] = [
+  { value: 'WEEKLY',   label: 'Weekly' },
+  { value: 'BIWEEKLY', label: 'Every 2 weeks' },
+  { value: 'MONTHLY',  label: 'Monthly' },
+]
+
+const EVENT_RECURRENCE_LABEL: Record<string, string> = Object.fromEntries(
+  EVENT_RECURRENCE_OPTIONS.map(({ value, label }) => [value, label]),
+)
+
 const EVENT_AUDIENCE_OPTIONS: { value: string; label: string }[] = [
   { value: 'SISTERS_ONLY',  label: 'Sisters only' },
   { value: 'BROTHERS_ONLY', label: 'Brothers only' },
@@ -610,6 +620,9 @@ function EventDetail({ data }: { data: PendingEvent }): JSX.Element {
         ? `${fmt(data.startTime).slice(0, 10)} · after ${data.startPrayer}`
         : fmt(data.startTime)} />
       <Row label="End"         value={data.endTime !== null && data.endTime !== undefined ? fmt(data.endTime) : undefined} />
+      <Row label="Repeats"     value={data.recurrence !== null && data.recurrence !== undefined
+        ? `${EVENT_RECURRENCE_LABEL[data.recurrence] ?? data.recurrence}${data.recurrenceUntil ? ` until ${data.recurrenceUntil}` : ' (open-ended)'}`
+        : undefined} />
       <Row label="Organizer"   value={data.organizer} />
       <Row label="Contact"     value={data.contactInfo} />
       <Row label="Entry"       value={data.isFree === true ? 'Free' : data.isFree === false ? 'Paid' : undefined} />
@@ -799,6 +812,37 @@ function EditForm({ kind, data, onChange }: EditFormProps): JSX.Element {
           ))}
         </select>
       </Field>
+      {/* Start/end above are the FIRST occurrence and anchor the series — the app works
+          out the next one itself, so they are not re-entered every week. */}
+      <div className="grid grid-cols-2 gap-3">
+        <Field label="Repeats">
+          <select
+            className={SELECT}
+            value={str('recurrence')}
+            // An end date only means anything for a series, so dropping back to a one-off
+            // clears it — otherwise it rides along unseen and hides the event later.
+            onChange={e => onChange({
+              ...data,
+              recurrence: e.target.value === '' ? null : e.target.value,
+              recurrenceUntil: e.target.value === '' ? null : data.recurrenceUntil,
+            })}
+          >
+            <option value="">No, one-off event</option>
+            {EVENT_RECURRENCE_OPTIONS.map(({ value, label }) => (
+              <option key={value} value={value}>{label}</option>
+            ))}
+          </select>
+        </Field>
+        <Field label="Repeat until">
+          <input
+            type="date"
+            className={INPUT}
+            disabled={str('recurrence') === ''}
+            value={str('recurrenceUntil')}
+            onChange={e => set('recurrenceUntil', e.target.value === '' ? null : e.target.value)}
+          />
+        </Field>
+      </div>
       <div className="grid grid-cols-2 gap-3">
         <Field label="Organizer"><input className={INPUT} value={str('organizer')} onChange={e => set('organizer', e.target.value)} /></Field>
         <Field label="Contact"><input className={INPUT} value={str('contactInfo')} onChange={e => set('contactInfo', e.target.value)} /></Field>

@@ -103,6 +103,10 @@ export type PrayerName = 'Fajr' | 'Dhuhr' | 'Asr' | 'Maghrib' | 'Isha';
 // open to everyone carries no audience at all, so nothing is shown for it.
 export type EventAudience = 'Nur Schwestern' | 'Nur Brüder';
 
+// An event that runs as a series ("jeden Samstag"). `startTime` then carries the next
+// occurrence that has not passed yet, not the first one the organiser announced.
+export type EventRecurrence = 'Wöchentlich' | 'Zweiwöchentlich' | 'Monatlich';
+
 export interface Event {
   id: string;
   title: string;
@@ -114,6 +118,9 @@ export interface Event {
   startTime: string;
   endTime?: string;
   startPrayer?: PrayerName;
+  recurrence?: EventRecurrence;
+  // Inclusive last date the series runs on. Absent means it runs open-ended.
+  recurrenceUntil?: string;
   categories: EventCategory[];
   organizer?: string;
   contactInfo?: string;

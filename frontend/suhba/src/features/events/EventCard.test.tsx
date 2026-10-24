@@ -34,6 +34,17 @@ describe('EventCard', () => {
     openSpy.mockRestore()
   })
 
+  it('marks a series with the weekday it repeats on', () => {
+    render(<ul><EventCard event={{ ...MOCK_EVENT, recurrence: 'Wöchentlich' }} /></ul>)
+    // 2026-10-20 is a Tuesday in Vienna.
+    expect(screen.getByText('Jeden Dienstag')).toBeInTheDocument()
+  })
+
+  it('shows no repeat badge on a one-off event', () => {
+    render(<ul><EventCard event={MOCK_EVENT} /></ul>)
+    expect(screen.queryByText(/^Jeden /)).not.toBeInTheDocument()
+  })
+
   it('does not open the detail when the route button is clicked', () => {
     const openSpy = vi.spyOn(window, 'open').mockImplementation(() => null)
     const onSelect = vi.fn()

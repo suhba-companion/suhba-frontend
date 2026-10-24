@@ -2,13 +2,14 @@ import { useTranslation } from 'react-i18next'
 import {
   HandsPraying, Microphone, BookOpen, Users, Person, SoccerBall,
   HandHeart, Question, MapPin, Clock, Phone, ArrowSquareOut, LinkSimple, NotePencil,
-  UserPlus,
+  UserPlus, Repeat,
 } from '@phosphor-icons/react'
 import type { Icon } from '@phosphor-icons/react'
 import type { Event, EventCategory } from '../../types'
 import { buildDirectionsUrl } from '@utils/maps'
 import { formatEventTime } from '@utils/eventTime'
 import { AUDIENCE_LABEL_KEYS } from './audience'
+import { formatRecurrence, formatRecurrenceEnd } from './recurrence'
 
 const CATEGORY_ICONS: Record<EventCategory, Icon> = {
   Gebet: HandsPraying,
@@ -46,6 +47,8 @@ interface EventDetailModalProps {
 
 export function EventDetailModal({ event }: EventDetailModalProps): JSX.Element {
   const { t } = useTranslation()
+  const repeat = formatRecurrence(event, t)
+  const repeatEnd = formatRecurrenceEnd(event, t)
   function handleRoute(): void {
     window.open(buildDirectionsUrl(event), '_blank', 'noopener,noreferrer')
   }
@@ -92,6 +95,12 @@ export function EventDetailModal({ event }: EventDetailModalProps): JSX.Element 
           <div>
             <p className="text-sm font-medium text-text-dark">{formatDate(event.startTime)}</p>
             <p className="text-sm text-text-muted">{formatEventTime(event, t)}</p>
+            {repeat !== undefined && (
+              <p className="text-sm text-moss font-medium mt-1 inline-flex items-center gap-1.5">
+                <Repeat size={13} weight="bold" aria-hidden="true" />
+                {repeatEnd !== undefined ? `${repeat} · ${repeatEnd}` : repeat}
+              </p>
+            )}
           </div>
         </div>
 

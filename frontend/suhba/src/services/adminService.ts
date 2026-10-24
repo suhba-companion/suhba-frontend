@@ -85,6 +85,11 @@ export interface PendingEvent {
   startTime: string
   endTime: string | null
   startPrayer: string | null
+  // 'WEEKLY' | 'BIWEEKLY' | 'MONTHLY'; null means a one-off event. startTime is then
+  // the first occurrence and anchors the series.
+  recurrence: string | null
+  // Inclusive last date (YYYY-MM-DD) the series runs on; null means open-ended.
+  recurrenceUntil: string | null
   categories: string[]
   organizer: string | null
   contactInfo: string | null

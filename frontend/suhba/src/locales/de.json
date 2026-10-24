@@ -253,6 +253,13 @@
       "startKindTime": "Uhrzeit angeben",
       "startDateLabel": "Datum",
       "endTimeLabel": "Ende (optional)",
+      "recurrenceLabel": "Wiederholung",
+      "recurrenceNone": "Einmalig",
+      "recurrenceWeekly": "Jede Woche",
+      "recurrenceBiweekly": "Alle 2 Wochen",
+      "recurrenceMonthly": "Jeden Monat",
+      "recurrenceHint": "Beginn oben zählt als erster Termin.",
+      "recurrenceUntilLabel": "Läuft bis (optional)",
       "organizerLabel": "Veranstalter (optional)",
       "requiresRegistrationLabel": "Anmeldung erforderlich",
       "audienceLabel": "Zielgruppe",
@@ -282,7 +289,8 @@
       "districtRequired": "Bezirk ist erforderlich",
       "startTimeRequired": "Startzeit ist erforderlich",
       "startDateRequired": "Datum ist erforderlich",
-      "registrationUrlInvalid": "Bitte einen gültigen Link eingeben (https://…)"
+      "registrationUrlInvalid": "Bitte einen gültigen Link eingeben (https://…)",
+      "recurrenceUntilInvalid": "Das Enddatum liegt vor dem ersten Termin."
     }
   },
   "prayers": {
@@ -315,6 +323,12 @@
     "notFound": "Event nicht gefunden.",
     "free": "Kostenlos",
     "afterPrayer": "nach dem {{prayer}}-Gebet",
+    "recurrence": {
+      "weekly": "Jeden {{weekday}}",
+      "biweekly": "Jeden 2. {{weekday}}",
+      "monthly": "Monatlich am {{day}}.",
+      "until": "bis {{date}}"
+    },
     "register": "Zur Anmeldung",
     "registrationRequired": "Anmeldung erforderlich",
     "sistersOnly": "Nur Schwestern",

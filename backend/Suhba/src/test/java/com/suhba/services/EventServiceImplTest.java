@@ -15,9 +15,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -29,6 +32,8 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class EventServiceImplTest {
 
+    private static final ZoneId VIENNA = ZoneId.of("Europe/Vienna");
+
     @Mock private EventRepository repository;
     @Mock private PrayerTimeRepository prayerTimes;
     @Mock private EventMapper mapper;
@@ -39,7 +44,7 @@ class EventServiceImplTest {
         EventEntity entity = buildEntity(48.2, 16.37);
         when(repository.findAllByStatusOrderByStartTimeAsc(EventEntity.ApprovalStatus.APPROVED))
             .thenReturn(List.of(entity));
-        when(mapper.entityListToDtoList(anyList())).thenReturn(List.of(buildDto(48.2, 16.37)));
+        when(mapper.entityToDto(entity)).thenReturn(buildDto(48.2, 16.37));
 
         List<EventDto> result = service.getAll();
 
@@ -50,13 +55,14 @@ class EventServiceImplTest {
     @Test
     void getUpcoming_returnsUpcomingEvents() {
         EventEntity entity = buildEntity(48.2, 16.37);
-        when(repository.findUpcoming(any(Instant.class))).thenReturn(List.of(entity));
-        when(mapper.entityListToDtoList(anyList())).thenReturn(List.of(buildDto(48.2, 16.37)));
+        when(repository.findUpcoming(any(Instant.class), any(LocalDate.class)))
+            .thenReturn(List.of(entity));
+        when(mapper.entityToDto(entity)).thenReturn(buildDto(48.2, 16.37));
 
         List<EventDto> result = service.getUpcoming();
 
         assertThat(result).hasSize(1);
-        verify(repository).findUpcoming(any(Instant.class));
+        verify(repository).findUpcoming(any(Instant.class), any(LocalDate.class));
     }
 
     @Test
@@ -251,7 +257,8 @@ class EventServiceImplTest {
         dto2.setStartTime(earlier);
 
         when(repository.findUpcomingInBoundingBox(
-                any(Instant.class), anyDouble(), anyDouble(), anyDouble(), anyDouble()))
+                any(Instant.class), any(LocalDate.class),
+                anyDouble(), anyDouble(), anyDouble(), anyDouble()))
             .thenReturn(List.of(e1, e2));
         when(mapper.entityToDto(e1)).thenReturn(dto1);
         when(mapper.entityToDto(e2)).thenReturn(dto2);
@@ -295,6 +302,257 @@ class EventServiceImplTest {
 
         verify(repository).save(argThat(e -> e.getCategories().equals(Set.of(
             EventEntity.EventCategory.LECTURE, EventEntity.EventCategory.YOUTH))));
+    }
+
+    // ── Recurring series ──────────────────────────────────────────────────────
+
+    @Test
+    void getUpcoming_weeklySeries_reportsTheNextOccurrenceInsteadOfTheFirst() {
+        EventEntity series = buildSeries(EventEntity.Recurrence.WEEKLY);
+        // Anchored on a Saturday far in the past, so every occurrence since has passed.
+        series.setStartTime(Instant.parse("2020-01-04T17:00:00Z"));
+
+        when(repository.findUpcoming(any(Instant.class), any(LocalDate.class)))
+            .thenReturn(List.of(series));
+        when(mapper.entityToDto(series)).thenReturn(buildDto(48.2, 16.37));
+
+        List<EventDto> result = service.getUpcoming();
+
+        assertThat(result).hasSize(1);
+        Instant next = result.get(0).getStartTime();
+        assertThat(next).isAfterOrEqualTo(Instant.now());
+        assertThat(next.atZone(VIENNA).getDayOfWeek())
+            .isEqualTo(Instant.parse("2020-01-04T17:00:00Z").atZone(VIENNA).getDayOfWeek());
+        assertThat(next).isBefore(Instant.now().plus(7, ChronoUnit.DAYS));
+    }
+
+    @Test
+    void getUpcoming_series_shiftsTheEndTimeByTheSameAmountAsTheStart() {
+        EventEntity series = buildSeries(EventEntity.Recurrence.WEEKLY);
+        series.setStartTime(Instant.parse("2020-01-04T17:00:00Z"));
+        series.setEndTime(Instant.parse("2020-01-04T18:30:00Z"));
+
+        when(repository.findUpcoming(any(Instant.class), any(LocalDate.class)))
+            .thenReturn(List.of(series));
+        when(mapper.entityToDto(series)).thenReturn(buildDto(48.2, 16.37));
+
+        EventDto result = service.getUpcoming().get(0);
+
+        assertThat(Duration.between(result.getStartTime(), result.getEndTime()))
+            .isEqualTo(Duration.ofMinutes(90));
+    }
+
+    @Test
+    void getUpcoming_biweeklySeries_skipsTheWeekInBetween() {
+        EventEntity series = buildSeries(EventEntity.Recurrence.BIWEEKLY);
+        Instant anchor = Instant.parse("2020-01-04T17:00:00Z");
+        series.setStartTime(anchor);
+
+        when(repository.findUpcoming(any(Instant.class), any(LocalDate.class)))
+            .thenReturn(List.of(series));
+        when(mapper.entityToDto(series)).thenReturn(buildDto(48.2, 16.37));
+
+        Instant next = service.getUpcoming().get(0).getStartTime();
+
+        assertThat(next).isAfterOrEqualTo(Instant.now());
+        long days = ChronoUnit.DAYS.between(
+            anchor.atZone(VIENNA).toLocalDate(), next.atZone(VIENNA).toLocalDate());
+        assertThat(days % 14).isZero();
+    }
+
+    @Test
+    void getUpcoming_monthlySeries_staysOnTheAnchorDayOfMonth() {
+        EventEntity series = buildSeries(EventEntity.Recurrence.MONTHLY);
+        // The 31st does not exist in every month. Counting from the anchor each time means
+        // February clamps to the 28th without dragging every later month back with it.
+        series.setStartTime(Instant.parse("2020-01-31T17:00:00Z"));
+
+        when(repository.findUpcoming(any(Instant.class), any(LocalDate.class)))
+            .thenReturn(List.of(series));
+        when(mapper.entityToDto(series)).thenReturn(buildDto(48.2, 16.37));
+
+        Instant next = service.getUpcoming().get(0).getStartTime();
+        LocalDate date = next.atZone(VIENNA).toLocalDate();
+
+        assertThat(next).isAfterOrEqualTo(Instant.now());
+        assertThat(date.getDayOfMonth()).isEqualTo(date.lengthOfMonth() < 31 ? date.lengthOfMonth() : 31);
+    }
+
+    @Test
+    void getUpcoming_seriesPastItsLastDate_dropsOutOfTheList() {
+        EventEntity series = buildSeries(EventEntity.Recurrence.WEEKLY);
+        series.setStartTime(Instant.parse("2020-01-04T17:00:00Z"));
+        series.setRecurrenceUntil(LocalDate.of(2020, 3, 1));
+
+        when(repository.findUpcoming(any(Instant.class), any(LocalDate.class)))
+            .thenReturn(List.of(series));
+
+        assertThat(service.getUpcoming()).isEmpty();
+    }
+
+    @Test
+    void getUpcoming_oneOffEvent_keepsItsOwnStartTime() {
+        EventEntity oneOff = buildEntity(48.2, 16.37);
+        EventDto dto = buildDto(48.2, 16.37);
+
+        when(repository.findUpcoming(any(Instant.class), any(LocalDate.class)))
+            .thenReturn(List.of(oneOff));
+        when(mapper.entityToDto(oneOff)).thenReturn(dto);
+
+        assertThat(service.getUpcoming().get(0).getStartTime())
+            .isEqualTo(Instant.parse("2026-06-05T12:00:00Z"));
+        verifyNoInteractions(prayerTimes);
+    }
+
+    @Test
+    void getUpcoming_prayerAnchoredSeries_takesEachOccurrencesTimeFromItsOwnDate() {
+        EventEntity series = buildSeries(EventEntity.Recurrence.WEEKLY);
+        series.setStartTime(Instant.parse("2020-01-04T17:00:00Z"));
+        series.setStartPrayer(EventEntity.StartPrayer.MAGHRIB);
+
+        when(repository.findUpcoming(any(Instant.class), any(LocalDate.class)))
+            .thenReturn(List.of(series));
+        when(mapper.entityToDto(series)).thenReturn(buildDto(48.2, 16.37));
+        // The calendar only covers 2026, so anything later falls back to the anchor time.
+        when(prayerTimes.findByDate(any())).thenAnswer(call -> {
+            LocalDate date = call.getArgument(0);
+            return date.getYear() == 2026
+                ? Optional.of(buildPrayerTimes(LocalTime.of(18, 7)))
+                : Optional.empty();
+        });
+
+        Instant next = service.getUpcoming().get(0).getStartTime();
+
+        assertThat(next).isAfterOrEqualTo(Instant.now());
+        // Whether the calendar had the date or not, the occurrence must still be real.
+        assertThat(next.atZone(VIENNA).getDayOfWeek())
+            .isEqualTo(Instant.parse("2020-01-04T17:00:00Z").atZone(VIENNA).getDayOfWeek());
+    }
+
+    @Test
+    void getById_seriesPastItsLastDate_stillReturnsTheEventForItsDetailPage() {
+        EventEntity series = buildSeries(EventEntity.Recurrence.WEEKLY);
+        series.setId(1L);
+        series.setStartTime(Instant.parse("2020-01-04T17:00:00Z"));
+        series.setRecurrenceUntil(LocalDate.of(2020, 3, 1));
+
+        when(repository.findById(1L)).thenReturn(Optional.of(series));
+        when(mapper.entityToDto(series)).thenReturn(buildDto(48.2, 16.37));
+
+        assertThat(service.getById(1L)).isNotNull();
+    }
+
+    @Test
+    void submit_rejectsASeriesThatEndsBeforeItStarts() {
+        EventDto input = buildDto(48.2, 16.37);
+        input.setRecurrence(EventEntity.Recurrence.WEEKLY);
+        input.setRecurrenceUntil(LocalDate.of(2026, 1, 1));
+
+        assertThatThrownBy(() -> service.submit(input, "user1"))
+            .isInstanceOf(BLException.class)
+            .hasMessageContaining("recurrenceUntil");
+    }
+
+    @Test
+    void submit_persistsTheRecurrenceAVisitorProposed() {
+        EventDto input = buildDto(48.2, 16.37);
+        input.setRecurrence(EventEntity.Recurrence.WEEKLY);
+        input.setRecurrenceUntil(LocalDate.of(2026, 12, 31));
+        EventEntity entity = buildEntity(48.2, 16.37);
+        entity.setRecurrence(EventEntity.Recurrence.WEEKLY);
+        entity.setRecurrenceUntil(LocalDate.of(2026, 12, 31));
+
+        when(mapper.dtoToEntity(input)).thenReturn(entity);
+        when(repository.save(any())).thenReturn(entity);
+        when(mapper.entityToDto(entity)).thenReturn(input);
+
+        service.submit(input, "user1");
+
+        verify(repository).save(argThat(e ->
+            e.getRecurrence() == EventEntity.Recurrence.WEEKLY &&
+            LocalDate.of(2026, 12, 31).equals(e.getRecurrenceUntil()) &&
+            e.getStatus() == EventEntity.ApprovalStatus.PENDING
+        ));
+    }
+
+    @Test
+    void update_persistsTheRecurrenceFromTheDto() {
+        EventEntity entity = buildEntity(48.2, 16.37);
+        entity.setId(1L);
+
+        EventDto dto = buildDto(48.2, 16.37);
+        dto.setRecurrence(EventEntity.Recurrence.WEEKLY);
+        dto.setRecurrenceUntil(LocalDate.of(2026, 12, 31));
+
+        when(repository.findById(1L)).thenReturn(Optional.of(entity));
+        when(repository.save(any())).thenReturn(entity);
+        when(mapper.entityToDto(any())).thenReturn(dto);
+
+        service.update(1L, dto);
+
+        verify(repository).save(argThat(e ->
+            e.getRecurrence() == EventEntity.Recurrence.WEEKLY &&
+            LocalDate.of(2026, 12, 31).equals(e.getRecurrenceUntil())
+        ));
+    }
+
+    @Test
+    void upvote_onASeries_answersWithTheNextOccurrenceNotTheAnchor() {
+        EventEntity series = buildSeries(EventEntity.Recurrence.WEEKLY);
+        series.setId(1L);
+        series.setStartTime(Instant.parse("2020-01-04T17:00:00Z"));
+
+        when(repository.findById(1L)).thenReturn(Optional.of(series));
+        when(repository.save(any())).thenReturn(series);
+        when(mapper.entityToDto(series)).thenReturn(buildDto(48.2, 16.37));
+
+        EventDto result = service.upvote(1L);
+
+        assertThat(result.getStartTime()).isAfterOrEqualTo(Instant.now());
+    }
+
+    @Test
+    void update_dropsAnEndDateLeftBehindWhenTheSeriesBecomesAOneOff() {
+        EventEntity entity = buildSeries(EventEntity.Recurrence.WEEKLY);
+        entity.setId(1L);
+        entity.setRecurrenceUntil(LocalDate.of(2026, 11, 30));
+
+        EventDto dto = buildDto(48.2, 16.37);
+        dto.setRecurrence(null);
+        // The admin cleared the pattern but the form still carried the old end date.
+        dto.setRecurrenceUntil(LocalDate.of(2026, 11, 30));
+
+        when(repository.findById(1L)).thenReturn(Optional.of(entity));
+        when(repository.save(any())).thenReturn(entity);
+        when(mapper.entityToDto(any())).thenReturn(dto);
+
+        service.update(1L, dto);
+
+        verify(repository).save(argThat(e ->
+            e.getRecurrence() == null && e.getRecurrenceUntil() == null));
+    }
+
+    @Test
+    void submit_dropsAnEndDateSentWithoutARecurrence() {
+        EventDto input = buildDto(48.2, 16.37);
+        input.setRecurrence(null);
+        input.setRecurrenceUntil(LocalDate.of(2026, 11, 30));
+        EventEntity entity = buildEntity(48.2, 16.37);
+        entity.setRecurrenceUntil(LocalDate.of(2026, 11, 30));
+
+        when(mapper.dtoToEntity(input)).thenReturn(entity);
+        when(repository.save(any())).thenReturn(entity);
+        when(mapper.entityToDto(entity)).thenReturn(input);
+
+        service.submit(input, "user1");
+
+        verify(repository).save(argThat(e -> e.getRecurrenceUntil() == null));
+    }
+
+    private EventEntity buildSeries(EventEntity.Recurrence recurrence) {
+        EventEntity entity = buildEntity(48.2, 16.37);
+        entity.setRecurrence(recurrence);
+        return entity;
     }
 
     private EventEntity buildEntity(double lat, double lng) {

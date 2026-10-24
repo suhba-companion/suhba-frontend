@@ -1,4 +1,4 @@
-import type { Event, EventAudience, EventCategory, PrayerName } from '../types'
+import type { Event, EventAudience, EventCategory, EventRecurrence, PrayerName } from '../types'
 import type { GeoPosition } from '../hooks/useGeolocation'
 import { roundKm } from '../utils/geo'
 import { toSafeHttpUrl } from '../utils/url'
@@ -10,6 +10,8 @@ const NEARBY_RADIUS_KM = 15
 type BackendPrayer = 'FAJR' | 'DHUHR' | 'ASR' | 'MAGHRIB' | 'ISHA'
 
 type BackendAudience = 'SISTERS_ONLY' | 'BROTHERS_ONLY'
+
+type BackendRecurrence = 'WEEKLY' | 'BIWEEKLY' | 'MONTHLY'
 
 type BackendCategory =
   | 'PRAYER' | 'LECTURE' | 'CLASS' | 'COMMUNITY' | 'YOUTH' | 'SPORT' | 'FUNDRAISER'
@@ -26,6 +28,8 @@ type BackendEvent = {
   startTime: string
   endTime: string | null
   startPrayer: BackendPrayer | null
+  recurrence: BackendRecurrence | null
+  recurrenceUntil: string | null
   categories: BackendCategory[]
   organizer: string | null
   contactInfo: string | null
@@ -55,6 +59,12 @@ const AUDIENCE_MAP: Record<BackendAudience, EventAudience> = {
   BROTHERS_ONLY: 'Nur Brüder',
 }
 
+const RECURRENCE_MAP: Record<BackendRecurrence, EventRecurrence> = {
+  WEEKLY:   'Wöchentlich',
+  BIWEEKLY: 'Zweiwöchentlich',
+  MONTHLY:  'Monatlich',
+}
+
 const PRAYER_MAP: Record<BackendPrayer, PrayerName> = {
   FAJR: 'Fajr',
   DHUHR: 'Dhuhr',
@@ -75,6 +85,8 @@ function toFrontendEvent(dto: BackendEvent): Event {
     startTime: dto.startTime,
     endTime: dto.endTime ?? undefined,
     startPrayer: dto.startPrayer != null ? PRAYER_MAP[dto.startPrayer] : undefined,
+    recurrence: dto.recurrence != null ? RECURRENCE_MAP[dto.recurrence] : undefined,
+    recurrenceUntil: dto.recurrenceUntil ?? undefined,
     categories: dto.categories.map((c) => CATEGORY_MAP[c]),
     organizer: dto.organizer ?? undefined,
     contactInfo: dto.contactInfo ?? undefined,
