@@ -135,6 +135,7 @@ public class EventServiceImpl implements EventService {
         entity.setCategories(dto.getCategories());
         entity.setRegistrationUrl(dto.getRegistrationUrl());
         entity.setRequiresRegistration(Boolean.TRUE.equals(dto.getRequiresRegistration()));
+        entity.setAudience(dto.getAudience());
         entity.setOrganizer(dto.getOrganizer());
         entity.setContactInfo(dto.getContactInfo());
         entity.setIsFree(dto.getIsFree());

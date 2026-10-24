@@ -68,6 +68,9 @@ public class EventDto {
 
     private Boolean requiresRegistration;
 
+    // null means the event is open to everyone.
+    private EventEntity.Audience audience;
+
     private EventEntity.ApprovalStatus status;
     private Integer upvotes;
     private Double distanceKm;

@@ -144,6 +144,31 @@ class EventRepositoryTest {
             ));
     }
 
+    @Test
+    void save_persistsAudience() {
+        Instant future = Instant.now().plusSeconds(3600);
+        EventEntity event = buildEvent(48.2, 16.37, future, EventEntity.ApprovalStatus.APPROVED);
+        event.setAudience(EventEntity.Audience.SISTERS_ONLY);
+
+        Long id = repository.saveAndFlush(event).getId();
+
+        assertThat(repository.findById(id)).get()
+            .extracting(EventEntity::getAudience)
+            .isEqualTo(EventEntity.Audience.SISTERS_ONLY);
+    }
+
+    @Test
+    void save_leavesAudienceNullWhenOpenToEveryone() {
+        Instant future = Instant.now().plusSeconds(3600);
+        EventEntity event = buildEvent(48.2, 16.37, future, EventEntity.ApprovalStatus.APPROVED);
+
+        Long id = repository.saveAndFlush(event).getId();
+
+        assertThat(repository.findById(id)).get()
+            .extracting(EventEntity::getAudience)
+            .isNull();
+    }
+
     private EventEntity buildEvent(double lat, double lng, Instant startTime, EventEntity.ApprovalStatus status) {
         return EventEntity.builder()
             .title("Freitagsgebet")

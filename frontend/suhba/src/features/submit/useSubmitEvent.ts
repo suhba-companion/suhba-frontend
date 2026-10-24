@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import i18next from 'i18next'
-import type { EventCategory, PrayerName } from '../../types'
+import type { EventAudience, EventCategory, PrayerName } from '../../types'
 import { toSafeHttpUrl } from '@utils/url'
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8080'
@@ -15,6 +15,11 @@ const PRAYER_TO_ENUM: Record<PrayerName, string> = {
   Asr:     'ASR',
   Maghrib: 'MAGHRIB',
   Isha:    'ISHA',
+}
+
+const AUDIENCE_TO_ENUM: Record<EventAudience, string> = {
+  'Nur Schwestern': 'SISTERS_ONLY',
+  'Nur Brüder':     'BROTHERS_ONLY',
 }
 
 const CATEGORY_TO_ENUM: Record<EventCategory, string> = {
@@ -50,6 +55,8 @@ interface EventFormData {
   organizer: string
   registrationUrl: string
   requiresRegistration: boolean
+  // Empty when the event is open to everyone, which is the default.
+  audience: EventAudience | ''
   isFree: boolean
 }
 
@@ -77,6 +84,7 @@ const INITIAL_DATA: EventFormData = {
   organizer: '',
   registrationUrl: '',
   requiresRegistration: false,
+  audience: '',
   isFree: false,
 }
 
@@ -136,6 +144,7 @@ export function useSubmitEvent(): UseSubmitEventReturn {
           isFree: data.isFree,
           registrationUrl: toSafeHttpUrl(data.registrationUrl) ?? null,
           requiresRegistration: data.requiresRegistration,
+          audience: data.audience ? AUDIENCE_TO_ENUM[data.audience] : null,
           latitude: VIENNA_LAT,
           longitude: VIENNA_LNG,
         }),

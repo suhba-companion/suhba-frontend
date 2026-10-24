@@ -14,8 +14,11 @@ interface EventsPageProps {
 
 export function EventsPage({ onAddEvent }: EventsPageProps): JSX.Element {
   const { t } = useTranslation()
-  const { filteredEvents, activeFilter, setFilter, query, setQuery, loading } = useEvents()
-  const activeFilterCount = activeFilter === 'Alle' ? 0 : 1
+  const {
+    filteredEvents, activeFilter, setFilter, audienceFilter, setAudienceFilter,
+    query, setQuery, loading,
+  } = useEvents()
+  const activeFilterCount = (activeFilter === 'Alle' ? 0 : 1) + (audienceFilter === null ? 0 : 1)
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null)
   const [isFilterOpen, setIsFilterOpen] = useState(false)
   const parentRef = useRef<HTMLDivElement>(null)
@@ -83,7 +86,9 @@ export function EventsPage({ onAddEvent }: EventsPageProps): JSX.Element {
             <EventsFilter
               activeFilter={activeFilter}
               onSetFilter={setFilter}
-              onReset={() => { setFilter('Alle'); setIsFilterOpen(false) }}
+              activeAudience={audienceFilter}
+              onSetAudience={setAudienceFilter}
+              onReset={() => { setFilter('Alle'); setAudienceFilter(null); setIsFilterOpen(false) }}
               onApply={() => setIsFilterOpen(false)}
             />
           )}

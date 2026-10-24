@@ -586,6 +586,15 @@ function HalalDetail({ data }: { data: PendingHalal }): JSX.Element {
 
 const EVENT_PRAYER_OPTIONS = ['FAJR', 'DHUHR', 'ASR', 'MAGHRIB', 'ISHA'] as const
 
+const EVENT_AUDIENCE_OPTIONS: { value: string; label: string }[] = [
+  { value: 'SISTERS_ONLY',  label: 'Sisters only' },
+  { value: 'BROTHERS_ONLY', label: 'Brothers only' },
+]
+
+const EVENT_AUDIENCE_LABEL: Record<string, string> = Object.fromEntries(
+  EVENT_AUDIENCE_OPTIONS.map(({ value, label }) => [value, label]),
+)
+
 function EventDetail({ data }: { data: PendingEvent }): JSX.Element {
   const fmt = (iso: string): string =>
     new Date(iso).toLocaleString('de-AT', {
@@ -605,6 +614,9 @@ function EventDetail({ data }: { data: PendingEvent }): JSX.Element {
       <Row label="Contact"     value={data.contactInfo} />
       <Row label="Entry"       value={data.isFree === true ? 'Free' : data.isFree === false ? 'Paid' : undefined} />
       <Row label="Registration" value={data.requiresRegistration === true ? 'Required' : undefined} />
+      <Row label="Audience"    value={data.audience !== null && data.audience !== undefined
+        ? EVENT_AUDIENCE_LABEL[data.audience] ?? data.audience
+        : undefined} />
       <Row label="Description" value={data.description} />
     </>
   )
@@ -793,6 +805,18 @@ function EditForm({ kind, data, onChange }: EditFormProps): JSX.Element {
       </div>
       <Field label="Registration link"><input type="url" className={INPUT} value={str('registrationUrl')} onChange={e => set('registrationUrl', e.target.value)} /></Field>
       <Field label="Description"><input className={INPUT} value={str('description')} onChange={e => set('description', e.target.value)} /></Field>
+      <Field label="Audience">
+        <select
+          className={INPUT}
+          value={str('audience')}
+          onChange={e => set('audience', e.target.value === '' ? null : e.target.value)}
+        >
+          <option value="">Everyone</option>
+          {EVENT_AUDIENCE_OPTIONS.map(({ value, label }) => (
+            <option key={value} value={value}>{label}</option>
+          ))}
+        </select>
+      </Field>
       <CheckField label="Registration required" value={bool('requiresRegistration')} onChange={v => set('requiresRegistration', v)} />
       <CheckField label="Free entry" value={bool('isFree')} onChange={v => set('isFree', v)} />
     </div>

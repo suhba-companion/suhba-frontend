@@ -255,6 +255,10 @@
       "endTimeLabel": "Ende (optional)",
       "organizerLabel": "Veranstalter (optional)",
       "requiresRegistrationLabel": "Anmeldung erforderlich",
+      "audienceLabel": "Zielgruppe",
+      "audienceAll": "Alle",
+      "audienceSisters": "Nur Schwestern",
+      "audienceBrothers": "Nur Brüder",
       "registrationUrlLabel": "Anmeldelink (optional)",
       "descriptionLabel": "Beschreibung (optional)",
       "isFreeLabel": "Kostenlose Veranstaltung",
@@ -313,10 +317,13 @@
     "afterPrayer": "nach dem {{prayer}}-Gebet",
     "register": "Zur Anmeldung",
     "registrationRequired": "Anmeldung erforderlich",
+    "sistersOnly": "Nur Schwestern",
+    "brothersOnly": "Nur Brüder",
     "filter": "Filter",
     "filter_": {
       "time": "Zeitraum",
       "category": "Kategorie",
+      "audience": "Zielgruppe",
       "reset": "Zurücksetzen",
       "apply": "Anwenden"
     }

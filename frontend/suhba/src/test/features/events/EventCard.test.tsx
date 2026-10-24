@@ -18,6 +18,22 @@ const EVENT: Event = {
 }
 
 describe('EventCard', () => {
+  it('shows a sisters-only badge when the event is restricted to sisters', () => {
+    render(<ul><EventCard event={{ ...EVENT, audience: 'Nur Schwestern' }} /></ul>)
+    expect(screen.getByText('Nur Schwestern')).toBeInTheDocument()
+  })
+
+  it('shows a brothers-only badge when the event is restricted to brothers', () => {
+    render(<ul><EventCard event={{ ...EVENT, audience: 'Nur Brüder' }} /></ul>)
+    expect(screen.getByText('Nur Brüder')).toBeInTheDocument()
+  })
+
+  it('shows no audience badge when the event is open to everyone', () => {
+    render(<ul><EventCard event={EVENT} /></ul>)
+    expect(screen.queryByText('Nur Schwestern')).not.toBeInTheDocument()
+    expect(screen.queryByText('Nur Brüder')).not.toBeInTheDocument()
+  })
+
   it('renders event title', () => {
     render(<ul><EventCard event={EVENT} /></ul>)
     expect(screen.getByText('Freitagsgebet')).toBeInTheDocument()

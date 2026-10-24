@@ -90,6 +90,8 @@ export interface PendingEvent {
   contactInfo: string | null
   isFree: boolean | null
   requiresRegistration: boolean | null
+  // 'SISTERS_ONLY' | 'BROTHERS_ONLY'; null means open to everyone.
+  audience: string | null
   status: ApprovalStatus
 }
 

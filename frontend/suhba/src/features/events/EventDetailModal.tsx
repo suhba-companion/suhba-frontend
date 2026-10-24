@@ -8,6 +8,7 @@ import type { Icon } from '@phosphor-icons/react'
 import type { Event, EventCategory } from '../../types'
 import { buildDirectionsUrl } from '@utils/maps'
 import { formatEventTime } from '@utils/eventTime'
+import { AUDIENCE_LABEL_KEYS } from './audience'
 
 const CATEGORY_ICONS: Record<EventCategory, Icon> = {
   Gebet: HandsPraying,
@@ -74,6 +75,11 @@ export function EventDetailModal({ event }: EventDetailModalProps): JSX.Element 
             <span className="inline-flex items-center gap-1 text-xs font-medium text-moss bg-cream-card border border-sage-light px-2.5 py-1 rounded-pill">
               <NotePencil size={11} weight="bold" aria-hidden="true" />
               {t('events.registrationRequired')}
+            </span>
+          )}
+          {event.audience !== undefined && (
+            <span className="text-xs font-medium text-moss bg-cream-card border border-sage-light px-2.5 py-1 rounded-pill">
+              {t(AUDIENCE_LABEL_KEYS[event.audience])}
             </span>
           )}
         </div>

@@ -9,7 +9,7 @@ vi.mock('@services/eventService', () => {
   return {
     getUpcomingEvents: vi.fn().mockResolvedValue([
       { id: '1', title: 'Freitagsgebet', categories: ['Gebet'],              address: 'Moschee',        district: '1010 Wien', lat: 48.2,  lng: 16.37, startTime: today,    isFree: true  },
-      { id: '2', title: 'Islamvortrag',  categories: ['Vortrag', 'Spende'],   address: 'Islamzentrum',   district: '1210 Wien', lat: 48.26, lng: 16.39, startTime: future,   isFree: false },
+      { id: '2', title: 'Islamvortrag',  categories: ['Vortrag', 'Spende'],   address: 'Islamzentrum',   district: '1210 Wien', lat: 48.26, lng: 16.39, startTime: future,   isFree: false, audience: 'Nur Schwestern' },
       { id: '3', title: 'Jugendtreff',   categories: ['Jugend', 'Spende'],   address: 'Gemeindezentrum', district: '1100 Wien', lat: 48.18, lng: 16.37, startTime: nextWeek, isFree: true  },
     ] as Event[]),
   }
@@ -81,6 +81,38 @@ describe('useEvents', () => {
     await waitFor(() => expect(result.current.loading).toBe(false))
     act(() => result.current.setFilter('Kurs'))
     expect(result.current.filteredEvents).toHaveLength(0)
+  })
+
+  it('audience filter keeps only events for that audience', async () => {
+    const { result } = renderHook(() => useEvents())
+    await waitFor(() => expect(result.current.loading).toBe(false))
+    act(() => result.current.setAudienceFilter('Nur Schwestern'))
+    expect(result.current.filteredEvents.map((e) => e.title)).toEqual(['Islamvortrag'])
+  })
+
+  it('audience filter narrows the category filter instead of replacing it', async () => {
+    const { result } = renderHook(() => useEvents())
+    await waitFor(() => expect(result.current.loading).toBe(false))
+    act(() => result.current.setFilter('Spende'))
+    act(() => result.current.setAudienceFilter('Nur Schwestern'))
+    expect(result.current.activeFilter).toBe('Spende')
+    expect(result.current.filteredEvents.map((e) => e.title)).toEqual(['Islamvortrag'])
+  })
+
+  it('clearing the audience filter restores the category results', async () => {
+    const { result } = renderHook(() => useEvents())
+    await waitFor(() => expect(result.current.loading).toBe(false))
+    act(() => result.current.setFilter('Spende'))
+    act(() => result.current.setAudienceFilter('Nur Brüder'))
+    expect(result.current.filteredEvents).toHaveLength(0)
+    act(() => result.current.setAudienceFilter(null))
+    expect(result.current.filteredEvents.map((e) => e.title)).toEqual(['Islamvortrag', 'Jugendtreff'])
+  })
+
+  it('default audienceFilter is null', async () => {
+    const { result } = renderHook(() => useEvents())
+    await waitFor(() => expect(result.current.loading).toBe(false))
+    expect(result.current.audienceFilter).toBeNull()
   })
 
   it('error is null on successful load', async () => {

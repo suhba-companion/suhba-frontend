@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import type { EventFilter } from './useEvents'
-import type { EventCategory } from '../../types'
+import type { EventAudience, EventCategory } from '../../types'
+import { AUDIENCE_OPTIONS, AUDIENCE_LABEL_KEYS } from './audience'
 
 const TIME_OPTIONS: { value: EventFilter; labelKey: string }[] = [
   { value: 'Alle',          labelKey: 'events.filterAll' },
@@ -15,6 +16,8 @@ const CATEGORY_OPTIONS: EventCategory[] = [
 interface EventsFilterProps {
   activeFilter: EventFilter
   onSetFilter: (f: EventFilter) => void
+  activeAudience: EventAudience | null
+  onSetAudience: (a: EventAudience | null) => void
   onReset: () => void
   onApply: () => void
 }
@@ -23,7 +26,9 @@ const PILL_BASE = 'px-3 py-1 rounded-full text-xs font-medium transition-colors'
 const PILL_ACTIVE = 'bg-moss text-cream-card'
 const PILL_INACTIVE = 'bg-cream-card border border-divider text-text-muted hover:text-text-dark'
 
-export function EventsFilter({ activeFilter, onSetFilter, onReset, onApply }: EventsFilterProps): JSX.Element {
+export function EventsFilter({
+  activeFilter, onSetFilter, activeAudience, onSetAudience, onReset, onApply,
+}: EventsFilterProps): JSX.Element {
   const { t } = useTranslation()
 
   return (
@@ -59,6 +64,25 @@ export function EventsFilter({ activeFilter, onSetFilter, onReset, onApply }: Ev
               className={`${PILL_BASE} ${activeFilter === cat ? PILL_ACTIVE : PILL_INACTIVE}`}
             >
               {cat}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <p className="text-[10px] uppercase tracking-[0.1em] text-text-muted font-medium mb-2">
+          {t('events.filter_.audience')}
+        </p>
+        <div className="flex flex-wrap gap-2">
+          {AUDIENCE_OPTIONS.map((audience) => (
+            <button
+              key={audience}
+              type="button"
+              aria-pressed={activeAudience === audience}
+              onClick={() => onSetAudience(activeAudience === audience ? null : audience)}
+              className={`${PILL_BASE} ${activeAudience === audience ? PILL_ACTIVE : PILL_INACTIVE}`}
+            >
+              {t(AUDIENCE_LABEL_KEYS[audience])}
             </button>
           ))}
         </div>

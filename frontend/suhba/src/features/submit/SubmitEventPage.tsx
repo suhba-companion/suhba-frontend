@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next'
 import { CheckCircle, X } from '@phosphor-icons/react'
 import { useSubmitEvent } from './useSubmitEvent'
 import { FormField } from './FormField'
-import type { EventCategory, PrayerName } from '../../types'
+import type { EventAudience, EventCategory, PrayerName } from '../../types'
 
 const INPUT_CLASS =
   'w-full bg-cream-card border border-divider rounded-card px-3 py-2.5 text-sm text-text-dark placeholder:text-text-muted outline-none focus:border-sage-light'
@@ -15,6 +15,14 @@ const CATEGORIES: EventCategory[] = [
 ]
 
 const PRAYERS: PrayerName[] = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha']
+
+// '' is "open to everyone". A select keeps the three choices mutually exclusive,
+// so an event can never be marked sisters-only and brothers-only at once.
+const AUDIENCES: { value: EventAudience | ''; labelKey: string }[] = [
+  { value: '',               labelKey: 'submit.event.audienceAll' },
+  { value: 'Nur Schwestern', labelKey: 'submit.event.audienceSisters' },
+  { value: 'Nur Brüder',     labelKey: 'submit.event.audienceBrothers' },
+]
 
 // A date-only pick is stored at local noon so the day survives any timezone shift.
 const NOON = 'T12:00'
@@ -170,6 +178,18 @@ export function SubmitEventPage({ onBack }: SubmitEventPageProps): JSX.Element {
             placeholder={t('submit.event.organizerPlaceholder')}
             className={INPUT_CLASS}
           />
+        </FormField>
+
+        <FormField label={t('submit.event.audienceLabel')}>
+          <select
+            value={data.audience}
+            onChange={(e) => update('audience', e.target.value as EventAudience | '')}
+            className={SELECT_CLASS}
+          >
+            {AUDIENCES.map(({ value, labelKey }) => (
+              <option key={value} value={value}>{t(labelKey)}</option>
+            ))}
+          </select>
         </FormField>
 
         <label className="flex items-center gap-3 cursor-pointer">

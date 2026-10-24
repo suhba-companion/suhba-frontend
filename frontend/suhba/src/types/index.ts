@@ -99,6 +99,10 @@ export type EventCategory =
 // a clock time. `startTime` then still holds the resolved instant, but the UI shows this.
 export type PrayerName = 'Fajr' | 'Dhuhr' | 'Asr' | 'Maghrib' | 'Isha';
 
+// Some events are announced as open only to sisters or only to brothers. An event
+// open to everyone carries no audience at all, so nothing is shown for it.
+export type EventAudience = 'Nur Schwestern' | 'Nur Brüder';
+
 export interface Event {
   id: string;
   title: string;
@@ -116,5 +120,6 @@ export interface Event {
   isFree: boolean;
   registrationUrl?: string;
   requiresRegistration: boolean;
+  audience?: EventAudience;
   distanceKm?: number;
 }

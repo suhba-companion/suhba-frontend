@@ -4,6 +4,8 @@ import { EventsFilter } from '@features/events/EventsFilter'
 const defaultProps = {
   activeFilter: 'Alle' as const,
   onSetFilter: vi.fn(),
+  activeAudience: null,
+  onSetAudience: vi.fn(),
   onReset: vi.fn(),
   onApply: vi.fn(),
 }
@@ -29,6 +31,24 @@ describe('EventsFilter', () => {
     expect(screen.getByText('Jugend')).toBeInTheDocument()
     expect(screen.getByText('Sport')).toBeInTheDocument()
     expect(screen.getByText('Spende')).toBeInTheDocument()
+  })
+
+  it('renders audience filter options', () => {
+    render(<EventsFilter {...defaultProps} />)
+    expect(screen.getByText('Nur Schwestern')).toBeInTheDocument()
+    expect(screen.getByText('Nur Brüder')).toBeInTheDocument()
+  })
+
+  it('calls onSetAudience with the audience when its pill is clicked', () => {
+    render(<EventsFilter {...defaultProps} />)
+    fireEvent.click(screen.getByText('Nur Schwestern'))
+    expect(defaultProps.onSetAudience).toHaveBeenCalledWith('Nur Schwestern')
+  })
+
+  it('clicking the active audience pill clears it', () => {
+    render(<EventsFilter {...defaultProps} activeAudience="Nur Brüder" />)
+    fireEvent.click(screen.getByText('Nur Brüder'))
+    expect(defaultProps.onSetAudience).toHaveBeenCalledWith(null)
   })
 
   it('renders Zurücksetzen and Anwenden buttons', () => {

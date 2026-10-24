@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo, useCallback } from 'react'
-import type { Event, EventCategory } from '../../types'
+import type { Event, EventAudience, EventCategory } from '../../types'
 import { getUpcomingEvents } from '@services/eventService'
 import { useGeolocation } from '../../hooks/useGeolocation'
 
@@ -10,6 +10,10 @@ interface UseEventsReturn {
   filteredEvents: readonly Event[]
   activeFilter: EventFilter
   setFilter: (f: EventFilter) => void
+  // Audience is its own axis rather than another `EventFilter` value, so picking
+  // "Nur Schwestern" narrows the current category instead of replacing it.
+  audienceFilter: EventAudience | null
+  setAudienceFilter: (a: EventAudience | null) => void
   query: string
   setQuery: (q: string) => void
   loading: boolean
@@ -36,6 +40,7 @@ export function useEvents(): UseEventsReturn {
   const userPos = useGeolocation()
   const [events, setEvents] = useState<readonly Event[]>([])
   const [activeFilter, setActiveFilter] = useState<EventFilter>('Alle')
+  const [audienceFilter, setAudienceFilter] = useState<EventAudience | null>(null)
   const [query, setQuery] = useState('')
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<Error | null>(null)
@@ -53,6 +58,7 @@ export function useEvents(): UseEventsReturn {
     if (activeFilter === 'Heute') result = result.filter((e) => isToday(e.startTime))
     else if (activeFilter === 'Diese Woche') result = result.filter((e) => isThisWeek(e.startTime))
     else if (activeFilter !== 'Alle') result = result.filter((e) => e.categories.includes(activeFilter))
+    if (audienceFilter !== null) result = result.filter((e) => e.audience === audienceFilter)
     if (query.trim() !== '') {
       const q = query.toLowerCase()
       result = result.filter(
@@ -68,10 +74,17 @@ export function useEvents(): UseEventsReturn {
     return [...result].sort(
       (a, b) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime(),
     )
-  }, [events, activeFilter, query])
+  }, [events, activeFilter, audienceFilter, query])
 
   const setFilter = useCallback((f: EventFilter) => setActiveFilter(f), [])
+  const handleSetAudienceFilter = useCallback((a: EventAudience | null) => setAudienceFilter(a), [])
   const handleSetQuery = useCallback((q: string) => setQuery(q), [])
 
-  return { events, filteredEvents, activeFilter, setFilter, query, setQuery: handleSetQuery, loading, error }
+  return {
+    events, filteredEvents,
+    activeFilter, setFilter,
+    audienceFilter, setAudienceFilter: handleSetAudienceFilter,
+    query, setQuery: handleSetQuery,
+    loading, error,
+  }
 }

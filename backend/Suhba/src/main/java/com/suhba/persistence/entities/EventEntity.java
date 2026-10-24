@@ -51,6 +51,12 @@ public class EventEntity {
     @Column(name = "start_prayer", length = 20)
     private StartPrayer startPrayer;
 
+    // Set when the announcement restricts the event to sisters or to brothers.
+    // null means it is open to everyone, so no audience is shown.
+    @Enumerated(EnumType.STRING)
+    @Column(name = "audience", length = 20)
+    private Audience audience;
+
     // EAGER required — LAZY causes LazyInitializationException when mapping outside transaction
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(
@@ -107,6 +113,10 @@ public class EventEntity {
 
     public enum EventCategory {
         PRAYER, LECTURE, CLASS, COMMUNITY, YOUTH, SPORT, FUNDRAISER, NEW_MUSLIMS, OTHER
+    }
+
+    public enum Audience {
+        SISTERS_ONLY, BROTHERS_ONLY
     }
 
     public enum StartPrayer {

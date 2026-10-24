@@ -7,6 +7,7 @@ import type { Icon } from '@phosphor-icons/react'
 import { buildDirectionsUrl } from '@utils/maps'
 import { formatEventTime } from '@utils/eventTime'
 import type { Event, EventCategory } from '../../types'
+import { AUDIENCE_LABEL_KEYS } from './audience'
 
 const CATEGORY_ICONS: Record<EventCategory, Icon> = {
   Gebet: HandsPraying,
@@ -19,7 +20,6 @@ const CATEGORY_ICONS: Record<EventCategory, Icon> = {
   'Neue Muslime': UserPlus,
   Sonstige: Question,
 }
-
 
 function formatDate(isoStr: string): string {
   const d = new Date(isoStr)
@@ -86,7 +86,7 @@ export function EventCard({ event, onSelect }: EventCardProps): JSX.Element {
       </div>
 
       <div className="flex items-center justify-between gap-2 pt-0.5">
-        <div className="flex items-center gap-2 min-w-0">
+        <div className="flex items-center flex-wrap gap-2 min-w-0">
           {event.isFree && (
             <span className="text-[11px] font-medium text-moss bg-sage-tint px-2 py-0.5 rounded-pill">
               {t('events.free')}
@@ -96,6 +96,11 @@ export function EventCard({ event, onSelect }: EventCardProps): JSX.Element {
             <span className="inline-flex items-center gap-1 text-[11px] font-medium text-moss bg-cream-card border border-sage-light px-2 py-0.5 rounded-pill truncate">
               <NotePencil size={11} weight="bold" aria-hidden="true" className="shrink-0" />
               {t('events.registrationRequired')}
+            </span>
+          )}
+          {event.audience !== undefined && (
+            <span className="text-[11px] font-medium text-moss bg-cream-card border border-sage-light px-2 py-0.5 rounded-pill whitespace-nowrap">
+              {t(AUDIENCE_LABEL_KEYS[event.audience])}
             </span>
           )}
         </div>

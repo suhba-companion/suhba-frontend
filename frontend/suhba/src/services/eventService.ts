@@ -1,4 +1,4 @@
-import type { Event, EventCategory, PrayerName } from '../types'
+import type { Event, EventAudience, EventCategory, PrayerName } from '../types'
 import type { GeoPosition } from '../hooks/useGeolocation'
 import { roundKm } from '../utils/geo'
 import { toSafeHttpUrl } from '../utils/url'
@@ -8,6 +8,8 @@ const VIENNA_CENTER: GeoPosition = { lat: 48.2082, lng: 16.3738 }
 const NEARBY_RADIUS_KM = 15
 
 type BackendPrayer = 'FAJR' | 'DHUHR' | 'ASR' | 'MAGHRIB' | 'ISHA'
+
+type BackendAudience = 'SISTERS_ONLY' | 'BROTHERS_ONLY'
 
 type BackendCategory =
   | 'PRAYER' | 'LECTURE' | 'CLASS' | 'COMMUNITY' | 'YOUTH' | 'SPORT' | 'FUNDRAISER'
@@ -30,6 +32,7 @@ type BackendEvent = {
   isFree: boolean
   registrationUrl: string | null
   requiresRegistration: boolean
+  audience: BackendAudience | null
   status: string
   upvotes: number
   distanceKm: number | null
@@ -45,6 +48,11 @@ const CATEGORY_MAP: Record<BackendCategory, EventCategory> = {
   FUNDRAISER: 'Spende',
   NEW_MUSLIMS: 'Neue Muslime',
   OTHER: 'Sonstige',
+}
+
+const AUDIENCE_MAP: Record<BackendAudience, EventAudience> = {
+  SISTERS_ONLY:  'Nur Schwestern',
+  BROTHERS_ONLY: 'Nur Brüder',
 }
 
 const PRAYER_MAP: Record<BackendPrayer, PrayerName> = {
@@ -73,6 +81,7 @@ function toFrontendEvent(dto: BackendEvent): Event {
     isFree: dto.isFree,
     registrationUrl: toSafeHttpUrl(dto.registrationUrl ?? undefined),
     requiresRegistration: dto.requiresRegistration,
+    audience: dto.audience != null ? AUDIENCE_MAP[dto.audience] : undefined,
     distanceKm: dto.distanceKm != null ? roundKm(dto.distanceKm) : undefined,
   }
 }
