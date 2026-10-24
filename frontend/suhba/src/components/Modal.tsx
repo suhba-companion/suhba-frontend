@@ -13,7 +13,14 @@ export function Modal({ onClose, title, children }: ModalProps): JSX.Element {
       if (e.key === 'Escape') onClose()
     }
     document.addEventListener('keydown', onKey)
-    return () => document.removeEventListener('keydown', onKey)
+    // iOS Safari otherwise hands the scroll to the page behind the sheet as soon as
+    // the sheet's own content reaches its end.
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.removeEventListener('keydown', onKey)
+      document.body.style.overflow = previousOverflow
+    }
   }, [onClose])
 
   return (
@@ -23,7 +30,7 @@ export function Modal({ onClose, title, children }: ModalProps): JSX.Element {
         aria-hidden="true"
         onClick={onClose}
       />
-      <div className="relative bg-cream-card rounded-t-2xl sm:rounded-2xl w-full sm:max-w-lg max-h-[90dvh] flex flex-col shadow-xl">
+      <div className="relative bg-cream-card rounded-t-2xl sm:rounded-2xl w-full sm:max-w-lg max-h-[90dvh] flex flex-col overflow-hidden shadow-xl pb-[env(safe-area-inset-bottom)]">
         <div className="sticky top-0 bg-cream-card border-b border-divider px-4 py-3 flex items-center justify-between rounded-t-2xl sm:rounded-t-2xl shrink-0">
           <h2 className="text-base font-semibold text-text-dark truncate">{title}</h2>
           <button
@@ -35,7 +42,7 @@ export function Modal({ onClose, title, children }: ModalProps): JSX.Element {
             <X size={18} aria-hidden="true" />
           </button>
         </div>
-        <div className="flex-1 overflow-y-auto overscroll-contain pb-[env(safe-area-inset-bottom)]">
+        <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain">
           {children}
         </div>
       </div>
