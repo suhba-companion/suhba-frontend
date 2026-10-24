@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import {
   HandsPraying, Microphone, BookOpen, Users, Person, SoccerBall,
-  HandHeart, Question, MapPin, Clock, UserPlus, NotePencil, Repeat
+  HandHeart, Question, MapPin, Clock, UserPlus, NotePencil, Repeat, PencilRuler
 } from '@phosphor-icons/react'
 import type { Icon } from '@phosphor-icons/react'
 import { buildDirectionsUrl } from '@utils/maps'
@@ -14,6 +14,7 @@ const CATEGORY_ICONS: Record<EventCategory, Icon> = {
   Gebet: HandsPraying,
   Vortrag: Microphone,
   Kurs: BookOpen,
+  Workshop: PencilRuler,
   Community: Users,
   Jugend: Person,
   Sport: SoccerBall,

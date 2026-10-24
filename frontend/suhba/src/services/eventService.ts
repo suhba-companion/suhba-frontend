@@ -14,7 +14,7 @@ type BackendAudience = 'SISTERS_ONLY' | 'BROTHERS_ONLY'
 type BackendRecurrence = 'WEEKLY' | 'BIWEEKLY' | 'MONTHLY'
 
 type BackendCategory =
-  | 'PRAYER' | 'LECTURE' | 'CLASS' | 'COMMUNITY' | 'YOUTH' | 'SPORT' | 'FUNDRAISER'
+  | 'PRAYER' | 'LECTURE' | 'CLASS' | 'WORKSHOP' | 'COMMUNITY' | 'YOUTH' | 'SPORT' | 'FUNDRAISER'
   | 'NEW_MUSLIMS' | 'OTHER'
 
 type BackendEvent = {
@@ -46,6 +46,7 @@ const CATEGORY_MAP: Record<BackendCategory, EventCategory> = {
   PRAYER: 'Gebet',
   LECTURE: 'Vortrag',
   CLASS: 'Kurs',
+  WORKSHOP: 'Workshop',
   COMMUNITY: 'Community',
   YOUTH: 'Jugend',
   SPORT: 'Sport',

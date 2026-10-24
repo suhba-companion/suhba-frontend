@@ -645,6 +645,7 @@ const EVENT_CATEGORY_OPTIONS: { value: string; label: string }[] = [
   { value: 'PRAYER', label: 'Prayer' },
   { value: 'LECTURE', label: 'Lecture' },
   { value: 'CLASS', label: 'Class' },
+  { value: 'WORKSHOP', label: 'Workshop' },
   { value: 'COMMUNITY', label: 'Community' },
   { value: 'YOUTH', label: 'Youth' },
   { value: 'SPORT', label: 'Sport' },

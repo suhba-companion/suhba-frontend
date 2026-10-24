@@ -32,6 +32,7 @@ const CATEGORY_TO_ENUM: Record<EventCategory, string> = {
   Gebet:     'PRAYER',
   Vortrag:   'LECTURE',
   Kurs:      'CLASS',
+  Workshop:  'WORKSHOP',
   Community: 'COMMUNITY',
   Jugend:    'YOUTH',
   Sport:     'SPORT',

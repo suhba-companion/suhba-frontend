@@ -96,6 +96,11 @@ describe('EventCard', () => {
     expect(screen.getByText('Kurs')).toBeInTheDocument()
   })
 
+  it('renders the workshop category chip', () => {
+    render(<ul><EventCard event={{ ...EVENT, categories: ['Workshop'] }} /></ul>)
+    expect(screen.getByText('Workshop')).toBeInTheDocument()
+  })
+
   it('calls onSelect with event id when clicked', () => {
     const onSelect = vi.fn()
     render(<ul><EventCard event={EVENT} onSelect={onSelect} /></ul>)

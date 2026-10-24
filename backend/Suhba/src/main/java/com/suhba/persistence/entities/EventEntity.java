@@ -126,7 +126,7 @@ public class EventEntity {
     }
 
     public enum EventCategory {
-        PRAYER, LECTURE, CLASS, COMMUNITY, YOUTH, SPORT, FUNDRAISER, NEW_MUSLIMS, OTHER
+        PRAYER, LECTURE, CLASS, WORKSHOP, COMMUNITY, YOUTH, SPORT, FUNDRAISER, NEW_MUSLIMS, OTHER
     }
 
     public enum Recurrence {

@@ -88,6 +88,7 @@ export type EventCategory =
   | 'Gebet'
   | 'Vortrag'
   | 'Kurs'
+  | 'Workshop'
   | 'Community'
   | 'Jugend'
   | 'Sport'

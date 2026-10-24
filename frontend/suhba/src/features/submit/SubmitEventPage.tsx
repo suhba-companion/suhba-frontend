@@ -10,7 +10,8 @@ const SELECT_CLASS =
   'w-full bg-cream-card border border-divider rounded-card px-3 py-2.5 text-sm text-text-dark outline-none focus:border-sage-light'
 
 const CATEGORIES: EventCategory[] = [
-  'Gebet', 'Vortrag', 'Kurs', 'Community', 'Jugend', 'Sport', 'Spende', 'Neue Muslime',
+  'Gebet', 'Vortrag', 'Kurs', 'Workshop', 'Community', 'Jugend', 'Sport', 'Spende',
+  'Neue Muslime',
   'Sonstige',
 ]
 
