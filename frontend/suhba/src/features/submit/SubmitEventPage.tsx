@@ -116,6 +116,18 @@ export function SubmitEventPage({ onBack }: SubmitEventPageProps): JSX.Element {
           </div>
         </FormField>
 
+        <FormField label={t('submit.event.audienceLabel')}>
+          <select
+            value={data.audience}
+            onChange={(e) => update('audience', e.target.value as EventAudience | '')}
+            className={SELECT_CLASS}
+          >
+            {AUDIENCES.map(({ value, labelKey }) => (
+              <option key={value} value={value}>{t(labelKey)}</option>
+            ))}
+          </select>
+        </FormField>
+
         <FormField label={t('submit.event.addressLabel')} error={errors.address}>
           <input
             type="text"
@@ -216,18 +228,6 @@ export function SubmitEventPage({ onBack }: SubmitEventPageProps): JSX.Element {
             placeholder={t('submit.event.organizerPlaceholder')}
             className={INPUT_CLASS}
           />
-        </FormField>
-
-        <FormField label={t('submit.event.audienceLabel')}>
-          <select
-            value={data.audience}
-            onChange={(e) => update('audience', e.target.value as EventAudience | '')}
-            className={SELECT_CLASS}
-          >
-            {AUDIENCES.map(({ value, labelKey }) => (
-              <option key={value} value={value}>{t(labelKey)}</option>
-            ))}
-          </select>
         </FormField>
 
         <label className="flex items-center gap-3 cursor-pointer">
