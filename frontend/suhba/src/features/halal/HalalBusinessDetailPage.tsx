@@ -2,8 +2,9 @@ import { useState, useEffect, Suspense, lazy } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ForkKnife, Coffee, Knife, ShoppingBag, Moon, Phone, Globe, Check } from '@phosphor-icons/react'
 import type { Icon } from '@phosphor-icons/react'
-import { Sect, Spinner } from '@components'
+import { Sect, Spinner, DistanceLabel } from '@components'
 import { getHalalBusinessById } from '@services/halalService'
+import { useGeolocationState, isGeoResolved } from '@hooks/useGeolocation'
 import { buildDirectionsUrl } from '@utils/maps'
 import { formatAddress } from '@utils/address'
 import type { HalalBusiness, BusinessType, CertStatus } from '../../types'
@@ -43,15 +44,20 @@ interface HalalBusinessDetailPageProps {
 
 export function HalalBusinessDetailPage({ businessId }: HalalBusinessDetailPageProps): JSX.Element {
   const { t } = useTranslation()
+  const { pos: userPos, status: geoStatus } = useGeolocationState()
   const [business, setBusiness] = useState<HalalBusiness | undefined>(undefined)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    // Same reason as SpotDetailPage: `/halal-spots/{id}` carries no distanceKm.
+    if (!isGeoResolved(geoStatus)) return
+    let cancelled = false
     setLoading(true)
-    getHalalBusinessById(businessId)
-      .then(setBusiness)
-      .finally(() => setLoading(false))
-  }, [businessId])
+    getHalalBusinessById(businessId, userPos)
+      .then((b) => { if (!cancelled) setBusiness(b) })
+      .finally(() => { if (!cancelled) setLoading(false) })
+    return () => { cancelled = true }
+  }, [businessId, userPos, geoStatus])
 
   if (loading) {
     return (
@@ -92,7 +98,7 @@ export function HalalBusinessDetailPage({ businessId }: HalalBusinessDetailPageP
 
         {business.distanceKm !== undefined && (
           <p className="text-text-muted text-sm m-0">
-            ~{business.distanceKm} km
+            <DistanceLabel km={business.distanceKm} />
           </p>
         )}
       </div>

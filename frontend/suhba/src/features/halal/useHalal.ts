@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo, useCallback } from 'react'
 import type { HalalBusiness, BusinessType } from '../../types'
 import { getHalalBusinesses } from '@services/halalService'
-import { useGeolocation } from '../../hooks/useGeolocation'
+import { useGeolocationState, isGeoResolved } from '../../hooks/useGeolocation'
 
 export interface HalalFilters {
   type: BusinessType | 'Alle'
@@ -31,7 +31,7 @@ interface UseHalalReturn {
 }
 
 export function useHalal(): UseHalalReturn {
-  const userPos = useGeolocation()
+  const { pos: userPos, status: geoStatus } = useGeolocationState()
   const [allBusinesses, setAllBusinesses] = useState<readonly HalalBusiness[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<Error | null>(null)
@@ -39,11 +39,17 @@ export function useHalal(): UseHalalReturn {
   const [sort, setSort] = useState<HalalSort>('Distanz')
 
   useEffect(() => {
+    if (!isGeoResolved(geoStatus)) return
+    let cancelled = false
+    setLoading(true)
     getHalalBusinesses(userPos)
-      .then(setAllBusinesses)
-      .catch((e: unknown) => setError(e instanceof Error ? e : new Error(String(e))))
-      .finally(() => setLoading(false))
-  }, [userPos.lat, userPos.lng])
+      .then((b) => { if (!cancelled) setAllBusinesses(b) })
+      .catch((e: unknown) => {
+        if (!cancelled) setError(e instanceof Error ? e : new Error(String(e)))
+      })
+      .finally(() => { if (!cancelled) setLoading(false) })
+    return () => { cancelled = true }
+  }, [userPos, geoStatus])
 
   const filteredAll = useMemo<HalalBusiness[]>(() => {
     const filtered = allBusinesses.filter((b): b is HalalBusiness => {

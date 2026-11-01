@@ -1,9 +1,8 @@
 import { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useVirtualizer } from '@tanstack/react-virtual'
-import { LoadingState } from '@components'
+import { LoadingState, LocationNotice } from '@components'
 import { useHalal, type HalalSort } from './useHalal'
-import { useGeolocationState } from '../../hooks/useGeolocation'
 import { HalalFilter } from './HalalFilter'
 import { HalalBusinessCard } from './HalalBusinessCard'
 
@@ -27,7 +26,6 @@ export function HalalPage({ onAddBusiness, onBusinessSelect }: HalalPageProps): 
     loading,
   } = useHalal()
 
-  const { status: geoStatus } = useGeolocationState()
   const [isFilterOpen, setIsFilterOpen] = useState(false)
   const parentRef = useRef<HTMLDivElement>(null)
 
@@ -40,11 +38,7 @@ export function HalalPage({ onAddBusiness, onBusinessSelect }: HalalPageProps): 
 
   return (
     <div className="flex flex-col h-full">
-      {(geoStatus === 'denied' || geoStatus === 'unavailable') && (
-        <div className="bg-sand/20 border-b border-sand/40 px-4 py-2 text-xs text-text-muted text-center">
-          Standort nicht verfügbar — Abstände ab Wien-Mitte
-        </div>
-      )}
+      <LocationNotice />
       {/* Fixed header */}
       <div className="p-4 space-y-3 shrink-0">
         <input

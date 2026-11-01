@@ -42,7 +42,7 @@ describe('SpotDetailHero', () => {
 
   it('renders distance', () => {
     render(<SpotDetailHero spot={MOCK_SPOT} />)
-    expect(screen.getByText(/1\.5 km/)).toBeInTheDocument()
+    expect(screen.getByText('1,5 km')).toBeInTheDocument()
   })
 
   it('renders amenity icons', () => {

@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useVirtualizer } from '@tanstack/react-virtual'
-import { Modal, LoadingState } from '@components'
+import { Modal, LoadingState, LocationNotice } from '@components'
 import { useEvents } from './useEvents'
 import { EventCard } from './EventCard'
 import { EventDetailModal } from './EventDetailModal'
@@ -38,6 +38,7 @@ export function EventsPage({ onAddEvent }: EventsPageProps): JSX.Element {
   return (
     <>
       <div className="flex flex-col h-full">
+        <LocationNotice />
         {/* Fixed header: search + filter toggle + count */}
         <div className="p-4 space-y-3 shrink-0">
           <input

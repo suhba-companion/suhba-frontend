@@ -1,10 +1,8 @@
 import type { PrayerSpot, SpotType } from '../types'
-import { haversineKm, roundKm } from '../utils/geo'
-
-import type { GeoPosition } from '../hooks/useGeolocation'
+import { resolveDistanceKm } from '../utils/geo'
+import { VIENNA_CENTER, nearbyParams, type GeoPosition } from '../utils/location'
 
 const API_BASE = `${import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8080'}/api/v1`
-const VIENNA_CENTER: GeoPosition = { lat: 48.2082, lng: 16.3738 }
 
 type BackendPrayerSpot = {
   id: number
@@ -36,11 +34,11 @@ function toSpotType(type: BackendPrayerSpot['type']): SpotType {
 }
 
 function toFrontendSpot(dto: BackendPrayerSpot, userPos: GeoPosition): PrayerSpot {
-  const distanceKm = roundKm(
-    dto.distanceKm != null
-      ? dto.distanceKm
-      : haversineKm(userPos.lat, userPos.lng, dto.latitude, dto.longitude),
-  )
+  // `/nearby` sets distanceKm, `/{id}` does not; resolveDistanceKm covers both.
+  const distanceKm = resolveDistanceKm(dto.distanceKm, userPos, {
+    lat: dto.latitude,
+    lng: dto.longitude,
+  })
   return {
     id: String(dto.id),
     name: dto.name,
@@ -65,15 +63,8 @@ function toFrontendSpot(dto: BackendPrayerSpot, userPos: GeoPosition): PrayerSpo
   }
 }
 
-const NEARBY_RADIUS_KM = 15
-
 export async function getSpots(userPos: GeoPosition = VIENNA_CENTER): Promise<readonly PrayerSpot[]> {
-  const params = new URLSearchParams({
-    latitude: String(userPos.lat),
-    longitude: String(userPos.lng),
-    radiusKm: String(NEARBY_RADIUS_KM),
-  })
-  const res = await fetch(`${API_BASE}/prayer-spots/nearby?${params}`)
+  const res = await fetch(`${API_BASE}/prayer-spots/nearby?${nearbyParams(userPos)}`)
   if (!res.ok) throw new Error(`Failed to fetch prayer spots: ${res.status}`)
   const data: BackendPrayerSpot[] = await res.json()
   return data.map((dto) => toFrontendSpot(dto, userPos))

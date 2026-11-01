@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import type { PrayerSpot } from '../../types'
 import { SpotAmenityIcons } from './SpotAmenityIcons'
+import { DistanceLabel } from '@components'
 
 interface SpotDetailHeroProps {
   spot: PrayerSpot
@@ -25,11 +26,7 @@ export function SpotDetailHero({ spot }: SpotDetailHeroProps): JSX.Element {
         >
           ● {openLabel}
         </span>
-        {spot.distanceKm !== undefined && (
-          <span className="text-text-muted">
-            ~{spot.distanceKm} km
-          </span>
-        )}
+        <DistanceLabel km={spot.distanceKm} className="text-text-muted" />
       </div>
 
       <SpotAmenityIcons spot={spot} showOpen={false} />

@@ -1,30 +1,10 @@
 import { useState } from 'react'
 import i18next from 'i18next'
+import { geocodeAddress } from '@utils/geocode'
 import type { BusinessType, CertStatus } from '../../types'
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8080'
 
-const VIENNA_LAT = 48.2082
-const VIENNA_LNG = 16.3738
-
-async function geocodeAddress(address: string, district: string): Promise<{ lat: number; lng: number }> {
-  try {
-    const q = encodeURIComponent(`${address}, ${district}, Wien, Österreich`)
-    const res = await fetch(
-      `https://nominatim.openstreetmap.org/search?q=${q}&format=json&limit=1&countrycodes=at`,
-      { headers: { 'Accept-Language': 'de', 'User-Agent': 'Suhba-App/1.0' } },
-    )
-    if (!res.ok) return { lat: VIENNA_LAT, lng: VIENNA_LNG }
-    const json: unknown = await res.json()
-    if (Array.isArray(json) && json.length > 0) {
-      const first = json[0] as Record<string, unknown>
-      const lat = parseFloat(String(first['lat']))
-      const lng = parseFloat(String(first['lon']))
-      if (!isNaN(lat) && !isNaN(lng)) return { lat, lng }
-    }
-  } catch { /* fall through to Vienna default */ }
-  return { lat: VIENNA_LAT, lng: VIENNA_LNG }
-}
 
 interface BusinessFormData {
   name: string

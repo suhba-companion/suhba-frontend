@@ -1,9 +1,8 @@
 import type { HalalBusiness, BusinessType, CertStatus } from '../types'
-import { haversineKm, roundKm } from '../utils/geo'
-import type { GeoPosition } from '../hooks/useGeolocation'
+import { resolveDistanceKm } from '../utils/geo'
+import { VIENNA_CENTER, nearbyParams, type GeoPosition } from '../utils/location'
 
 const API_BASE = `${import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8080'}/api/v1`
-const VIENNA_CENTER: GeoPosition = { lat: 48.2082, lng: 16.3738 }
 
 type BackendHalalSpot = {
   id: number
@@ -39,11 +38,11 @@ function toCertStatus(certified: boolean | null, body: string | null): CertStatu
 }
 
 function toFrontendBusiness(dto: BackendHalalSpot, userPos: GeoPosition): HalalBusiness {
-  const distanceKm = roundKm(
-    dto.distanceKm != null
-      ? dto.distanceKm
-      : haversineKm(userPos.lat, userPos.lng, dto.latitude, dto.longitude),
-  )
+  // `/nearby` sets distanceKm, `/{id}` does not; resolveDistanceKm covers both.
+  const distanceKm = resolveDistanceKm(dto.distanceKm, userPos, {
+    lat: dto.latitude,
+    lng: dto.longitude,
+  })
   return {
     id: String(dto.id),
     name: dto.name,
@@ -70,15 +69,8 @@ export async function getHalalBusinessById(id: string, userPos: GeoPosition = VI
   return toFrontendBusiness(await res.json(), userPos)
 }
 
-const NEARBY_RADIUS_KM = 15
-
 export async function getHalalBusinesses(userPos: GeoPosition = VIENNA_CENTER): Promise<readonly HalalBusiness[]> {
-  const params = new URLSearchParams({
-    latitude: String(userPos.lat),
-    longitude: String(userPos.lng),
-    radiusKm: String(NEARBY_RADIUS_KM),
-  })
-  const res = await fetch(`${API_BASE}/halal-spots/nearby?${params}`)
+  const res = await fetch(`${API_BASE}/halal-spots/nearby?${nearbyParams(userPos)}`)
   if (!res.ok) throw new Error(`Failed to fetch halal spots: ${res.status}`)
   const data: BackendHalalSpot[] = await res.json()
   return data.map((dto) => toFrontendBusiness(dto, userPos))

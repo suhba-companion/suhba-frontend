@@ -543,5 +543,11 @@
         }
       ]
     }
+  },
+  "location": {
+    "unavailable": "Standort nicht verfügbar – Entfernungen ab Wien-Mitte",
+    "denied": "Standort nicht freigegeben – Entfernungen ab Wien-Mitte",
+    "retry": "Erneut versuchen",
+    "asTheCrowFlies": "Luftlinie"
   }
 }

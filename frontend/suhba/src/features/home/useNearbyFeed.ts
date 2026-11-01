@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from 'react'
 import type { Event, FeedEvent, PrayerSpot } from '../../types'
 import { getUpcomingEvents } from '@services/eventService'
 import { getSpots } from '@services/masjidiService'
-import { useGeolocation } from '../../hooks/useGeolocation'
+import { useGeolocationState, isGeoResolved } from '../../hooks/useGeolocation'
 
 interface UseNearbyFeedReturn {
   items: readonly FeedEvent[]
@@ -69,12 +69,13 @@ function eventToFeedEvent(event: Event): FeedEvent {
 }
 
 export function useNearbyFeed(): UseNearbyFeedReturn {
-  const userPos = useGeolocation()
+  const { pos: userPos, status: geoStatus } = useGeolocationState()
   const [data, setData] = useState<NearbyData>({ spots: [], events: [] })
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<Error | null>(null)
 
   useEffect(() => {
+    if (!isGeoResolved(geoStatus)) return
     let cancelled = false
     setLoading(true)
     Promise.allSettled([getSpots(userPos), getUpcomingEvents(userPos)])
@@ -96,7 +97,7 @@ export function useNearbyFeed(): UseNearbyFeedReturn {
     return () => {
       cancelled = true
     }
-  }, [userPos.lat, userPos.lng])
+  }, [userPos, geoStatus])
 
   const items = useMemo(() => {
     const result: FeedEvent[] = []

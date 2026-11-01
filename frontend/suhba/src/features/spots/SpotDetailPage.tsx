@@ -2,6 +2,7 @@ import { useState, useEffect, Suspense, lazy } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Sect, Spinner } from '@components'
 import { getSpotById } from '@services/masjidiService'
+import { useGeolocationState, isGeoResolved } from '@hooks/useGeolocation'
 import type { PrayerSpot } from '../../types'
 import { SpotDetailHero } from './SpotDetailHero'
 import { SpotDetailInfo } from './SpotDetailInfo'
@@ -16,17 +17,22 @@ interface SpotDetailPageProps {
 
 export function SpotDetailPage({ spotId }: SpotDetailPageProps): JSX.Element {
   const { t } = useTranslation()
+  const { pos: userPos, status: geoStatus } = useGeolocationState()
   const [spot, setSpot] = useState<PrayerSpot | undefined>(undefined)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    // The position has to be passed through: `/prayer-spots/{id}` returns no
+    // distanceKm, so without it the hero measured from Vienna centre and
+    // contradicted the card the user just tapped.
+    if (!isGeoResolved(geoStatus)) return
+    let cancelled = false
     setLoading(true)
-    getSpotById(spotId)
-      .then((s) => {
-        setSpot(s)
-      })
-      .finally(() => setLoading(false))
-  }, [spotId])
+    getSpotById(spotId, userPos)
+      .then((s) => { if (!cancelled) setSpot(s) })
+      .finally(() => { if (!cancelled) setLoading(false) })
+    return () => { cancelled = true }
+  }, [spotId, userPos, geoStatus])
 
   if (loading) {
     return (

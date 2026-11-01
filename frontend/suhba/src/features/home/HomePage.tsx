@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { ErrorBoundary, Sect } from '@components'
+import { ErrorBoundary, Sect, LocationNotice } from '@components'
 import type { NavTab } from '@components'
 import type { FeedEvent } from '../../types'
 import { useDhikr } from './useDhikr'
@@ -29,6 +29,7 @@ export function HomePage({ onNavigate, onSpotSelect, onEventSelect }: HomePagePr
 
   return (
     <div className="p-4 space-y-6 pb-8">
+      <LocationNotice />
       <PrayerTimesWidget />
 
       <ErrorBoundary>

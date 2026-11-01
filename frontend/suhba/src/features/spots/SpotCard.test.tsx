@@ -38,7 +38,7 @@ describe('SpotCard', () => {
 
   it('renders distance', () => {
     render(<ul><SpotCard spot={MOCK_SPOT} /></ul>)
-    expect(screen.getByText(/1\.5 km/)).toBeInTheDocument()
+    expect(screen.getByText('1,5 km')).toBeInTheDocument()
   })
 
   it('renders amenity icons for features', () => {

@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { buildDirectionsUrl } from '@utils/maps'
 import type { FeedEvent } from '../../types'
+import { DistanceLabel } from '@components'
 
 interface NearbyFeedProps {
   items?: readonly FeedEvent[]
@@ -71,7 +72,7 @@ export function NearbyFeed({ items = [], loading = false, error = null, onSelect
 
             <div className="flex items-center justify-between gap-2">
               <span className="text-text-muted text-xs">
-                {item.distanceKm !== undefined && `~${item.distanceKm} km`}
+                <DistanceLabel km={item.distanceKm} />
                 {item.distanceKm !== undefined && item.time ? ' · ' : ''}
                 {item.time}
               </span>

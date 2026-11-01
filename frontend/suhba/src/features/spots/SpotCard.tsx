@@ -3,6 +3,7 @@ import { buildDirectionsUrl } from '@utils/maps'
 import type { PrayerSpot } from '../../types'
 import { SpotAmenityIcons } from './SpotAmenityIcons'
 import { formatAddress } from '@utils/address'
+import { DistanceLabel } from '@components'
 
 interface SpotCardProps {
   spot: PrayerSpot
@@ -38,9 +39,7 @@ export function SpotCard({ spot, onSelect }: SpotCardProps): JSX.Element {
       <SpotAmenityIcons spot={spot} showOpen={false} />
 
       <div className="flex items-center justify-between gap-2">
-        <span className="text-text-muted text-xs">
-          {spot.distanceKm !== undefined && `~${spot.distanceKm} km`}
-        </span>
+        <DistanceLabel km={spot.distanceKm} className="text-text-muted text-xs" />
         <button
           type="button"
           onClick={(e) => handleRoute(e, spot)}

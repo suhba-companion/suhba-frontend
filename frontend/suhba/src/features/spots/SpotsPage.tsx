@@ -1,8 +1,7 @@
 import { useState, Suspense, lazy } from 'react'
 import { useTranslation } from 'react-i18next'
-import { LoadingState } from '@components'
+import { LoadingState, LocationNotice } from '@components'
 import { useSpots, type SpotSort } from './useSpots'
-import { useGeolocationState } from '../../hooks/useGeolocation'
 import { SpotsFilter } from './SpotsFilter'
 import { SpotsListView } from './SpotsListView'
 
@@ -18,17 +17,12 @@ interface SpotsPageProps {
 export function SpotsPage({ onSpotSelect, onAddSpot }: SpotsPageProps): JSX.Element {
   const { t } = useTranslation()
   const { filteredSpots, filters, updateFilters, resetFilters, activeFilterCount, sort, setSort, loading } = useSpots()
-  const { status: geoStatus } = useGeolocationState()
   const [viewMode, setViewMode] = useState<ViewMode>('list')
   const [isFilterOpen, setIsFilterOpen] = useState(false)
 
   return (
     <div className="flex flex-col h-full">
-      {(geoStatus === 'denied' || geoStatus === 'unavailable') && (
-        <div className="bg-sand/20 border-b border-sand/40 px-4 py-2 text-xs text-text-muted text-center">
-          Standort nicht verfügbar — Abstände ab Wien-Mitte
-        </div>
-      )}
+      <LocationNotice />
       <div className="p-4 space-y-3 shrink-0">
         <input
           type="search"

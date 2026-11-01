@@ -38,7 +38,7 @@ describe('NearbyFeed', () => {
 
   it('renders distance', () => {
     render(<NearbyFeed items={MOCK_ITEMS} />)
-    expect(screen.getByText(/0\.5 km/)).toBeInTheDocument()
+    expect(screen.getByText('500 m')).toBeInTheDocument()
   })
 
   it('opens the detail (calls onSelect) when a card is clicked', () => {

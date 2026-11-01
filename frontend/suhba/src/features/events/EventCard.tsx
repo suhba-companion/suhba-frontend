@@ -9,6 +9,7 @@ import { formatEventTime } from '@utils/eventTime'
 import type { Event, EventCategory } from '../../types'
 import { AUDIENCE_LABEL_KEYS } from './audience'
 import { formatRecurrence } from './recurrence'
+import { DistanceLabel } from '@components'
 
 const CATEGORY_ICONS: Record<EventCategory, Icon> = {
   Gebet: HandsPraying,
@@ -91,6 +92,12 @@ export function EventCard({ event, onSelect }: EventCardProps): JSX.Element {
         <div className="flex items-center gap-1.5 text-xs text-text-muted">
           <MapPin size={12} aria-hidden="true" className="shrink-0" />
           <span className="truncate">{event.address}</span>
+          {event.distanceKm !== undefined && (
+            <>
+              <span aria-hidden="true">·</span>
+              <DistanceLabel km={event.distanceKm} className="shrink-0" />
+            </>
+          )}
         </div>
       </div>
 

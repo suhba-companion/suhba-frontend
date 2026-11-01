@@ -2,12 +2,11 @@ import { useState } from 'react'
 import i18next from 'i18next'
 import type { EventAudience, EventCategory, EventRecurrence, PrayerName } from '../../types'
 import { toSafeHttpUrl } from '@utils/url'
+import { geocodeAddress } from '@utils/geocode'
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8080'
 
 // Vienna centre — used when the user doesn't pick a precise location
-const VIENNA_LAT = 48.2082
-const VIENNA_LNG = 16.3738
 
 const PRAYER_TO_ENUM: Record<PrayerName, string> = {
   Fajr:    'FAJR',
@@ -157,6 +156,9 @@ export function useSubmitEvent(): UseSubmitEventReturn {
     }
     setStatus('loading')
     try {
+      // Events used to be posted at Vienna centre regardless of address, which
+      // made distanceKm and the radius filter meaningless for every one of them.
+      const { lat, lng } = await geocodeAddress(data.address.trim(), data.district.trim())
       const res = await fetch(`${API_BASE}/api/v1/events`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -176,8 +178,8 @@ export function useSubmitEvent(): UseSubmitEventReturn {
           registrationUrl: toSafeHttpUrl(data.registrationUrl) ?? null,
           requiresRegistration: data.requiresRegistration,
           audience: data.audience ? AUDIENCE_TO_ENUM[data.audience] : null,
-          latitude: VIENNA_LAT,
-          longitude: VIENNA_LNG,
+          latitude: lat,
+          longitude: lng,
         }),
       })
       if (!res.ok) throw new Error(`${res.status}`)

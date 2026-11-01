@@ -45,7 +45,7 @@ describe('HalalBusinessCard', () => {
 
   it('renders distance', () => {
     render(<ul><HalalBusinessCard business={BASE_BUSINESS} /></ul>)
-    expect(screen.getByText(/2\.5 km/)).toBeInTheDocument()
+    expect(screen.getByText('2,5 km')).toBeInTheDocument()
   })
 
   it('renders route button', () => {

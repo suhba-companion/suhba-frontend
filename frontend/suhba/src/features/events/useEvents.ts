@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo, useCallback } from 'react'
 import type { Event, EventAudience, EventCategory } from '../../types'
 import { getUpcomingEvents } from '@services/eventService'
-import { useGeolocation } from '../../hooks/useGeolocation'
+import { useGeolocationState, isGeoResolved } from '../../hooks/useGeolocation'
 
 export type EventFilter = 'Alle' | 'Heute' | 'Diese Woche' | EventCategory
 
@@ -37,7 +37,7 @@ function isThisWeek(dateStr: string): boolean {
 }
 
 export function useEvents(): UseEventsReturn {
-  const userPos = useGeolocation()
+  const { pos: userPos, status: geoStatus } = useGeolocationState()
   const [events, setEvents] = useState<readonly Event[]>([])
   const [activeFilter, setActiveFilter] = useState<EventFilter>('Alle')
   const [audienceFilter, setAudienceFilter] = useState<EventAudience | null>(null)
@@ -46,12 +46,17 @@ export function useEvents(): UseEventsReturn {
   const [error, setError] = useState<Error | null>(null)
 
   useEffect(() => {
+    if (!isGeoResolved(geoStatus)) return
+    let cancelled = false
     setLoading(true)
     getUpcomingEvents(userPos)
-      .then(setEvents)
-      .catch(setError)
-      .finally(() => setLoading(false))
-  }, [userPos.lat, userPos.lng])
+      .then((e) => { if (!cancelled) setEvents(e) })
+      .catch((e: unknown) => {
+        if (!cancelled) setError(e instanceof Error ? e : new Error(String(e)))
+      })
+      .finally(() => { if (!cancelled) setLoading(false) })
+    return () => { cancelled = true }
+  }, [userPos, geoStatus])
 
   const filteredEvents = useMemo(() => {
     let result = events

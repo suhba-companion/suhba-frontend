@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo, useCallback } from 'react'
 import type { PrayerSpot, SpotType } from '../../types'
 import { getSpots } from '@services/masjidiService'
-import { useGeolocation } from '../../hooks/useGeolocation'
+import { useGeolocationState, isGeoResolved } from '../../hooks/useGeolocation'
 
 export interface SpotFilters {
   type: SpotType | 'Alle'
@@ -43,7 +43,7 @@ interface UseSpotsReturn {
 }
 
 export function useSpots(): UseSpotsReturn {
-  const userPos = useGeolocation()
+  const { pos: userPos, status: geoStatus } = useGeolocationState()
   const [allSpots, setAllSpots] = useState<readonly PrayerSpot[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<Error | null>(null)
@@ -51,11 +51,19 @@ export function useSpots(): UseSpotsReturn {
   const [sort, setSort] = useState<SpotSort>('Distanz')
 
   useEffect(() => {
+    // Wait for a verdict on the position. Firing while `pending` fetched against
+    // Vienna centre, rendered those distances as if real, then refetched.
+    if (!isGeoResolved(geoStatus)) return
+    let cancelled = false
+    setLoading(true)
     getSpots(userPos)
-      .then(setAllSpots)
-      .catch((e: unknown) => setError(e instanceof Error ? e : new Error(String(e))))
-      .finally(() => setLoading(false))
-  }, [userPos.lat, userPos.lng])
+      .then((s) => { if (!cancelled) setAllSpots(s) })
+      .catch((e: unknown) => {
+        if (!cancelled) setError(e instanceof Error ? e : new Error(String(e)))
+      })
+      .finally(() => { if (!cancelled) setLoading(false) })
+    return () => { cancelled = true }
+  }, [userPos, geoStatus])
 
   const filteredSpots = useMemo<PrayerSpot[]>(() => {
     const filtered = allSpots.filter((spot): spot is PrayerSpot => {

@@ -1,11 +1,9 @@
 import type { Event, EventAudience, EventCategory, EventRecurrence, PrayerName } from '../types'
-import type { GeoPosition } from '../hooks/useGeolocation'
-import { roundKm } from '../utils/geo'
+import { resolveDistanceKm } from '../utils/geo'
+import { VIENNA_CENTER, nearbyParams, type GeoPosition } from '../utils/location'
 import { toSafeHttpUrl } from '../utils/url'
 
 const API_BASE = `${import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8080'}/api/v1`
-const VIENNA_CENTER: GeoPosition = { lat: 48.2082, lng: 16.3738 }
-const NEARBY_RADIUS_KM = 15
 
 type BackendPrayer = 'FAJR' | 'DHUHR' | 'ASR' | 'MAGHRIB' | 'ISHA'
 
@@ -74,7 +72,7 @@ const PRAYER_MAP: Record<BackendPrayer, PrayerName> = {
   ISHA: 'Isha',
 }
 
-function toFrontendEvent(dto: BackendEvent): Event {
+function toFrontendEvent(dto: BackendEvent, userPos: GeoPosition): Event {
   return {
     id: String(dto.id),
     title: dto.title,
@@ -95,27 +93,30 @@ function toFrontendEvent(dto: BackendEvent): Event {
     registrationUrl: toSafeHttpUrl(dto.registrationUrl ?? undefined),
     requiresRegistration: dto.requiresRegistration,
     audience: dto.audience != null ? AUDIENCE_MAP[dto.audience] : undefined,
-    distanceKm: dto.distanceKm != null ? roundKm(dto.distanceKm) : undefined,
+    // Matches spots and halal: `/events/{id}` omits distanceKm, so fall back to
+    // measuring it here instead of silently dropping the distance.
+    distanceKm: resolveDistanceKm(dto.distanceKm, userPos, {
+      lat: dto.latitude,
+      lng: dto.longitude,
+    }),
   }
 }
 
 export async function getUpcomingEvents(userPos: GeoPosition = VIENNA_CENTER): Promise<readonly Event[]> {
-  const params = new URLSearchParams({
-    latitude: String(userPos.lat),
-    longitude: String(userPos.lng),
-    radiusKm: String(NEARBY_RADIUS_KM),
-  })
-  const res = await fetch(`${API_BASE}/events/nearby?${params}`)
+  const res = await fetch(`${API_BASE}/events/nearby?${nearbyParams(userPos)}`)
   if (!res.ok) throw new Error(`Failed to fetch events: ${res.status}`)
   const data: BackendEvent[] = await res.json()
-  return data.map(toFrontendEvent)
+  return data.map((dto) => toFrontendEvent(dto, userPos))
 }
 
-export async function getEventById(id: string): Promise<Event | undefined> {
+export async function getEventById(
+  id: string,
+  userPos: GeoPosition = VIENNA_CENTER,
+): Promise<Event | undefined> {
   const res = await fetch(`${API_BASE}/events/${id}`)
   if (res.status === 404) return undefined
   if (!res.ok) throw new Error(`Failed to fetch event: ${res.status}`)
-  return toFrontendEvent(await res.json())
+  return toFrontendEvent(await res.json(), userPos)
 }
 
 export async function submitEvent(
@@ -127,5 +128,5 @@ export async function submitEvent(
     body: JSON.stringify(data),
   })
   if (!res.ok) throw new Error(`Failed to submit event: ${res.status}`)
-  return toFrontendEvent(await res.json())
+  return toFrontendEvent(await res.json(), VIENNA_CENTER)
 }

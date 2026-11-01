@@ -1,6 +1,40 @@
 import { renderHook, act } from '@testing-library/react'
 import { useSubmitEvent } from '@features/submit/useSubmitEvent'
 
+type FetchMock = ReturnType<typeof vi.fn>
+
+interface EventPostBody {
+  title: string
+  categories: string[]
+  address: string
+  district: string
+  startTime: string
+  endTime: string | null
+  startPrayer: string | null
+  recurrence: string | null
+  recurrenceUntil: string | null
+  registrationUrl: string | null
+  requiresRegistration: boolean
+  audience: string | null
+  latitude: number
+  longitude: number
+}
+
+/**
+ * The hook geocodes the address before posting, so the events request is no
+ * longer `calls[0]`. Everything here asserts on the POST, not the lookup.
+ */
+function eventPost(mockFetch: FetchMock): [string, RequestInit] {
+  const calls = mockFetch.mock.calls as Array<[string, RequestInit]>
+  const call = calls.find(([url]) => typeof url === 'string' && url.includes('/api/v1/events'))
+  if (!call) throw new Error('no POST to /api/v1/events was made')
+  return call
+}
+
+function eventPostBody(mockFetch: FetchMock): EventPostBody {
+  return JSON.parse(String(eventPost(mockFetch)[1].body)) as EventPostBody
+}
+
 describe('useSubmitEvent', () => {
   beforeEach(() => {
     vi.restoreAllMocks()
@@ -93,8 +127,8 @@ describe('useSubmitEvent', () => {
       result.current.update('startTime', '2026-06-01T12:00')
     })
     await act(async () => { await result.current.submit() })
-    expect(mockFetch).toHaveBeenCalledTimes(1)
-    const [url, opts] = mockFetch.mock.calls[0]
+    expect(mockFetch).toHaveBeenCalledTimes(2) // geocode, then POST
+    const [url, opts] = eventPost(mockFetch)
     expect(url).toContain('/events')
     expect(opts.method).toBe('POST')
   })
@@ -115,9 +149,9 @@ describe('useSubmitEvent', () => {
       result.current.update('endTime', '2026-06-01T14:00')
     })
     await act(async () => { await result.current.submit() })
-    const body = JSON.parse(mockFetch.mock.calls[0][1].body)
+    const body = eventPostBody(mockFetch)
     expect(new Date(body.startTime).getTime()).toBe(new Date('2026-06-01T12:00').getTime())
-    expect(new Date(body.endTime).getTime()).toBe(new Date('2026-06-01T14:00').getTime())
+    expect(new Date(body.endTime!).getTime()).toBe(new Date('2026-06-01T14:00').getTime())
   })
 
   it('sends no start prayer by default', async () => {
@@ -132,7 +166,7 @@ describe('useSubmitEvent', () => {
       result.current.update('startTime', '2026-06-01T12:00')
     })
     await act(async () => { await result.current.submit() })
-    expect(JSON.parse(mockFetch.mock.calls[0][1].body).startPrayer).toBeNull()
+    expect(eventPostBody(mockFetch).startPrayer).toBeNull()
   })
 
   it('sends the chosen prayer as its backend enum', async () => {
@@ -148,7 +182,7 @@ describe('useSubmitEvent', () => {
       result.current.selectStartPrayer('Maghrib')
     })
     await act(async () => { await result.current.submit() })
-    expect(JSON.parse(mockFetch.mock.calls[0][1].body).startPrayer).toBe('MAGHRIB')
+    expect(eventPostBody(mockFetch).startPrayer).toBe('MAGHRIB')
   })
 
   it('clears an entered end time when a start prayer is chosen', () => {
@@ -202,7 +236,7 @@ describe('useSubmitEvent', () => {
       result.current.update('registrationUrl', 'eventbrite.com/e/123')
     })
     await act(async () => { await result.current.submit() })
-    const body = JSON.parse(mockFetch.mock.calls[0][1].body)
+    const body = eventPostBody(mockFetch)
     expect(body.registrationUrl).toBe('https://eventbrite.com/e/123')
     expect(body.categories).toEqual(['LECTURE'])
   })
@@ -236,7 +270,7 @@ describe('useSubmitEvent', () => {
       result.current.update('startTime', '2026-06-01T12:00')
     })
     await act(async () => { await result.current.submit() })
-    expect(JSON.parse(mockFetch.mock.calls[0][1].body).registrationUrl).toBeNull()
+    expect(eventPostBody(mockFetch).registrationUrl).toBeNull()
   })
 
   it('sends the picked audience as the backend enum', async () => {
@@ -252,7 +286,7 @@ describe('useSubmitEvent', () => {
       result.current.update('audience', 'Nur Schwestern')
     })
     await act(async () => { await result.current.submit() })
-    expect(JSON.parse(mockFetch.mock.calls[0][1].body).audience).toBe('SISTERS_ONLY')
+    expect(eventPostBody(mockFetch).audience).toBe('SISTERS_ONLY')
   })
 
   it('sends a null audience when the event is open to everyone', async () => {
@@ -267,7 +301,7 @@ describe('useSubmitEvent', () => {
       result.current.update('startTime', '2026-06-01T12:00')
     })
     await act(async () => { await result.current.submit() })
-    expect(JSON.parse(mockFetch.mock.calls[0][1].body).audience).toBeNull()
+    expect(eventPostBody(mockFetch).audience).toBeNull()
   })
 
   it('sends requiresRegistration when the checkbox is ticked', async () => {
@@ -283,7 +317,7 @@ describe('useSubmitEvent', () => {
       result.current.update('requiresRegistration', true)
     })
     await act(async () => { await result.current.submit() })
-    const body = JSON.parse(mockFetch.mock.calls[0][1].body)
+    const body = eventPostBody(mockFetch)
     expect(body.requiresRegistration).toBe(true)
     expect(body.registrationUrl).toBeNull()
   })
@@ -300,7 +334,7 @@ describe('useSubmitEvent', () => {
       result.current.update('startTime', '2026-06-01T12:00')
     })
     await act(async () => { await result.current.submit() })
-    expect(JSON.parse(mockFetch.mock.calls[0][1].body).categories).toEqual(['PRAYER', 'YOUTH'])
+    expect(eventPostBody(mockFetch).categories).toEqual(['PRAYER', 'YOUTH'])
   })
 
   it('errors starts as empty object', () => {
@@ -323,7 +357,7 @@ describe('useSubmitEvent', () => {
     const { result } = renderHook(() => useSubmitEvent())
     act(() => fillValid(result))
     await act(async () => { await result.current.submit() })
-    const body = JSON.parse(mockFetch.mock.calls[0][1].body)
+    const body = eventPostBody(mockFetch)
     expect(body.recurrence).toBeNull()
     expect(body.recurrenceUntil).toBeNull()
   })
@@ -337,7 +371,7 @@ describe('useSubmitEvent', () => {
       result.current.selectRecurrence('Zweiwöchentlich')
     })
     await act(async () => { await result.current.submit() })
-    expect(JSON.parse(mockFetch.mock.calls[0][1].body).recurrence).toBe('BIWEEKLY')
+    expect(eventPostBody(mockFetch).recurrence).toBe('BIWEEKLY')
   })
 
   it('sends an open-ended series with no end date', async () => {
@@ -349,7 +383,7 @@ describe('useSubmitEvent', () => {
       result.current.selectRecurrence('Wöchentlich')
     })
     await act(async () => { await result.current.submit() })
-    const body = JSON.parse(mockFetch.mock.calls[0][1].body)
+    const body = eventPostBody(mockFetch)
     expect(body.recurrence).toBe('WEEKLY')
     expect(body.recurrenceUntil).toBeNull()
   })
@@ -364,7 +398,7 @@ describe('useSubmitEvent', () => {
     })
     act(() => result.current.update('recurrenceUntil', '2026-12-31'))
     await act(async () => { await result.current.submit() })
-    expect(JSON.parse(mockFetch.mock.calls[0][1].body).recurrenceUntil).toBe('2026-12-31')
+    expect(eventPostBody(mockFetch).recurrenceUntil).toBe('2026-12-31')
   })
 
   it('drops an end date that was entered before falling back to a one-off', async () => {
@@ -379,7 +413,7 @@ describe('useSubmitEvent', () => {
     act(() => result.current.selectRecurrence(''))
     expect(result.current.data.recurrenceUntil).toBe('')
     await act(async () => { await result.current.submit() })
-    expect(JSON.parse(mockFetch.mock.calls[0][1].body).recurrenceUntil).toBeNull()
+    expect(eventPostBody(mockFetch).recurrenceUntil).toBeNull()
   })
 
   it('rejects a series that ends before its first occurrence', async () => {
