@@ -1,0 +1,60 @@
+import type { Dhikr } from '../types'
+
+export const AZKAR_SABAH: Dhikr[] = [
+  {
+    id: 'sabah-1',
+    ar: 'أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ، لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ',
+    latin: 'Aṣbaḥnā wa-aṣbaḥa l-mulku lillāhi, wa-l-ḥamdu lillāh, lā ilāha illallāhu waḥdahu lā sharīka lah, lahu l-mulku wa-lahu l-ḥamdu wa-huwa ʿalā kulli shayʾin qadīr',
+    de: 'Wir haben den Morgen erreicht und mit ihm gehört die Herrschaft Allah. Alles Lob gebührt Allah. Es gibt keinen Gott außer Allah, Er allein, ohne Teilhaber. Sein ist die Herrschaft und Sein ist das Lob, und Er hat Macht über alle Dinge.',
+    count: '1×',
+    hadithInfo: "Der Prophet ﷺ pflegte am Morgen zu sagen: 'Aṣbaḥnā wa-aṣbaḥa l-mulku lillāh...' — Ṣaḥīḥ Muslim 2723",
+  },
+  {
+    id: 'sabah-2',
+    ar: 'اللَّهُمَّ بِكَ أَصْبَحْنَا، وَبِكَ أَمْسَيْنَا، وَبِكَ نَحْيَا، وَبِكَ نَمُوتُ، وَإِلَيْكَ النُّشُورُ',
+    latin: 'Allāhumma bika aṣbaḥnā, wa-bika amsaynā, wa-bika naḥyā, wa-bika namūtu, wa-ilayka n-nushūr',
+    de: 'O Allah, durch Dich haben wir den Morgen erreicht, durch Dich den Abend, durch Dich leben wir, durch Dich sterben wir, und zu Dir ist die Auferstehung.',
+    count: '1×',
+    hadithInfo: "Überliefert von Abū Hurayra رضي الله عنه — Sunan at-Tirmidhī 3391",
+  },
+  {
+    id: 'sabah-3',
+    ar: 'اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ وَأَبُوءُ بِذَنْبِي فَاغْفِرْ لِي فَإِنَّهُ لَا يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ',
+    latin: 'Allāhumma anta rabbī lā ilāha illā anta, khalaqtanī wa-anā ʿabduk, wa-anā ʿalā ʿahdika wa-waʿdika ma-staṭaʿtu, aʿūdhu bika min sharri mā ṣanaʿtu, abūʾu laka bi-niʿmatika ʿalayya wa-abūʾu bi-dhanbī fa-ghfir lī fa-innahū lā yaghfiru dh-dhunūba illā ant',
+    de: 'O Allah, Du bist mein Herr, es gibt keinen Gott außer Dir. Du hast mich erschaffen und ich bin Dein Diener. Ich bekenne Deine Gnade an mir und ich bekenne meine Sünde. So vergib mir, denn niemand vergibt die Sünden außer Dir.',
+    count: '1×',
+    hadithInfo: "Sayyid al-Istighfār — 'Wer dies morgens mit Überzeugung sagt und noch vor Abend stirbt, ist ein Bewohner des Paradieses.' — Ṣaḥīḥ al-Bukhārī 6306",
+  },
+  {
+    id: 'sabah-4',
+    ar: 'رَضِيتُ بِاللَّهِ رَبًّا، وَبِالْإِسْلَامِ دِينًا، وَبِمُحَمَّدٍ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ نَبِيًّا',
+    latin: 'Raḍītu billāhi rabbā, wa-bi-l-islāmi dīnā, wa-bi-Muḥammadin ṣallallāhu ʿalayhi wa-sallama nabiyyā',
+    de: 'Ich bin zufrieden mit Allah als Herrn, mit dem Islam als Religion und mit Muhammad ﷺ als Prophet.',
+    count: '3×',
+    hadithInfo: "'Wer dies morgens und abends dreimal sagt, dem ist es ein Recht bei Allah, ihn zufriedenzustellen.' — Sunan Abī Dāwūd 5072",
+  },
+  {
+    id: 'sabah-5',
+    ar: 'اللَّهُمَّ عَافِنِي فِي بَدَنِي، اللَّهُمَّ عَافِنِي فِي سَمْعِي، اللَّهُمَّ عَافِنِي فِي بَصَرِي، لَا إِلَهَ إِلَّا أَنْتَ',
+    latin: 'Allāhumma ʿāfinī fī badanī, Allāhumma ʿāfinī fī samʿī, Allāhumma ʿāfinī fī baṣarī, lā ilāha illā ant',
+    de: 'O Allah, schenke meinem Körper Wohlbefinden. O Allah, schenke meinem Gehör Wohlbefinden. O Allah, schenke meinem Augenlicht Wohlbefinden. Es gibt keinen Gott außer Dir.',
+    count: '3×',
+    hadithInfo: "Überliefert von Abū Bakr aṣ-Ṣiddīq رضي الله عنه — Sunan Abī Dāwūd 5090",
+  },
+  {
+    id: 'sabah-6',
+    ar: 'حَسْبِيَ اللَّهُ لَا إِلَهَ إِلَّا هُوَ، عَلَيْهِ تَوَكَّلْتُ وَهُوَ رَبُّ الْعَرْشِ الْعَظِيمِ',
+    latin: 'Ḥasbiya llāhu lā ilāha illā hū, ʿalayhi tawakkaltu wa-huwa rabbu l-ʿarshi l-ʿaẓīm',
+    de: 'Allah genügt mir, es gibt keinen Gott außer Ihm. Auf Ihn vertraue ich, und Er ist der Herr des gewaltigen Throns.',
+    count: '7×',
+    hadithInfo: "'Wer dies morgens und abends siebenmal sagt — Allah wird ihm in seiner Angelegenheit genügen.' — Sunan Abī Dāwūd 5081",
+  },
+  {
+    id: 'sabah-7',
+    ar: 'سُبْحَانَ اللَّهِ وَبِحَمْدِهِ',
+    latin: 'Subḥānallāhi wa-biḥamdih',
+    de: 'Gepriesen sei Allah und Ihm gebührt das Lob',
+    count: '100×',
+    hadithInfo: "'Wer dies morgens und abends hundertmal sagt — kein Mensch wird am Tag des Gerichts mit Besserem kommen.' — Ṣaḥīḥ Muslim 2692",
+  },
+]

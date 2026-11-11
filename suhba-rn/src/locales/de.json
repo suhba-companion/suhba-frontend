@@ -1,0 +1,584 @@
+{
+  "nav": {
+    "start": "Start",
+    "orte": "Gebetsorte",
+    "halal": "Halal Spots",
+    "events": "Events",
+    "azkar": "Azkar & Duaa",
+    "prayers": "Gebete",
+    "label": "Hauptnavigation"
+  },
+  "topBar": {
+    "appName": "Suhba",
+    "openCounter": "Dhikr zählen",
+    "formSpot": "Ort hinzufügen",
+    "formBusiness": "Betrieb hinzufügen",
+    "formEvent": "Event vorschlagen"
+  },
+  "home": {
+    "quickAccess": "Schnellzugriff",
+    "nearby": "In der Nähe",
+    "nearbyEmpty": "Nichts in der Nähe gefunden.",
+    "nearbyLoading": "Wird geladen…",
+    "nearbyError": "Inhalte konnten nicht geladen werden.",
+    "azkar": "Azkar & Duaa",
+    "azkarLink": "Azkar & Duaa öffnen",
+    "tiles": {
+      "orte": {
+        "label": "Gebetsorte",
+        "sub": "Moscheen in Wien"
+      },
+      "halal": {
+        "label": "Halal Spots",
+        "sub": "Restaurants & Shops"
+      },
+      "events": {
+        "label": "Events",
+        "sub": "Veranstaltungen"
+      },
+      "gebete": {
+        "label": "Gebete",
+        "sub": "Demnächst"
+      },
+      "azkar": {
+        "label": "Azkar & Duaa",
+        "sub": "Dhikr & Gebete"
+      }
+    }
+  },
+  "dhikr": {
+    "navGroup": "Dhikr-Auswahl",
+    "navItem": "Dhikr {{number}} von {{total}}",
+    "next": "Weiter",
+    "openCounter": "Dhikr zählen"
+  },
+  "spots": {
+    "searchPlaceholder": "Suche nach Gebetsort…",
+    "searchLabel": "Gebetsorte suchen",
+    "viewList": "Liste",
+    "viewMap": "Karte",
+    "viewToggle": "Ansicht wechseln",
+    "filter": "Filter",
+    "count": "{{count}} Orte",
+    "addSpot": "+ Hinzufügen",
+    "loading": "Gebetsorte werden geladen…",
+    "mapLoading": "Karte wird geladen…",
+    "noResults": "Keine Gebetsorte gefunden. Passe deine Filter an.",
+    "route": "Route →",
+    "filter_": {
+      "type": "Typ",
+      "amenities": "Ausstattung",
+      "typeAll": "Alle",
+      "typeMoscheen": "Moscheen",
+      "typeGebetsorte": "Gebetsorte",
+      "typeSonstige": "Sonstige",
+      "amenityJuma": "Freitagsgebet",
+      "amenityWudu": "Wudu",
+      "amenitySisters": "Frauenbereich",
+      "amenityParking": "Parkplatz",
+      "amenityHijab": "Hijab verfügbar",
+      "amenityPrayerClothes": "Gebetskleidung",
+      "reset": "Zurücksetzen",
+      "apply": "Anwenden"
+    },
+    "amenity": {
+      "juma": "Freitagsgebet",
+      "wudu": "Wudu-Möglichkeit",
+      "sisters": "Frauenbereich",
+      "parking": "Parkplatz",
+      "hijab": "Hijab verfügbar",
+      "prayerClothes": "Gebetskleidung verfügbar"
+    },
+    "detail": {
+      "notFound": "Gebetsort nicht gefunden.",
+      "info": "Informationen",
+      "address": "Adresse",
+      "juma": "Juma-Gebet",
+      "jumaTime": "{{time}} Uhr",
+      "jumaSummer": "Juma (Sommer)",
+      "jumaWinter": "Juma (Winter)",
+      "hours": "Öffnungszeiten",
+      "language": "Sprache(n)",
+      "directions": "Navigation",
+      "verified": "Verifiziert",
+      "map": "Karte",
+      "mapLoading": "Karte wird geladen…"
+    }
+  },
+  "halal": {
+    "searchPlaceholder": "Halal-Betriebe suchen…",
+    "searchLabel": "Halal-Betriebe suchen",
+    "filter": "Filter",
+    "count": "{{count}} Betriebe",
+    "addBusiness": "+ Betrieb",
+    "loading": "Betriebe werden geladen…",
+    "allBusinesses": "Alle Betriebe",
+    "noResults": "Keine Betriebe gefunden. Passe deine Suche an.",
+    "certHMA": "HMA",
+    "unavailable": {
+      "title": "Halal Spots sind zurzeit nicht verfügbar",
+      "body": "Wir arbeiten gerade an einer zuverlässigen Liste, die nur Betriebe anzeigt, die zu 100 % halal sind.",
+      "suggest": "+ Betrieb vorschlagen"
+    },
+    "stars": "{{rating}} Sterne",
+    "detail": {
+      "title": "Betrieb",
+      "notFound": "Betrieb nicht gefunden.",
+      "info": "Informationen",
+      "address": "Adresse",
+      "hours": "Öffnungszeiten",
+      "phone": "Telefon",
+      "website": "Website",
+      "map": "Karte",
+      "mapLoading": "Karte wird geladen…"
+    },
+    "filter_": {
+      "category": "Kategorie",
+      "all": "Alle",
+      "restaurants": "Restaurants",
+      "cafes": "Cafés",
+      "butchers": "Metzgereien",
+      "grocery": "Lebensmittel",
+      "other": "Sonstige",
+      "extras": "Extras",
+      "parking": "Parkplatz",
+      "reset": "Zurücksetzen",
+      "apply": "Anwenden"
+    },
+    "amenity": {
+      "parking": "Parkplatz"
+    }
+  },
+  "azkar": {
+    "tabsLabel": "Azkar-Kategorien",
+    "tabAzkar": "Azkar",
+    "tabDuaa": "Duaa",
+    "tabSabah": "Sabah",
+    "tabMasa": "Masa'",
+    "azkarListLabel": "Azkar-Liste",
+    "duaaListLabel": "Duaa-Liste",
+    "sabahListLabel": "Azkar Sabah",
+    "masaListLabel": "Azkar Masa'",
+    "navCardsLabel": "Morgen- und Abend-Azkar",
+    "sabahLabel": "Azkar Sabah",
+    "masaLabel": "Azkar Masa'",
+    "afterPrayerLabel": "Nach dem Gebet",
+    "repetitions": "{{count}} Wiederholungen",
+    "counter": {
+      "reset": "Zurücksetzen",
+      "close": "Schließen",
+      "of": "von {{target}}",
+      "progress": "{{current}} von {{target}}",
+      "tapToCount": "Tippe zum Zählen",
+      "done": "Fertig · Alhamdulillah"
+    }
+  },
+  "submit": {
+    "spot": {
+      "formLabel": "Gebetsort hinzufügen",
+      "nameLabel": "Name",
+      "typeLabel": "Typ",
+      "addressLabel": "Adresse",
+      "districtLabel": "Bezirk",
+      "namePlaceholder": "Name des Gebetsorts",
+      "addressPlaceholder": "Straße und Hausnummer",
+      "districtPlaceholder": "z. B. 1100 Wien",
+      "typePlaceholder": "Bitte wählen…",
+      "amenitiesLegend": "Ausstattung",
+      "jumaLabel": "Juma-Gebet",
+      "wuduLabel": "Wudu-Möglichkeit",
+      "sistersLabel": "Frauenbereich",
+      "parkingLabel": "Parkplatz",
+      "noteLabel": "Kommentar (optional)",
+      "notePlaceholder": "Zusätzliche Informationen…",
+      "submitButton": "Einreichen",
+      "submitting": "Wird gesendet…",
+      "successTitle": "Vielen Dank!",
+      "successText": "Dein Vorschlag wurde eingereicht und wird geprüft.",
+      "backButton": "Zurück",
+      "errorText": "Etwas ist schiefgelaufen. Bitte versuche es erneut.",
+      "typeMoschee": "Moschee",
+      "typeGebetsort": "Gebetsort",
+      "typeSonstige": "Sonstige",
+      "latitudeLabel": "Breitengrad (optional)",
+      "longitudeLabel": "Längengrad (optional)",
+      "openingHoursLabel": "Öffnungszeiten (optional)",
+      "openingHoursPlaceholder": "z. B. Mo–So 08:00–22:00",
+      "jumaTimeLabel": "Uhrzeit Juma-Gebet",
+      "nameRequired": "Name ist erforderlich",
+      "typeRequired": "Typ ist erforderlich",
+      "addressRequired": "Adresse ist erforderlich",
+      "addressNotFound": "Diese Adresse konnten wir nicht finden. Bitte prüfe Straße, Hausnummer und Bezirk.",
+      "districtRequired": "Bezirk ist erforderlich",
+      "latitudeRequired": "Gültigen Breitengrad eingeben",
+      "longitudeRequired": "Gültigen Längengrad eingeben"
+    },
+    "business": {
+      "formLabel": "Betrieb hinzufügen",
+      "nameLabel": "Name",
+      "typeLabel": "Kategorie",
+      "addressLabel": "Adresse",
+      "districtLabel": "Bezirk",
+      "certLabel": "Zertifizierung (optional)",
+      "namePlaceholder": "Name des Betriebs",
+      "addressPlaceholder": "Straße und Hausnummer",
+      "districtPlaceholder": "z. B. 1100 Wien",
+      "typePlaceholder": "Bitte wählen…",
+      "certPlaceholder": "Nicht angegeben",
+      "noteLabel": "Kommentar (optional)",
+      "notePlaceholder": "Zusätzliche Informationen…",
+      "submitButton": "Einreichen",
+      "submitting": "Wird gesendet…",
+      "successTitle": "Vielen Dank!",
+      "successText": "Dein Betrieb wurde eingereicht und wird geprüft.",
+      "backButton": "Zurück",
+      "errorText": "Etwas ist schiefgelaufen. Bitte versuche es erneut.",
+      "typeRestaurant": "Restaurant",
+      "typeCafe": "Café",
+      "typeMetzgerei": "Metzgerei",
+      "typeLebensmittel": "Lebensmittel",
+      "typeSonstige": "Sonstige",
+      "certHMA": "HMA-Zertifiziert",
+      "certSelf": "Selbst-zertifiziert",
+      "certOwned": "Muslim-Owned",
+      "latitudeLabel": "Breitengrad (optional)",
+      "longitudeLabel": "Längengrad (optional)",
+      "openingHoursLabel": "Öffnungszeiten (optional)",
+      "openingHoursPlaceholder": "z. B. Mo–So 11:00–22:00",
+      "phoneLabel": "Telefon (optional)",
+      "phonePlaceholder": "+43 1 …",
+      "websiteLabel": "Website (optional)",
+      "nameRequired": "Name ist erforderlich",
+      "typeRequired": "Kategorie ist erforderlich",
+      "addressRequired": "Adresse ist erforderlich",
+      "addressNotFound": "Diese Adresse konnten wir nicht finden. Bitte prüfe Straße, Hausnummer und Bezirk.",
+      "districtRequired": "Bezirk ist erforderlich",
+      "latitudeRequired": "Gültigen Breitengrad eingeben",
+      "longitudeRequired": "Gültigen Längengrad eingeben"
+    },
+    "event": {
+      "formLabel": "Event vorschlagen",
+      "titleLabel": "Titel",
+      "categoryLabel": "Kategorie",
+      "addressLabel": "Adresse",
+      "districtLabel": "Bezirk",
+      "startTimeLabel": "Beginn",
+      "startKindLabel": "Art der Zeitangabe",
+      "startKindTime": "Uhrzeit angeben",
+      "startDateLabel": "Datum",
+      "endTimeLabel": "Ende (optional)",
+      "recurrenceLabel": "Wiederholung",
+      "recurrenceNone": "Einmalig",
+      "recurrenceWeekly": "Jede Woche",
+      "recurrenceBiweekly": "Alle 2 Wochen",
+      "recurrenceMonthly": "Jeden Monat",
+      "recurrenceHint": "Beginn oben zählt als erster Termin.",
+      "recurrenceUntilLabel": "Läuft bis (optional)",
+      "organizerLabel": "Veranstalter (optional)",
+      "requiresRegistrationLabel": "Anmeldung erforderlich",
+      "audienceLabel": "Zielgruppe",
+      "audienceAll": "Alle",
+      "audienceSisters": "Nur Schwestern",
+      "audienceBrothers": "Nur Brüder",
+      "registrationUrlLabel": "Anmeldelink (optional)",
+      "descriptionLabel": "Beschreibung (optional)",
+      "isFreeLabel": "Kostenlose Veranstaltung",
+      "titlePlaceholder": "Name des Events",
+      "categoryPlaceholder": "Kategorie hinzufügen…",
+      "addressPlaceholder": "Straße und Hausnummer",
+      "districtPlaceholder": "z. B. 1100 Wien",
+      "organizerPlaceholder": "Name des Veranstalters",
+      "registrationUrlPlaceholder": "https://…",
+      "descriptionPlaceholder": "Kurze Beschreibung…",
+      "submitButton": "Einreichen",
+      "submitting": "Wird gesendet…",
+      "successTitle": "Vielen Dank!",
+      "successText": "Dein Event wurde eingereicht und wird geprüft.",
+      "backButton": "Zurück",
+      "errorText": "Etwas ist schiefgelaufen. Bitte versuche es erneut.",
+      "titleRequired": "Titel ist erforderlich",
+      "categoryRequired": "Mindestens eine Kategorie ist erforderlich",
+      "categoryRemove": "{{category}} entfernen",
+      "addressRequired": "Adresse ist erforderlich",
+      "districtRequired": "Bezirk ist erforderlich",
+      "startTimeRequired": "Startzeit ist erforderlich",
+      "startDateRequired": "Datum ist erforderlich",
+      "registrationUrlInvalid": "Bitte einen gültigen Link eingeben (https://…)",
+      "recurrenceUntilInvalid": "Das Enddatum liegt vor dem ersten Termin."
+    }
+  },
+  "prayers": {
+    "loading": "Gebetszeiten werden geladen…",
+    "error": "Gebetszeiten konnten nicht geladen werden.",
+    "retry": "Erneut versuchen",
+    "nextPrayer": "Nächstes Gebet",
+    "shorouk": "Shorouk",
+    "shoroukSub": "Sonnenaufgang",
+    "offlineWarning": "Gebetszeiten vom {{date}} – können leicht abweichen",
+    "additionalTimes": "Weitere Zeiten",
+    "sunrise": "Sonnenaufgang",
+    "midnight": "Mitternacht"
+  },
+  "sort": {
+    "distanz": "Distanz",
+    "name": "Name",
+    "datum": "Datum"
+  },
+  "events": {
+    "searchPlaceholder": "Events suchen…",
+    "searchLabel": "Events suchen",
+    "filterAll": "Alle",
+    "filterToday": "Heute",
+    "filterThisWeek": "Diese Woche",
+    "count": "{{count}} Events",
+    "addEvent": "+ Event vorschlagen",
+    "loading": "Events werden geladen…",
+    "empty": "Keine Events gefunden.",
+    "notFound": "Event nicht gefunden.",
+    "free": "Kostenlos",
+    "afterPrayer": "nach dem {{prayer}}-Gebet",
+    "recurrence": {
+      "weekly": "Jeden {{weekday}}",
+      "biweekly": "Jeden 2. {{weekday}}",
+      "monthly": "Monatlich am {{day}}.",
+      "until": "bis {{date}}"
+    },
+    "copyLink": "Link kopieren",
+    "linkCopied": "Link kopiert",
+    "registrationRequired": "Anmeldung erforderlich",
+    "sistersOnly": "Nur Schwestern",
+    "brothersOnly": "Nur Brüder",
+    "filter": "Filter",
+    "filter_": {
+      "time": "Zeitraum",
+      "category": "Kategorie",
+      "audience": "Zielgruppe",
+      "reset": "Zurücksetzen",
+      "apply": "Anwenden"
+    }
+  },
+  "social": {
+    "label": "Suhba in sozialen Medien",
+    "instagram": "Suhba auf Instagram (öffnet in neuem Tab)",
+    "tiktok": "Suhba auf TikTok (öffnet in neuem Tab)"
+  },
+  "legal": {
+    "footerLabel": "Rechtliches",
+    "impressum": {
+      "title": "Impressum",
+      "linkLabel": "Impressum",
+      "updated": "Stand: September 2026",
+      "sections": [
+        {
+          "heading": "Angaben gemäß § 5 ECG und § 25 MedienG",
+          "paragraphs": [
+            "Suhba – Muslimischer Begleiter in Wien",
+            "Medieninhaberinnen, Herausgeberinnen und Diensteanbieterinnen sind gemeinsam:",
+            "Amal Mostafa und Mona Imam",
+            "c/o Mona Imam",
+            "Sandleitengasse 15/2/CNB",
+            "1160 Wien, Österreich"
+          ]
+        },
+        {
+          "heading": "Verantwortlich für den Inhalt",
+          "paragraphs": [
+            "Amal Mostafa und Mona Imam sind gemeinsam für die Inhalte der App verantwortlich."
+          ]
+        },
+        {
+          "heading": "Kontakt",
+          "paragraphs": [
+            "E-Mail: suhba.companion@gmail.com",
+            "Anfragen an diese Adresse erreichen beide Betreiber."
+          ]
+        },
+        {
+          "heading": "Rechtliche Angaben",
+          "paragraphs": [
+            "Suhba wird von zwei Privatpersonen ehrenamtlich betrieben. Es besteht keine Eintragung im Firmenbuch und keine UID-Nummer.",
+            "Anwendbare Rechtsvorschriften: ECG, MedienG, DSGVO, DSG"
+          ]
+        },
+        {
+          "heading": "Zweck des Angebots",
+          "paragraphs": [
+            "Betrieb einer nicht gewerblichen Community-App für Musliminnen und Muslime in Wien: Gebetsorte, Halal-Betriebe, Events, Azkar und Duaa."
+          ]
+        },
+        {
+          "heading": "Blattlinie (§ 25 Abs. 4 MedienG)",
+          "paragraphs": [
+            "Suhba ist ein unabhängiges, ehrenamtlich von zwei Privatpersonen betriebenes Informationsangebot für die muslimische Gemeinschaft in Wien. Die App verfolgt keine parteipolitischen Ziele und vertritt keine einzelne Rechtsschule oder Organisation."
+          ]
+        },
+        {
+          "heading": "Online-Streitbeilegung",
+          "paragraphs": [
+            "Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung bereit: ec.europa.eu/consumers/odr",
+            "Wir sind nicht verpflichtet und nicht bereit, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen."
+          ]
+        },
+        {
+          "heading": "Haftung für Inhalte",
+          "paragraphs": [
+            "Die Inhalte dieser App werden mit größtmöglicher Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Angaben zu Gebetszeiten, Gebetsorten, Halal-Zertifizierungen und Events kann jedoch keine Gewähr übernommen werden.",
+            "Community-Beiträge (vorgeschlagene Orte, Betriebe und Events) geben die Meinung der jeweils einreichenden Person wieder. Bei Kenntnis von Rechtsverletzungen entfernen wir die betroffenen Inhalte umgehend."
+          ]
+        },
+        {
+          "heading": "Haftung für Links",
+          "paragraphs": [
+            "Unser Angebot enthält Links zu externen Websites Dritter, auf deren Inhalte wir keinen Einfluss haben. Für diese fremden Inhalte ist stets der jeweilige Anbieter verantwortlich."
+          ]
+        },
+        {
+          "heading": "Urheberrecht",
+          "paragraphs": [
+            "Die durch die Betreiber erstellten Inhalte und Werke unterliegen dem österreichischen Urheberrecht. Kartendaten stammen von OpenStreetMap und stehen unter der Open Database License (ODbL)."
+          ]
+        }
+      ]
+    },
+    "datenschutz": {
+      "title": "Datenschutzerklärung",
+      "linkLabel": "Datenschutz",
+      "updated": "Stand: November 2026",
+      "sections": [
+        {
+          "heading": "Gemeinsam Verantwortliche (Art. 26 DSGVO)",
+          "paragraphs": [
+            "Amal Mostafa und Mona Imam",
+            "c/o Mona Imam, Sandleitengasse 15/2/CNB, 1160 Wien, Österreich",
+            "E-Mail: suhba.companion@gmail.com",
+            "Wir entscheiden gemeinsam über Zwecke und Mittel der Verarbeitung und sind daher gemeinsam Verantwortliche im Sinne des Art. 26 DSGVO. Du kannst deine Rechte gegenüber jeder von uns beiden geltend machen; die oben genannte E-Mail-Adresse erreicht beide."
+          ]
+        },
+        {
+          "heading": "Grundsätzliches",
+          "paragraphs": [
+            "Der Schutz deiner persönlichen Daten ist uns ein wichtiges Anliegen. Wir verarbeiten deine Daten ausschließlich auf Grundlage der DSGVO und des österreichischen Datenschutzgesetzes.",
+            "Diese Erklärung gilt für die Suhba-App für iOS und Android.",
+            "Die Nutzung von Suhba ist ohne Benutzerkonto, ohne Registrierung und ohne Angabe personenbezogener Daten möglich."
+          ]
+        },
+        {
+          "heading": "Standortdaten",
+          "paragraphs": [
+            "Um die Entfernung zu Gebetsorten und Events zu berechnen und die Einträge nach Nähe zu sortieren, fragt die App deinen Standort ab. Die Abfrage erfolgt ausschließlich nach deiner ausdrücklichen Freigabe im Systemdialog von iOS beziehungsweise Android (Art. 6 Abs. 1 lit. a DSGVO).",
+            "Suhba greift auf den Standort nur zu, solange die App im Vordergrund geöffnet ist. Eine Standortermittlung im Hintergrund findet nicht statt. Wir zeichnen deinen Weg nicht auf und erstellen keine Bewegungsprofile.",
+            "Deine Koordinaten werden an unseren eigenen Server übermittelt, damit dieser die Orte in deiner Umgebung ermitteln kann. Sie werden dort ausschließlich zur Beantwortung der jeweiligen Anfrage verwendet, nicht in unserer Datenbank gespeichert und keinem Benutzerkonto zugeordnet. Sie erscheinen für die Dauer der Aufbewahrung in den Server-Logfiles (siehe unten).",
+            "An Dritte geben wir deinen Standort nicht weiter. Wir nutzen keine externen Routing- oder Entfernungsdienste; die Entfernungsberechnung erfolgt ausschließlich durch uns selbst. Auch die Gebetszeiten werden ohne deinen Standort abgerufen, da wir den Kalender für Wien verwenden.",
+            "Die Karte gibt deinen Standort ebenfalls nicht preis: Sie öffnet immer mit Blick auf die Wiener Innenstadt und zeigt deine eigene Position nicht an.",
+            "Du kannst die Standortfreigabe jederzeit in den Systemeinstellungen deines Geräts widerrufen, unter iOS in „Einstellungen > Datenschutz & Sicherheit > Ortungsdienste“, unter Android in „Einstellungen > Standort“. Ohne Freigabe funktioniert die App weiterhin; als Bezugspunkt dient dann das Wiener Stadtzentrum."
+          ]
+        },
+        {
+          "heading": "Server-Logfiles",
+          "paragraphs": [
+            "Sobald die App Daten bei unserem Server abruft, werden dort automatisch Zugriffsdaten in Logfiles gespeichert: IP-Adresse, Datum und Uhrzeit, die aufgerufene Schnittstelle sowie Angaben zu Betriebssystem und App-Version.",
+            "Die Verarbeitung erfolgt zur Gewährleistung eines sicheren und stabilen Betriebs auf Basis unseres berechtigten Interesses (Art. 6 Abs. 1 lit. f DSGVO). Die Logfiles werden nach spätestens 30 Tagen gelöscht."
+          ]
+        },
+        {
+          "heading": "Hosting und Auftragsverarbeiter",
+          "paragraphs": [
+            "Wir betreiben Suhba nicht auf eigenen Servern, sondern setzen folgende Dienstleister als Auftragsverarbeiter im Sinne des Art. 28 DSGVO ein:",
+            "Render Services, Inc. – Betrieb unserer Programmschnittstelle (API)",
+            "Supabase, Inc. – Betrieb unserer Datenbank",
+            "Mit allen genannten Anbietern bestehen Auftragsverarbeitungsverträge. Sie verarbeiten Daten ausschließlich nach unserer Weisung und nutzen sie nicht für eigene Zwecke."
+          ]
+        },
+        {
+          "heading": "Übermittlung in Drittländer",
+          "paragraphs": [
+            "Die oben genannten Anbieter sind Unternehmen mit Sitz in den Vereinigten Staaten. Dadurch kann es zu einer Verarbeitung personenbezogener Daten, insbesondere deiner IP-Adresse und der übermittelten Koordinaten, außerhalb der Europäischen Union kommen.",
+            "Die Übermittlung stützt sich auf die Standardvertragsklauseln der Europäischen Kommission (Art. 46 Abs. 2 lit. c DSGVO) sowie, soweit die Anbieter dort zertifiziert sind, auf den Angemessenheitsbeschluss zum EU-US Data Privacy Framework (Art. 45 DSGVO).",
+            "Wir weisen darauf hin, dass in den USA kein mit der Europäischen Union vollständig vergleichbares Datenschutzniveau besteht und insbesondere ein Zugriff durch US-Behörden nicht vollständig ausgeschlossen werden kann."
+          ]
+        },
+        {
+          "heading": "Bezug der App über App Store und Google Play",
+          "paragraphs": [
+            "Suhba wird über den Apple App Store und über Google Play vertrieben. Beim Herunterladen und beim Aktualisieren der App verarbeiten Apple und Google eigenverantwortlich Daten wie deine Geräte- und Kontokennung sowie den Zeitpunkt des Downloads. Auf diese Verarbeitung haben wir keinen Einfluss; es gelten die Datenschutzbestimmungen des jeweiligen Anbieters.",
+            "Von den Stores erhalten wir ausschließlich zusammengefasste Statistiken, etwa zur Zahl der Installationen. Ein Rückschluss auf einzelne Personen ist uns dabei nicht möglich."
+          ]
+        },
+        {
+          "heading": "Kontaktaufnahme per E-Mail",
+          "paragraphs": [
+            "Wenn du uns schreibst, verarbeiten wir deine E-Mail-Adresse und den Inhalt deiner Nachricht, um die Anfrage zu beantworten (Art. 6 Abs. 1 lit. f DSGVO; bei Anliegen zu einem Vertragsverhältnis Art. 6 Abs. 1 lit. b DSGVO).",
+            "Unser E-Mail-Postfach wird bei Google Ireland Limited (Gmail) geführt. Wir löschen Anfragen, sobald sie abschließend bearbeitet sind und keine gesetzlichen Aufbewahrungspflichten entgegenstehen."
+          ]
+        },
+        {
+          "heading": "Formulare: Ort, Betrieb und Event vorschlagen",
+          "paragraphs": [
+            "Wenn du einen Gebetsort, einen Halal-Betrieb oder ein Event vorschlägst, verarbeiten wir die von dir eingegebenen Angaben, um den Vorschlag zu prüfen und zu veröffentlichen (Art. 6 Abs. 1 lit. a und lit. f DSGVO).",
+            "Wir fragen dabei weder deinen Namen noch deine E-Mail-Adresse ab. Dein Vorschlag wird uns ohne Angaben zu deiner Person übermittelt.",
+            "Damit der vorgeschlagene Ort auf der Karte eingeordnet werden kann, übermitteln wir die von dir eingegebene Adresse an den Geokodierungsdienst Nominatim der OpenStreetMap Foundation. Dabei werden diese Adresse und deine IP-Adresse an die Server der Foundation übertragen. Dein eigener Standort wird nicht mitgesendet.",
+            "Bitte gib nur Kontaktdaten an, deren Veröffentlichung du oder die betroffene Einrichtung wünschst. Vorschläge werden vor der Veröffentlichung redaktionell geprüft."
+          ]
+        },
+        {
+          "heading": "Speicherung auf deinem Gerät",
+          "paragraphs": [
+            "Azkar und Duaa sind fest in die App eingebaut. Sie stehen dir auch ohne Internetverbindung zur Verfügung, ohne dass dafür Daten übertragen werden.",
+            "Darüber hinaus legt Suhba keine Nutzungsdaten auf deinem Gerät ab. Filtereinstellungen, zuletzt geöffnete Orte und der Stand des Tasbih-Zählers bestehen nur, solange die jeweilige Ansicht geöffnet ist, und werden nicht dauerhaft gespeichert.",
+            "Wir setzen keine Cookies und binden keine Analyse- oder Werbedienste ein."
+          ]
+        },
+        {
+          "heading": "Karten und externe Dienste",
+          "paragraphs": [
+            "Für die Kartendarstellung lädt die App Kartenkacheln direkt von den Servern der OpenStreetMap Foundation. Dabei wird deine IP-Adresse an diese Server übertragen. Da die Karte stets auf die Wiener Innenstadt zentriert startet, lässt sich daraus nicht auf deinen Aufenthaltsort schließen. Details: osmfoundation.org/wiki/Privacy_Policy",
+            "Die Inhalte zu Gebetsorten, Halal-Betrieben, Events und Gebetszeiten stammen aus unserer eigenen Datenbank und werden ausschließlich über unseren eigenen Server abgerufen. Eine direkte Verbindung deines Geräts zu Dritten entsteht dabei nicht.",
+            "Wenn du auf „Route“ tippst, öffnet die App Google Maps in deinem Browser oder in der Google-Maps-App. Erst mit diesem Tippen werden deine IP-Adresse und die Zieladresse an Google übermittelt; es gelten dann die Datenschutzbestimmungen von Google.",
+            "Dasselbe gilt für die Links zu unseren Profilen auf Instagram und TikTok sowie für Anmeldelinks zu Events: Sie öffnen die jeweilige Seite außerhalb von Suhba. Eine Verbindung zum jeweiligen Anbieter entsteht erst, wenn du einen solchen Link antippst."
+          ]
+        },
+        {
+          "heading": "Keine Benachrichtigungen, keine Werbung, kein Tracking",
+          "paragraphs": [
+            "Suhba sendet keine Push-Benachrichtigungen. Die App greift weder auf Kamera, Mikrofon, Fotos, Kontakte, Kalender noch auf Gesundheits- oder Bewegungsdaten zu. Die einzige Berechtigung, um die wir bitten, ist der Standort.",
+            "Wir verwenden keine Werbekennung deines Geräts, binden keine Analyse-, Werbe- oder Social-Media-Tracker ein und verfolgen dein Verhalten weder innerhalb von Suhba noch über andere Apps und Websites hinweg."
+          ]
+        },
+        {
+          "heading": "Speicherdauer",
+          "paragraphs": [
+            "Wir speichern personenbezogene Daten nur so lange, wie es für die genannten Zwecke erforderlich ist oder gesetzliche Aufbewahrungspflichten bestehen."
+          ]
+        },
+        {
+          "heading": "Keine automatisierte Entscheidungsfindung",
+          "paragraphs": [
+            "Eine automatisierte Entscheidungsfindung einschließlich Profiling im Sinne des Art. 22 DSGVO findet nicht statt. Wir erstellen keine Nutzungsprofile und werten dein Verhalten in der App nicht aus."
+          ]
+        },
+        {
+          "heading": "Deine Rechte",
+          "paragraphs": [
+            "Dir stehen die Rechte auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit und Widerspruch zu. Eine erteilte Einwilligung kannst du jederzeit mit Wirkung für die Zukunft widerrufen.",
+            "Wende dich dazu an: suhba.companion@gmail.com"
+          ]
+        },
+        {
+          "heading": "Beschwerderecht",
+          "paragraphs": [
+            "Wenn du der Ansicht bist, dass die Verarbeitung deiner Daten gegen das Datenschutzrecht verstößt, kannst du dich bei der Österreichischen Datenschutzbehörde beschweren: Barichgasse 40–42, 1030 Wien, dsb.gv.at"
+          ]
+        },
+        {
+          "heading": "Änderungen dieser Erklärung",
+          "paragraphs": [
+            "Wir passen diese Datenschutzerklärung an, sobald sich die Funktionen der App oder die rechtlichen Rahmenbedingungen ändern. Es gilt jeweils die in der App abrufbare Fassung."
+          ]
+        }
+      ]
+    }
+  },
+  "common": {
+    "done": "Fertig"
+  }
+}

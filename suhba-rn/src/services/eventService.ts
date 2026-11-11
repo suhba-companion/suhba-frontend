@@ -1,0 +1,130 @@
+import type { Event, EventAudience, EventCategory, EventRecurrence, PrayerName } from '../types'
+import type { GeoPosition } from '../hooks/useGeolocation'
+import { roundKm } from '../utils/geo'
+import { toSafeHttpUrl } from '../utils/url'
+
+import { API_BASE } from '../config'
+import { apiGet } from './apiFetch'
+const VIENNA_CENTER: GeoPosition = { lat: 48.2082, lng: 16.3738 }
+const NEARBY_RADIUS_KM = 15
+
+type BackendPrayer = 'FAJR' | 'DHUHR' | 'ASR' | 'MAGHRIB' | 'ISHA'
+
+type BackendAudience = 'SISTERS_ONLY' | 'BROTHERS_ONLY'
+
+type BackendRecurrence = 'WEEKLY' | 'BIWEEKLY' | 'MONTHLY'
+
+type BackendCategory =
+  | 'PRAYER' | 'LECTURE' | 'CLASS' | 'WORKSHOP' | 'COMMUNITY' | 'YOUTH' | 'SPORT' | 'FUNDRAISER'
+  | 'NEW_MUSLIMS' | 'OTHER'
+
+type BackendEvent = {
+  id: number
+  title: string
+  description: string | null
+  address: string
+  district: string
+  latitude: number
+  longitude: number
+  startTime: string
+  endTime: string | null
+  startPrayer: BackendPrayer | null
+  recurrence: BackendRecurrence | null
+  recurrenceUntil: string | null
+  categories: BackendCategory[]
+  organizer: string | null
+  contactInfo: string | null
+  isFree: boolean
+  registrationUrl: string | null
+  requiresRegistration: boolean
+  audience: BackendAudience | null
+  status: string
+  upvotes: number
+  distanceKm: number | null
+}
+
+const CATEGORY_MAP: Record<BackendCategory, EventCategory> = {
+  PRAYER: 'Gebet',
+  LECTURE: 'Vortrag',
+  CLASS: 'Kurs',
+  WORKSHOP: 'Workshop',
+  COMMUNITY: 'Community',
+  YOUTH: 'Jugend',
+  SPORT: 'Sport',
+  FUNDRAISER: 'Spende',
+  NEW_MUSLIMS: 'Neue Muslime',
+  OTHER: 'Sonstige',
+}
+
+const AUDIENCE_MAP: Record<BackendAudience, EventAudience> = {
+  SISTERS_ONLY:  'Nur Schwestern',
+  BROTHERS_ONLY: 'Nur Brüder',
+}
+
+const RECURRENCE_MAP: Record<BackendRecurrence, EventRecurrence> = {
+  WEEKLY:   'Wöchentlich',
+  BIWEEKLY: 'Zweiwöchentlich',
+  MONTHLY:  'Monatlich',
+}
+
+const PRAYER_MAP: Record<BackendPrayer, PrayerName> = {
+  FAJR: 'Fajr',
+  DHUHR: 'Dhuhr',
+  ASR: 'Asr',
+  MAGHRIB: 'Maghrib',
+  ISHA: 'Isha',
+}
+
+// A value the backend adds later must degrade, never throw: one unknown category once
+// emptied the whole Events tab in the iOS port.
+function toFrontendEvent(dto: BackendEvent): Event {
+  return {
+    id: String(dto.id),
+    title: dto.title,
+    description: dto.description ?? undefined,
+    address: dto.address,
+    district: dto.district,
+    lat: dto.latitude,
+    lng: dto.longitude,
+    startTime: dto.startTime,
+    endTime: dto.endTime ?? undefined,
+    startPrayer: dto.startPrayer != null ? PRAYER_MAP[dto.startPrayer] : undefined,
+    recurrence: dto.recurrence != null ? RECURRENCE_MAP[dto.recurrence] : undefined,
+    recurrenceUntil: dto.recurrenceUntil ?? undefined,
+    categories: dto.categories.map((c) => CATEGORY_MAP[c] ?? 'Sonstige'),
+    organizer: dto.organizer ?? undefined,
+    contactInfo: dto.contactInfo ?? undefined,
+    isFree: dto.isFree,
+    registrationUrl: toSafeHttpUrl(dto.registrationUrl ?? undefined),
+    requiresRegistration: dto.requiresRegistration,
+    audience: dto.audience != null ? AUDIENCE_MAP[dto.audience] : undefined,
+    distanceKm: dto.distanceKm != null ? roundKm(dto.distanceKm) : undefined,
+  }
+}
+
+export async function getUpcomingEvents(userPos: GeoPosition = VIENNA_CENTER): Promise<readonly Event[]> {
+  const params = new URLSearchParams({
+    latitude: String(userPos.lat),
+    longitude: String(userPos.lng),
+    radiusKm: String(NEARBY_RADIUS_KM),
+  })
+  const data = await apiGet<BackendEvent[]>(`${API_BASE}/events/nearby?${params}`)
+  return (data ?? []).map(toFrontendEvent)
+}
+
+export async function getEventById(id: string): Promise<Event | undefined> {
+  const dto = await apiGet<BackendEvent>(`${API_BASE}/events/${id}`, { allowNotFound: true })
+  return dto === undefined ? undefined : toFrontendEvent(dto)
+}
+
+export async function submitEvent(
+  data: Omit<BackendEvent, 'id' | 'status' | 'upvotes' | 'distanceKm'>,
+): Promise<Event> {
+  const res = await fetch(`${API_BASE}/events`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  })
+  if (!res.ok) throw new Error(`Failed to submit event: ${res.status}`)
+  return toFrontendEvent(await res.json())
+}
