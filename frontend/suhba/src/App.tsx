@@ -8,8 +8,7 @@ import { HalalUnavailablePage } from '@features/halal'
 import { EventsPage, EventDetailPage } from '@features/events'
 import { AzkarPage } from '@features/azkar'
 import { SubmitSpotPage, SubmitBusinessPage, SubmitEventPage } from '@features/submit'
-import { LegalPage, LegalLinks } from '@features/legal'
-import type { LegalDocument } from '@features/legal'
+import { LegalPage, LegalLinks, useLegalRoute } from '@features/legal'
 import { SocialLinks } from '@features/social'
 
 type FormView = 'submit-spot' | 'submit-business' | 'submit-event' | null
@@ -20,19 +19,19 @@ function App(): JSX.Element {
   const [selectedSpot, setSelectedSpot] = useState<{ id: string; name: string } | null>(null)
   const [selectedEvent, setSelectedEvent] = useState<{ id: string; title: string } | null>(null)
   const [activeForm, setActiveForm] = useState<FormView>(null)
-  const [legalDocument, setLegalDocument] = useState<LegalDocument | null>(null)
+  const { legalDocument, openLegal, closeLegal } = useLegalRoute()
 
   const handleTabChange = (tab: NavTab): void => {
     setSelectedSpot(null)
     setSelectedEvent(null)
     setActiveForm(null)
-    setLegalDocument(null)
+    closeLegal()
     setActiveTab(tab)
   }
 
   const handleBack = (): void => {
     setActiveForm(null)
-    setLegalDocument(null)
+    closeLegal()
   }
 
   const formTitles: Record<NonNullable<FormView>, string> = {
@@ -99,7 +98,7 @@ function App(): JSX.Element {
         footer={
           <div className="flex flex-col gap-3">
             <SocialLinks variant="dark" />
-            <LegalLinks variant="dark" onSelect={setLegalDocument} />
+            <LegalLinks variant="dark" onSelect={openLegal} />
           </div>
         }
       />
@@ -118,7 +117,7 @@ function App(): JSX.Element {
           {legalDocument === null && (
             <footer className="lg:hidden px-4 pb-6 pt-2 flex flex-col gap-3">
               <SocialLinks />
-              <LegalLinks onSelect={setLegalDocument} />
+              <LegalLinks onSelect={openLegal} />
             </footer>
           )}
         </main>

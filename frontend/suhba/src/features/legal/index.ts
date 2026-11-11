@@ -1,3 +1,5 @@
 export { LegalPage } from './LegalPage'
 export type { LegalDocument } from './LegalPage'
 export { LegalLinks } from './LegalLinks'
+export { useLegalRoute } from './useLegalRoute'
+export type { LegalRoute } from './useLegalRoute'
