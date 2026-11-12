@@ -27,7 +27,8 @@
   "submit": {
     "production": {
       "ios": {
-        "bundleIdentifier": "at.suhba.app"
+        "bundleIdentifier": "at.suhba.app",
+        "ascAppId": "6833665676"
       }
     }
   }
