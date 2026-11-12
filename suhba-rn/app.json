@@ -12,10 +12,19 @@
       "supportsTablet": false,
       "bundleIdentifier": "at.suhba.app",
       "infoPlist": {
-        "NSLocationWhenInUseUsageDescription": "Suhba zeigt dir die Entfernung zu Gebetsorten und Events in deiner Nähe. Ohne Standort rechnet die App ab Wien-Mitte."
+        "NSLocationWhenInUseUsageDescription": "Suhba zeigt dir die Entfernung zu Gebetsorten und Events in deiner Nähe. Ohne Standort rechnet die App ab Wien-Mitte.",
+        "ITSAppUsesNonExemptEncryption": false
       },
       "privacyManifests": {
         "NSPrivacyCollectedDataTypes": [
+          {
+            "NSPrivacyCollectedDataType": "NSPrivacyCollectedDataTypePreciseLocation",
+            "NSPrivacyCollectedDataTypeLinked": false,
+            "NSPrivacyCollectedDataTypeTracking": false,
+            "NSPrivacyCollectedDataTypePurposes": [
+              "NSPrivacyCollectedDataTypePurposeAppFunctionality"
+            ]
+          },
           {
             "NSPrivacyCollectedDataType": "NSPrivacyCollectedDataTypePreciseLocation",
             "NSPrivacyCollectedDataTypeLinked": false,
